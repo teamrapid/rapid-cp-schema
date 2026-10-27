@@ -1,0 +1,14 @@
+# Site file example, from CP_YAML_SPEC.md v0.1.0 §7.
+site: unc
+version: 1
+datamodel: omop54
+cdm_version: "5.4"
+dialect: postgresql
+vocabulary_version: v5.0 30-AUG-26
+cdm_schema: cdm
+vocab_schema: vocab
+source_value_fallback: true
+personal_history_concepts:
+  - {vocabulary: SNOMED, code: "417662000", label: History of clinical finding in subject}
+  - {concept_id: 2000001234, label: local history concept}
+updated: "2026-09-29"

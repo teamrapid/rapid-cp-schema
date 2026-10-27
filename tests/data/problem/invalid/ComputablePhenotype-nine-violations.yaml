@@ -1,0 +1,33 @@
+# Breaks nine rules of CP_YAML_SPEC.md v0.1.0, yet validates cleanly against schema v0.1.0.
+# Move to tests/data/invalid/ once the schema rejects it. See SPEC.md, "Constraint layer".
+#  1. search_mode: cluster with no cluster block            (spec §2)
+#  2. medication feature coded in LOINC                      (spec §3.2)
+#  3. diagnostic_test feature with no result                 (spec §3.2)
+#  4. two features with the same id (f1)                     (spec §3)
+#  5. L1 disjunct on a Tier 3 feature                        (spec §5.1)
+#  6. disjunct referencing a feature that doesn't exist      (spec §5)
+#  7. L2A rules block on an L1 CP                            (spec §2)
+#  8. one expr node that is both feature and all_of          (spec §5.2)
+#  9. rule made only of none_of                              (spec §5.2)
+cp_id: mondo0010619-xlh_L1_v1.0
+schema_version: 0.1.0
+title: Broken XLH CP
+disease: {mondo_id: "MONDO:0010619", slug: xlh, name: X-linked hypophosphatemia}
+level: L1
+search_mode: cluster
+status: draft
+provenance: {authored_by: test, authored_date: "2026-10-23"}
+features:
+  - {id: f1, module: medication, name: burosumab, specificity_tier: 1, codes: [{vocabulary: LOINC, code: "2777-1"}]}
+  - {id: f1, module: diagnostic_test, name: phosphate, specificity_tier: 3, codes: [{vocabulary: LOINC, code: "2777-1"}]}
+disjuncts:
+  - {id: d1, feature: f1}
+  - {id: d2, feature: f99}
+rules:
+  - id: r1
+    expr:
+      feature: f1
+      all_of: [{feature: f1}]
+  - id: r2
+    expr:
+      none_of: [{feature: f1}]

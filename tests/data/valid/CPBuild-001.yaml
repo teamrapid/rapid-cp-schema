@@ -1,0 +1,6 @@
+# Build file header example, from CP_YAML_SPEC.md v0.1.0 §6 (the YAML between "-- cpsql-build" and "-- end-cpsql-build").
+generator: cpsql 0.1.0
+build_id: mondo0010619-xlh_L1_v1.0_omop54.b1
+cp_id: mondo0010619-xlh_L1_v1.0
+datamodel: omop54
+build: 1

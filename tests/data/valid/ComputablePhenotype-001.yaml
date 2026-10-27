@@ -1,0 +1,58 @@
+# Level 1 CP for X-linked hypophosphatemia, assembled from the snippets in CP_YAML_SPEC.md v0.1.0.
+# Illustrative only: not a clinically reviewed CP.
+cp_id: mondo0010619-xlh_L1_v1.0
+schema_version: 0.1.0
+title: X-linked hypophosphatemia, Level 1
+disease:
+  mondo_id: MONDO:0010619
+  slug: xlh
+  name: X-linked hypophosphatemia
+  included_mondo_ids:
+    - MONDO:0010619
+level: L1
+search_mode: population
+status: draft
+provenance:
+  authored_by: example
+  authored_date: "2026-10-27"
+expected_flag_rate:
+  basis: none
+  source: example
+features:
+  - id: f1
+    module: diagnostic_code
+    name: XLH diagnosis code
+    specificity_tier: 1
+    codes:
+      - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
+  - id: f2
+    module: medication
+    name: burosumab
+    specificity_tier: 1
+    codes:
+      - {vocabulary: RXNORM, code: "2043855", label: burosumab}
+  - id: f3
+    module: genetic_finding
+    name: PHEX pathogenic variant
+    specificity_tier: 1
+    codes:
+      - {vocabulary: LOINC, code: "53037-8", label: Genetic variation clinical significance}
+    genetic:
+      gene_symbol: PHEX
+      hgnc_id: HGNC:8918
+      interpretations:
+        - {vocabulary: LOINC, code: LA6668-3}
+        - {vocabulary: LOINC, code: LA26332-9}
+      require_gene_text_match: true
+  - id: f4
+    module: phenotype
+    name: Low serum phosphate
+    specificity_tier: 3
+    hpo_id: HP:0002148
+    codes:
+      - {vocabulary: LOINC, code: 2777-1}
+    result: {kind: numeric, operator: below_ref_low}
+disjuncts:
+  - {id: d1, feature: f1, min_distinct_dates: 2, min_span_days: 90}
+  - {id: d2, feature: f2}
+  - {id: d3, feature: f3}

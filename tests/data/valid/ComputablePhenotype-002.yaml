@@ -1,0 +1,48 @@
+# Level 2A CP for X-linked hypophosphatemia, using the rule examples in CP_YAML_SPEC.md v0.1.0 §5.2.
+# Illustrative only: not a clinically reviewed CP.
+cp_id: mondo0010619-xlh_L2A_v2.0
+schema_version: 0.1.0
+title: X-linked hypophosphatemia, Level 2A
+disease:
+  mondo_id: MONDO:0010619
+  slug: xlh
+  name: X-linked hypophosphatemia
+level: L2A
+search_mode: cluster
+cluster:
+  umbrella_codes:
+    - {vocabulary: ICD10CM, code: E83.3, label: Disorders of phosphorus metabolism and phosphatases}
+status: draft
+provenance:
+  authored_by: example
+  authored_date: "2026-10-27"
+  supersedes: mondo0010619-xlh_L1_v1.0
+features:
+  - id: f2
+    module: diagnostic_code
+    name: XLH diagnosis code
+    specificity_tier: 2
+    codes:
+      - {vocabulary: ICD10CM, code: E83.31}
+  - id: f5
+    module: medication
+    name: burosumab
+    specificity_tier: 1
+    codes:
+      - {vocabulary: RXNORM, code: "2043855", label: burosumab}
+  - id: f6
+    module: phenotype
+    name: Low serum phosphate
+    specificity_tier: 3
+    codes:
+      - {vocabulary: LOINC, code: 2777-1}
+    result: {kind: numeric, operator: below_ref_low}
+rules:
+  - id: r1
+    expr:
+      all_of:
+        - {feature: f2, min_distinct_dates: 2}
+        - {feature: f6}
+  - id: r2
+    expr:
+      within: {days: 365, in_order: true, of: [f2, f5]}
