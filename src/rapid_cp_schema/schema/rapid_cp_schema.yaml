@@ -30,6 +30,8 @@ prefixes:
   linkml: https://w3id.org/linkml/
   MONDO: http://purl.obolibrary.org/obo/MONDO_
   HP: http://purl.obolibrary.org/obo/HP_
+  # Placeholder under the v0.1.0 schema id, so the generators run. The real RAPID prefix/PURL is open (SPEC.md §5.3).
+  rapidcp: https://mendelian.co/schemas/rapid-cp-logic/
 default_prefix: rapidcp
 default_range: string
 imports:
