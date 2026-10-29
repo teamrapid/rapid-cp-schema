@@ -1,0 +1,1653 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teamrapid.github.io/rapid-cp-schema/cp-yaml-spec/">
+      
+      
+        <link rel="prev" href="../elements/">
+      
+      
+        <link rel="next" href="../about/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>CP YAML specification - rapid-cp-schema</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+      
+
+
+    
+    
+
+      
+    
+<script src="../assets/pymdownx-extras/material-extra-theme-2ek1P7jT.js" type="text/javascript"></script>
+<script src="../assets/pymdownx-extras/material-extra-3rdparty-BUCF4rjN.js" type="text/javascript"></script>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+      <link rel="stylesheet" href="../assets/pymdownx-extras/extra-c6ab11540a.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rapid-cp-yaml-specification-v010" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="header.title"
+  >
+    <a
+      href="https://teamrapid.github.io/rapid-cp-schema/"
+      title="rapid-cp-schema"
+      class="md-header__button md-logo"
+      aria-label="rapid-cp-schema"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rapid-cp-schema
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CP YAML specification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      <div class="md-header-nav__scheme md-header-nav__button md-source__icon md-icon">
+          <a
+            href="javascript:toggleScheme();"
+            title="Light mode"
+            class="light-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+          </a>
+          <a
+            href="javascript:toggleScheme();"
+            title="Dark mode"
+            class="dark-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+          </a>
+          <a
+            href="javascript:toggleScheme();"
+            title="System preference"
+            class="system-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+          </a>
+           <a
+            href="javascript:toggleScheme();"
+            title="Unknown scheme"
+            class="unknown-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.07 11.25-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
+          </a>
+      </div>
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teamrapid/rapid-cp-schema" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="rapid-cp-schema" class="md-nav__button md-logo" aria-label="rapid-cp-schema" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+
+    </a>
+    rapid-cp-schema
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teamrapid/rapid-cp-schema" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CP YAML specification
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CP YAML specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-top-level-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Top-level fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-code-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Code references
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-modules-allowed-vocabularies-and-omop-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Modules, allowed vocabularies, and OMOP routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-genetic-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Genetic findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-counting-and-persistence-min_distinct_dates-min_span_days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Counting and persistence: min_distinct_dates, min_span_days
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-level-1-disjuncts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Level 1: disjuncts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-level-2a-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Level 2A: rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-level-2b-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Level 2B: score
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-cluster-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Cluster mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-build-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Build file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-site-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Site files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-three-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. The three statements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-repository-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Repository layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Open decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-top-level-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Top-level fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-code-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Code references
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-modules-allowed-vocabularies-and-omop-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Modules, allowed vocabularies, and OMOP routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-genetic-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Genetic findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-counting-and-persistence-min_distinct_dates-min_span_days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Counting and persistence: min_distinct_dates, min_span_days
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-level-1-disjuncts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Level 1: disjuncts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-level-2a-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Level 2A: rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-level-2b-score" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Level 2B: score
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-cluster-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Cluster mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-build-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Build file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-site-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Site files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-three-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. The three statements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-repository-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Repository layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Open decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+                  
+
+
+  
+  
+
+
+<h1 id="rapid-cp-yaml-specification-v010">RAPID CP YAML specification, v0.1.0</h1>
+<p>The formal schema is <code>rapid_cp_logic.linkml.yaml</code>, in the <code>schema/</code> folder of the cp-deployment repo. This document explains it, and
+is the reference for how each field turns into OMOP SQL.</p>
+<h2 id="1-the-files">1. The files</h2>
+<p>"The CP workstream" separates <em>logic</em> from <em>translation</em>, so a mapping fix and a logic
+change are different kinds of edit. Settings that belong to a site rather than a disease
+live in their own file. That gives three kinds of file:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Name</th>
+<th>Holds</th>
+<th>New version when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CP logic</td>
+<td><code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;.yaml</code></td>
+<td>Features (coded evidence) and how they combine</td>
+<td>The clinical logic changes</td>
+</tr>
+<tr>
+<td>Build</td>
+<td><code>&lt;cp-id&gt;_&lt;datamodel&gt;.b&lt;build&gt;.sql</code></td>
+<td>The generated SQL for one data model, shared by every site on it</td>
+<td>Only the translation changes</td>
+</tr>
+<tr>
+<td>Site</td>
+<td><code>&lt;site&gt;_v&lt;version&gt;.yaml</code></td>
+<td>Everything about running at one site: schemas, vocabulary release, history concepts (§7)</td>
+<td>Anything about the site changes</td>
+</tr>
+</tbody>
+</table>
+<p><code>&lt;disease-id&gt;</code> is the lowercase Mondo id without the colon, a hyphen, and the disease's
+<code>slug</code> (<code>mondo0010619-xlh</code>). <code>&lt;level&gt;</code> is <code>L1</code>, <code>L2A</code>, <code>L2B</code>, or <code>L3</code>. Example:
+<code>mondo0010619-xlh_L1_v1.0.yaml</code> and <code>mondo0010619-xlh_L1_v1.0_omop54.b1.sql</code>.</p>
+<p>Everything in a file name is lowercase except the level. This keeps names safe on
+case-insensitive checkouts, where two names differing only in case would collide.</p>
+<p>Names starting <code>cluster-</code> are reserved for cluster CPs, which are not supported yet. They
+will be named <code>cluster-&lt;umbrella-code&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, with the umbrella code
+lowercase, prefixed with its vocabulary and without dots (e.g. <code>cluster-icd10e833_L2A_v1.0</code>).
+For now each candidate disease gets its own CP (§5.4).</p>
+<p><strong>Version numbers.</strong> Which part of <code>v&lt;major&gt;.&lt;minor&gt;</code> to bump depends on what changed:</p>
+<ul>
+<li><strong>Major</strong> (<code>v1.3</code> → <code>v2.0</code>): the CP's structure changes. That means a disjunct, rule or
+  score item is added or removed, the level changes, the search mode or cluster changes, or
+  a feature's module changes. Major numbers are never reused.</li>
+<li><strong>Minor</strong> (<code>v1.0</code> → <code>v1.1</code>): the structure stays the same but details inside it change.
+  For example, codes are added to or removed from an existing feature, a threshold or
+  <code>min_distinct_dates</code> changes, or score points are re-weighted. Minor resets to 0 on a
+  major bump.</li>
+<li><strong>No bump</strong>: only lifecycle or documentation fields change (<code>status</code>, <code>review</code>, <code>notes</code>
+  and the others listed in §6). These don't affect which patients are flagged.</li>
+</ul>
+<p>Either bump starts the build numbering again at <code>b1</code>. <strong>cpsql</strong> doesn't check which part
+you bumped; it only checks that a logic change came with a new version (§6).</p>
+<p>The CP logic file is not the curation record, which
+holds the whole evidence base and review trail.</p>
+<p>The CP file never contains OMOP <code>concept_id</code>s. Codes are written in their source
+vocabularies (ICD-10-CM <code>E83.31</code>, SNOMED CT <code>82236004</code>, LOINC <code>2777-1</code>, RxNorm <code>2043855</code>),
+and the generated SQL resolves them against each site's own <code>CONCEPT</code> table at run time.
+That keeps the logic portable across sites and vocabulary releases.</p>
+<p><strong>cpsql</strong> is the command-line tool in the same repo that works with these files. It checks a CP file against this spec and
+turns it into the SQL that sites run against their OMOP database. Its commands are:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validate CP.yaml</code></td>
+<td>Checks the CP file against the schema</td>
+</tr>
+<tr>
+<td><code>explain CP.yaml</code></td>
+<td>Prints, for each feature, which OMOP tables and columns will be searched and how the logic combines them</td>
+</tr>
+<tr>
+<td><code>build CP.yaml</code></td>
+<td>Writes the build file: the SQL for one data model (§6)</td>
+</tr>
+<tr>
+<td><code>check BUILD.sql CP.yaml</code></td>
+<td>Confirms a committed build file still matches its CP file and hasn't been hand-edited</td>
+</tr>
+<tr>
+<td><code>render BUILD.sql --site SITE.yaml</code></td>
+<td>Applies a site file (§7), producing the SQL that site runs</td>
+</tr>
+<tr>
+<td><code>refresh cps/&lt;disease-id&gt;/</code></td>
+<td>Updates the disease folder's <code>translation-status.md</code> and <code>CHANGELOG.md</code> (§9)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-top-level-fields">2. Top-level fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Req</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cp_id</code></td>
+<td>✓</td>
+<td>Must match the file name, <code>level</code>, <code>disease.mondo_id</code> and <code>disease.slug</code></td>
+</tr>
+<tr>
+<td><code>schema_version</code></td>
+<td>✓</td>
+<td>Version of this spec, currently <code>0.1.0</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>✓</td>
+<td></td>
+</tr>
+<tr>
+<td><code>disease</code></td>
+<td>✓</td>
+<td><code>mondo_id</code> ✓, <code>slug</code> ✓ (short lowercase hyphenated name used in file names, e.g. <code>xlh</code>), <code>name</code> ✓, <code>included_mondo_ids</code> (every Mondo id that constitutes the disease entity, <code>mondo_id</code> included, as CURIEs; defaults to just <code>mondo_id</code>. <code>mondo_id</code> stays the primary id and, with <code>slug</code>, names the file), <code>curation_record_version</code> (version of the curation record for <code>mondo_id</code> that this CP was built from)</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>✓</td>
+<td><code>L1</code> / <code>L2A</code> / <code>L2B</code> / <code>L3</code> (L3 is declared only; <strong>cpsql</strong> does not generate it)</td>
+</tr>
+<tr>
+<td><code>search_mode</code></td>
+<td>✓</td>
+<td><code>population</code> or <code>cluster</code></td>
+</tr>
+<tr>
+<td><code>cluster</code></td>
+<td>if cluster</td>
+<td><code>umbrella_codes</code> (ICD10CM/SNOMED), <code>candidate_mondo_ids</code> (documentation only: the other diseases under the umbrella. Each candidate gets its own CP)</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>✓</td>
+<td><code>draft</code> (being written) / <code>testing</code> (at one or more sites) / <code>accepted</code> (at all seed sites) / <code>refining</code> (accepted, but showed an underperformance signature and is being revised) / <code>exemplar-candidate</code> (no expert-set logic works; held for a future trained model, and <strong>cpsql</strong> won't build SQL for it) / <code>deprecated</code> (superseded or withdrawn)</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td></td>
+<td>Clinical sign-off: <code>reviewer</code> ✓, <code>date</code> ✓, <code>decision</code> ✓ (<code>proceed</code> / <code>revise</code>), <code>comments</code>. Recorded only; <strong>cpsql</strong> doesn't block unreviewed CPs</td>
+</tr>
+<tr>
+<td><code>sites_tested</code></td>
+<td></td>
+<td>Where this CP version has been run: a list of <code>{site, site_version, build}</code>, e.g. <code>{site: unc, site_version: 1, build: mondo0010619-xlh_L1_v1.0_omop54.b1}</code>. <code>site</code> is a lowercase name, <code>site_version</code> the site file version used (§7), and <code>build</code> must be a build of this CP. Recorded only</td>
+</tr>
+<tr>
+<td><code>provenance</code></td>
+<td>✓</td>
+<td><code>authored_by</code>, <code>authored_date</code>, <code>kg_extracted_at</code> (ISO 8601 timestamp of the KG subgraph extract), <code>change_note</code>, <code>supersedes</code></td>
+</tr>
+<tr>
+<td><code>expected_flag_rate</code></td>
+<td></td>
+<td>The range of patients per 100,000 a correct CP should flag at a site (prevalence × the share of cases diagnosed and coded), from the Expected Flag Rate Pipeline: <code>low_per_100k</code>, <code>high_per_100k</code>, <code>basis</code> ✓ (<code>measured</code> / <code>class_band</code> / <code>none</code>), <code>source</code> ✓ (which pipeline run or reference produced it). With <code>none</code>, give no numbers; otherwise <code>high_per_100k</code> is required and <code>low_per_100k</code> can be left out for an open-ended range. A wide range, not a target: feeds the flag-rate gauge</td>
+</tr>
+<tr>
+<td><code>features</code></td>
+<td>✓</td>
+<td>Atomic evidence items (§3)</td>
+</tr>
+<tr>
+<td><code>disjuncts</code></td>
+<td>L1 only</td>
+<td>§5.1</td>
+</tr>
+<tr>
+<td><code>rules</code></td>
+<td>L2A only</td>
+<td>§5.2</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>L2B only</td>
+<td>§5.3</td>
+</tr>
+<tr>
+<td><code>absorbed_into</code></td>
+<td></td>
+<td>The cluster CP that currently handles this disease (e.g. <code>cluster-icd10e833_L2A_v1.0</code>); empty once the disease stands alone. Reserved for cluster CPs</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td></td>
+<td>Free text.</td>
+</tr>
+</tbody>
+</table>
+<p>Each level must carry its own logic block and no other level's block.</p>
+<h2 id="3-features">3. Features</h2>
+<p>A feature is one piece of evidence. Every feature has an <code>id</code> (<code>f1</code>, <code>f2</code>, …), a <code>module</code>,
+a <code>name</code>, a <code>specificity_tier</code> (1 to 5), and one or more <code>codes</code>. Some
+modules also need a <code>result</code> or a <code>genetic</code> block. Optional fields:
+<code>hpo_id</code> (an annotation on phenotype features; it is not queried), <code>text_terms</code>
+(names and synonyms for Lane 3 NLP; the OMOP generator ignores them), and
+<code>include_personal_history</code> (§3.2).</p>
+<p>A feature can be listed under <code>features</code> without being used in any disjunct, rule or score item. Such features are carried for traceability and
+never queried.</p>
+<h3 id="31-code-references">3.1 Code references</h3>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">SNOMED</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="s">"82236004"</span><span class="p p-Indicator">,</span><span class="nt"> label</span><span class="p">:</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">,</span><span class="nt"> include_descendants</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p><code>vocabulary</code> names the code's vocabulary: <code>ICD10CM</code>, <code>SNOMED</code>, <code>LOINC</code> or <code>RXNORM</code>. Result
+units use a fifth, <code>UCUM</code> (e.g. <code>mg/dL</code>).
+<strong>cpsql</strong> maps each to its Athena <code>vocabulary_id</code>. Always quote SNOMED and RxNorm codes, so YAML
+reads them as strings rather than numbers.</p>
+<p><code>include_descendants</code> controls whether a code also matches the more specific codes beneath
+it in its vocabulary's hierarchy. For example, a SNOMED CT disorder with
+<code>include_descendants: true</code> also matches every subtype of that disorder, and the RxNorm
+ingredient burosumab also matches every burosumab product (each strength and formulation).
+Without it, only records carrying exactly that code match.</p>
+<p>The default depends on where the code is used:</p>
+<ul>
+<li><strong>A feature's main codes default to true.</strong> Sites often record a more specific code than
+  the one you curated, so descendants are usually wanted.</li>
+<li><strong>Result values and units default to false.</strong> An accepted answer such as <code>Pathogenic</code>, or a
+  unit such as <code>mg/dL</code>, should match only itself.</li>
+</ul>
+<p>Set it explicitly on any code to override the default.</p>
+<p>How descendants are found depends on the vocabulary. For SNOMED, LOINC and RxNorm codes, <strong>cpsql</strong> looks them up in the site's <code>CONCEPT_ANCESTOR</code> table, which lists
+every ancestor–descendant pair in the OMOP vocabularies. ICD10CM codes can't be expanded
+that way: ICD-10-CM is not a standard vocabulary in OMOP (its codes are source codes that
+map to SNOMED CT), so they never appear in <code>CONCEPT_ANCESTOR</code>. Instead they expand by code
+prefix, which works because an ICD-10-CM code's children all start with it: <code>E83.3</code>
+matches <code>E83.30</code>, <code>E83.31</code>, and so on. ICD10CM codes are also normalised to dotted form (<code>E8331</code> → <code>E83.31</code>),
+as a safety net for codes typed without the dot.</p>
+<h3 id="32-modules-allowed-vocabularies-and-omop-routing">3.2 Modules, allowed vocabularies, and OMOP routing</h3>
+<p>The same code-matching logic runs against every table: the codeset is compared with <strong>both</strong>
+the standard <code>*_concept_id</code> and <code>*_source_concept_id</code> columns. Concept ids are unique across
+vocabularies, so a standard SNOMED concept matches the standard column and a non-standard
+ICD10CM concept matches the source column, with no ambiguity.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Vocabularies</th>
+<th>Default OMOP tables</th>
+<th>Extra requirement</th>
+<th>What must be true of the row</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>diagnostic_code</code></td>
+<td>ICD10CM, SNOMED</td>
+<td><code>condition_occurrence</code>, <code>observation</code></td>
+<td>none</td>
+<td>Code present (ever)</td>
+</tr>
+<tr>
+<td><code>phenotype</code> (coded)</td>
+<td>ICD10CM, SNOMED</td>
+<td><code>condition_occurrence</code>, <code>observation</code></td>
+<td>none</td>
+<td>Code present</td>
+</tr>
+<tr>
+<td><code>phenotype</code> (measurement)</td>
+<td>LOINC</td>
+<td><code>measurement</code>, <code>observation</code></td>
+<td><code>result</code></td>
+<td>Result meets criterion</td>
+</tr>
+<tr>
+<td><code>diagnostic_test</code></td>
+<td>LOINC, SNOMED</td>
+<td><code>measurement</code>, <code>observation</code></td>
+<td><code>result</code></td>
+<td>Result meets criterion (an order is not a finding)</td>
+</tr>
+<tr>
+<td><code>genetic_finding</code></td>
+<td>LOINC, SNOMED</td>
+<td><code>measurement</code>, <code>observation</code></td>
+<td><code>genetic</code></td>
+<td>Interpretation and gene match (§3.4)</td>
+</tr>
+<tr>
+<td><code>medication</code></td>
+<td>RXNORM</td>
+<td><code>drug_exposure</code></td>
+<td>none</td>
+<td>Any exposure (ingredient expands to products)</td>
+</tr>
+<tr>
+<td><code>procedure</code></td>
+<td>SNOMED</td>
+<td><code>procedure_occurrence</code></td>
+<td>none</td>
+<td>Procedure recorded</td>
+</tr>
+</tbody>
+</table>
+<p><code>observation</code> is searched alongside <code>condition_occurrence</code> because in OMOP a
+concept's <code>domain_id</code> decides the table, and many SNOMED findings are Observation-domain.</p>
+<p>Searching <code>observation</code> doesn't pick up family history. OMOP usually records "family
+history of X" in two parts:</p>
+<ul>
+<li><code>observation_concept_id</code> holds a general concept, such as "family history of clinical
+  finding";</li>
+<li><code>value_as_concept_id</code> holds the disease X itself.</li>
+</ul>
+<p>For coded features, <strong>cpsql</strong> looks for the code only in <code>observation_concept_id</code> (and
+<code>observation_source_concept_id</code>), never in <code>value_as_concept_id</code>. So a relative's diagnosis
+doesn't flag the patient.</p>
+<p>"History of X" records, about the patient's own past condition, are stored the same way,
+but they are real evidence for a lifelong rare disease, so <strong>cpsql</strong> counts them. An
+<code>observation</code> row counts as the patient's own history when both of these hold:</p>
+<ul>
+<li><code>value_as_concept_id</code> is one of the feature's codes, and</li>
+<li><code>observation_concept_id</code> is a personal-history concept: by default SNOMED CT <code>417662000</code>
+  "History of clinical finding in subject", or any of its descendants.</li>
+</ul>
+<p>This is on by default for <code>diagnostic_code</code> and coded <code>phenotype</code> features. Set
+<code>include_personal_history: false</code> on a feature to count only direct records. Sites that use
+different history concepts can change the list in their site file (§7).</p>
+<p>For ICD10CM codes, the site file's <code>source_value_fallback</code> (default on) also compares the raw
+<code>*_source_value</code> string, normalised for case, dots, and whitespace. This catches ETLs that
+left <code>*_source_concept_id</code> at 0.</p>
+<p>A phenotype feature with LOINC codes must be all-LOINC. Put coded (SNOMED/ICD10CM)
+phenotypes in a separate feature.</p>
+<p>Reference-range operators (<code>above_ref_high</code>, <code>below_ref_low</code>) route to <code>measurement</code> only,
+because <code>observation</code> has no range columns.</p>
+<h3 id="33-results">3.3 Results</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">result</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">numeric</span><span class="p p-Indicator">,</span><span class="nt"> operator</span><span class="p">:</span><span class="w"> </span><span class="nv">below_ref_low</span><span class="p p-Indicator">}</span><span class="w">                 </span><span class="c1"># uses the row's own range_low</span>
+<span class="nt">result</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">numeric</span><span class="p p-Indicator">,</span><span class="nt"> operator</span><span class="p">:</span><span class="w"> </span><span class="nv">gt</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="nt"> units</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">UCUM</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="nv">pg/mL</span><span class="p p-Indicator">}]}</span>
+<span class="nt">result</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="nv">qualitative</span><span class="p p-Indicator">,</span><span class="nt"> value_concepts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">LOINC</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="nv">LA6576-8</span><span class="p p-Indicator">}]}</span><span class="w">   </span><span class="c1"># Positive</span>
+</code></pre></div>
+<p>A numeric result compares the row's <code>value_as_number</code> using one of these operators:</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Matches when the result is…</th>
+<th>Fields needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gt</code></td>
+<td>greater than <code>value</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>gte</code></td>
+<td>greater than or equal to <code>value</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>lt</code></td>
+<td>less than <code>value</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>lte</code></td>
+<td>less than or equal to <code>value</code></td>
+<td><code>value</code></td>
+</tr>
+<tr>
+<td><code>between</code></td>
+<td>from <code>value</code> to <code>value_high</code>, both included</td>
+<td><code>value</code>, <code>value_high</code></td>
+</tr>
+<tr>
+<td><code>above_ref_high</code></td>
+<td>above the upper limit of the normal range recorded on that same row (<code>range_high</code>)</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>below_ref_low</code></td>
+<td>below the lower limit of the normal range recorded on that same row (<code>range_low</code>)</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>The last two use the normal range the lab reported with each result, not a threshold you
+set. They only work in <code>measurement</code> (the only table with range columns), and a row with
+no range recorded doesn't match.</p>
+<p>When a numeric threshold has no <code>units</code>, the value is compared whatever its unit, and
+<code>cpsql validate</code> warns about it. The reference-range operators are usually the safest choice,
+since they are unit-free and age-appropriate wherever the lab supplies ranges.</p>
+<h3 id="34-genetic-findings">3.4 Genetic findings</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">codes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">LOINC</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="s">"53037-8"</span><span class="p p-Indicator">}]</span><span class="w">        </span><span class="c1"># Genetic variation clinical significance</span>
+<span class="nt">genetic</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gene_symbol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PHEX</span>
+<span class="w">  </span><span class="nt">hgnc_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HGNC:8918</span>
+<span class="w">  </span><span class="nt">interpretations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">LOINC</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="nv">LA6668-3</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">LOINC</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="nv">LA26332-9</span><span class="p p-Indicator">}]</span>
+<span class="w">  </span><span class="nt">require_gene_text_match</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>A row qualifies when its concept is in <code>codes</code>, <strong>and</strong> its <code>value_as_concept_id</code> is an
+accepted interpretation (if any are listed), <strong>and</strong> the gene symbol appears in the row's
+source text (<code>*_source_value</code>, <code>value_source_value</code>, and <code>value_as_string</code> on
+<code>observation</code>). The last condition applies only if <code>require_gene_text_match</code> is true.</p>
+<p>Core OMOP 5.4 has no place that ties a gene, a variant, and an interpretation together, so
+this matching is a heuristic. It flags any variant in the gene with an accepted
+interpretation; it can't be restricted to specific variants. Before relying on this module at a site,
+confirm that the site's genetics results are loaded as discrete rows at all.</p>
+<h2 id="4-counting-and-persistence-min_distinct_dates-min_span_days">4. Counting and persistence: <code>min_distinct_dates</code>, <code>min_span_days</code></h2>
+<p>Disjuncts, rule leaves, and score items can require a feature on N distinct dates
+(default 1). <strong>cpsql</strong> counts distinct dates rather than rows, so ETL duplicates don't inflate
+the count.</p>
+<p>They can also require <strong>persistence</strong> with <code>min_span_days</code>: the feature's records must
+stretch across at least N days, from the first to the last. This separates a condition that
+keeps being recorded from a code entered once in error.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f2</span><span class="p p-Indicator">,</span><span class="nt"> min_distinct_dates</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> min_span_days</span><span class="p">:</span><span class="w"> </span><span class="nv">90</span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># 2+ dates, at least 90 days apart</span>
+</code></pre></div>
+<h2 id="5-logic">5. Logic</h2>
+<h3 id="51-level-1-disjuncts">5.1 Level 1: disjuncts</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">disjuncts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">d1</span><span class="p p-Indicator">,</span><span class="nt"> feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f1</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">d2</span><span class="p p-Indicator">,</span><span class="nt"> feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f2</span><span class="p p-Indicator">,</span><span class="nt"> min_distinct_dates</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>The CP fires if any disjunct fires. Every disjunct must reference a <code>specificity_tier: 1</code> feature,
+matching the "union of every domain that reaches Tier 1" definition.</p>
+<h3 id="52-level-2a-rules">5.2 Level 2A: rules</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">r2</span>
+<span class="w">    </span><span class="nt">expr</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">all_of</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f2</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">any_of</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f3</span><span class="p p-Indicator">,</span><span class="nt"> min_distinct_dates</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f4</span><span class="p p-Indicator">}]</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">none_of</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f9</span><span class="p p-Indicator">}]</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">r3</span>
+<span class="w">    </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">at_least</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> of</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f2</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f3</span><span class="p p-Indicator">},</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f5</span><span class="p p-Indicator">}]}</span>
+</code></pre></div>
+<p>Each <code>expr</code> node is exactly one of: <code>feature</code>, <code>all_of</code>, <code>any_of</code>, <code>none_of</code> (NOT any),
+<code>at_least</code>+<code>of</code>, or <code>within</code> (below). The CP fires if any rule fires. Every rule must contain at least one
+positive (non-negated) feature, because a rule made only of <code>none_of</code> would match almost
+everyone.</p>
+<p><strong>Time windows.</strong> A <code>within</code> node requires a record of each listed feature, all falling
+within a set number of days of each other:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">r4</span>
+<span class="w">  </span><span class="nt">expr</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">within</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">days</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">365</span>
+<span class="w">      </span><span class="nt">of</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">f2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">f5</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># E83.31 and burosumab within a year of each other</span>
+</code></pre></div>
+<p>Add <code>in_order: true</code> to require the records in the listed order as well. For example,
+the drug started on or after the diagnosis:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nt">within</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">days</span><span class="p">:</span><span class="w"> </span><span class="nv">365</span><span class="p p-Indicator">,</span><span class="nt"> in_order</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="nt"> of</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">f2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">f5</span><span class="p p-Indicator">]}</span><span class="w">    </span><span class="c1"># f2 first, then f5</span>
+</code></pre></div>
+<p>With <code>in_order</code>, records on the same day count as in order, and <code>days</code> is measured from the
+first listed feature to the last. <code>of</code> lists feature ids only (at least two), and each
+feature's own filters (codes, results, personal history) apply as usual. A <code>within</code> node can
+be combined with the other nodes like any condition, including inside <code>none_of</code> (e.g. "the
+diagnosis, but not treated within a year").</p>
+<p><code>none_of</code> is available as syntax, but the curated mimic and hard-exclusion modules are not
+yet specified.</p>
+<h3 id="53-level-2b-score">5.3 Level 2B: score</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">score</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">s1</span><span class="p p-Indicator">,</span><span class="nt"> feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f2</span><span class="p p-Indicator">,</span><span class="nt"> points</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">s2</span><span class="p p-Indicator">,</span><span class="nt"> feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f3</span><span class="p p-Indicator">,</span><span class="nt"> points</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> min_distinct_dates</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">s3</span><span class="p p-Indicator">,</span><span class="nt"> feature</span><span class="p">:</span><span class="w"> </span><span class="nv">f9</span><span class="p p-Indicator">,</span><span class="nt"> points</span><span class="p">:</span><span class="w"> </span><span class="nv">-3</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p>A person flags when the sum of the points for features they meet reaches <code>threshold</code>. The
+flag reasons are the items with a non-zero contribution. Negative items appear too, which
+makes it visible when an exclusion-like item was outweighed.</p>
+<h3 id="54-cluster-mode">5.4 Cluster mode</h3>
+<p>Cluster mode searches only the patients who already carry a broad "umbrella" diagnosis,
+instead of the whole database. It is meant for telling apart several diseases that share
+an umbrella code. For example, XLH, hereditary vitamin D-dependent rickets and other
+disorders all sit under ICD-10-CM <code>E83.3</code> (disorders of phosphorus metabolism).</p>
+<p>Set <code>search_mode: cluster</code> and list the umbrella codes under <code>cluster.umbrella_codes</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">search_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster</span>
+<span class="nt">cluster</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">umbrella_codes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">ICD10CM</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="nv">E83.3</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p><strong>cpsql</strong> then works in two steps:</p>
+<ol>
+<li><strong>Build the cluster.</strong> It finds every patient with an umbrella code, searching the same
+   tables in the same way as a <code>diagnostic_code</code> feature, descendants included (so <code>E83.3</code>
+   also covers <code>E83.30</code>, <code>E83.31</code>, …), except that personal-history records don't count. Internally this is handled as a hidden feature with
+   the id <code>u0</code>. It never appears as a flag reason.</li>
+<li><strong>Apply the rules inside the cluster.</strong> Every disjunct, rule or score item is evaluated
+   only for patients in the cluster. A patient who meets a rule but has no umbrella code is
+   not flagged.</li>
+</ol>
+<p>The <code>counts</code> statement changes to match: <code>__denominator__</code> is the number of patients in
+the cluster, not the number of patients in the whole <code>person</code> table. The flag rate then
+reads as "the share of the cluster that looks like this disease".</p>
+<p>Each candidate disease under the umbrella gets its own CP file with the same
+<code>umbrella_codes</code> (see <code>candidate_mondo_ids</code> in §2).</p>
+<h2 id="6-build-file">6. Build file</h2>
+<p>The build file is the SQL itself: one file, <code>&lt;cp_id&gt;_&lt;datamodel&gt;.b&lt;build&gt;.sql</code>, committed to
+GitHub next to the CP file. It serves every site on that data model, because site settings
+are applied only when it runs (§7). It has two parts.</p>
+<p><strong>Header.</strong> A YAML block inside SQL comments, between <code>-- cpsql-build</code> and
+<code>-- end-cpsql-build</code>, recording where the SQL came from. It follows the <code>CPBuild</code> class in
+the schema:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- cpsql-build</span>
+<span class="c1">-- generator: cpsql 0.1.0</span>
+<span class="c1">-- cp_logic_sha256: be8d8491…        -- fingerprint of the CP logic this SQL came from</span>
+<span class="c1">-- build_id: mondo0010619-xlh_L1_v1.0_omop54.b1</span>
+<span class="c1">-- cp_id: mondo0010619-xlh_L1_v1.0</span>
+<span class="c1">-- datamodel: omop54</span>
+<span class="c1">-- build: 1</span>
+<span class="c1">-- change_note: ...</span>
+<span class="c1">-- end-cpsql-build</span>
+</code></pre></div>
+<p><strong>Three statements</strong>, each introduced by a <code>-- ======== @statement &lt;name&gt;</code> line (§8).</p>
+<p>The statements are generated and are never edited by hand. A new build of the same CP
+version is only needed when the translation itself changes, for example a new <strong>cpsql</strong>
+release:</p>
+<div class="highlight"><pre><span></span><code>cpsql<span class="w"> </span>build<span class="w"> </span>CP.yaml<span class="w"> </span>--from<span class="w"> </span>cps/&lt;disease-id&gt;/…b1.sql<span class="w"> </span>--note<span class="w"> </span><span class="s2">"Regenerated with cpsql 0.2"</span><span class="w">   </span><span class="c1"># -&gt; …b2.sql</span>
+</code></pre></div>
+<p>Build files are immutable: <code>cpsql build</code> refuses to overwrite an existing one. A new CP
+version starts again at <code>b1</code>.</p>
+<p><code>cpsql check BUILD.sql CP.yaml</code> regenerates the statements from the CP file and fails if:</p>
+<ul>
+<li>any statement differs (someone hand-edited the SQL, or a different <strong>cpsql</strong> version wrote it);</li>
+<li>the CP logic's fingerprint no longer matches (the logic changed without a new CP version
+  and rebuild).</li>
+</ul>
+<p>The fingerprint covers only the fields that decide which patients are flagged: the disease
+ids (<code>mondo_id</code>, <code>included_mondo_ids</code>), <code>level</code>, <code>search_mode</code>, <code>cluster</code>, <code>features</code>,
+<code>disjuncts</code>, <code>rules</code> and <code>score</code>. Lifecycle and documentation fields (<code>status</code>, <code>review</code>,
+<code>sites_tested</code>, <code>provenance</code>, <code>expected_flag_rate</code>, <code>title</code>, <code>notes</code>, <code>absorbed_into</code>) can be edited without a new
+version or build.</p>
+<p>Running <code>check</code> in the GitHub Action keeps the committed SQL and the YAML logic from drifting
+apart.</p>
+<h2 id="7-site-files">7. Site files</h2>
+<p>Everything that depends on the site rather than the disease is kept in one file per site,
+under <code>/sites/</code>, and applied when the SQL runs:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unc</span>
+<span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">datamodel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">omop54</span>
+<span class="nt">cdm_version</span><span class="p">:</span><span class="w"> </span><span class="s">"5.4"</span>
+<span class="nt">dialect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+<span class="nt">vocabulary_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v5.0 30-AUG-26</span><span class="w">      </span><span class="c1"># from the site's VOCABULARY table</span>
+<span class="nt">cdm_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdm</span>
+<span class="nt">vocab_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vocab</span>
+<span class="nt">source_value_fallback</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># also match raw ICD-10-CM strings (§3.2)</span>
+<span class="nt">personal_history_concepts</span><span class="p">:</span><span class="w">              </span><span class="c1"># what marks an observation as the patient's own history</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">vocabulary</span><span class="p">:</span><span class="w"> </span><span class="nv">SNOMED</span><span class="p p-Indicator">,</span><span class="nt"> code</span><span class="p">:</span><span class="w"> </span><span class="s">"417662000"</span><span class="p p-Indicator">,</span><span class="nt"> label</span><span class="p">:</span><span class="w"> </span><span class="nv">History of clinical finding in subject</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">concept_id</span><span class="p">:</span><span class="w"> </span><span class="nv">2000001234</span><span class="p p-Indicator">,</span><span class="nt"> label</span><span class="p">:</span><span class="w"> </span><span class="nv">local history concept</span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># an id, used as is</span>
+<span class="nt">updated</span><span class="p">:</span><span class="w"> </span><span class="s">"2026-09-29"</span>
+<span class="nt">change_note</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div>
+<p><strong>Versioned.</strong> Any change to a site's settings is a new file, <code>unc_v2.yaml</code>, and old versions
+are kept. A run is then fully identified by the build and the site file version, which is
+what <code>sites_tested</code> records. Changing a site file never invalidates a build.</p>
+<p><strong>Applied at run time.</strong> The SQL that sites run comes from <code>cpsql render</code>:</p>
+<div class="highlight"><pre><span></span><code>cpsql<span class="w"> </span>render<span class="w"> </span>cps/&lt;disease-id&gt;/…b1.sql<span class="w"> </span>--site<span class="w"> </span>sites/unc_v1.yaml<span class="w">                     </span><span class="c1"># whole file</span>
+cpsql<span class="w"> </span>render<span class="w"> </span>cps/&lt;disease-id&gt;/…b1.sql<span class="w"> </span>--site<span class="w"> </span>sites/unc_v1.yaml<span class="w"> </span>--statement<span class="w"> </span>counts
+</code></pre></div>
+<p>In the committed SQL each site setting is a marker: an SQL comment followed by a safe
+default (e.g. <code>/*@source_value_fallback*/1</code>). So the file still parses and runs before rendering,
+with the fallback on and no personal-history concepts. Only the schema
+names (<code>@cdm_schema</code>, <code>@vocab_schema</code>) must be filled in. Rendering refuses a site file whose
+data model doesn't match the build.</p>
+<p>The <code>codesets</code> statement is the check that a new site file is right: run it once per new
+version to confirm the site's history concepts and vocabulary release resolve. History concepts
+given as a code are looked up like any other code; those given as a <code>concept_id</code> are listed
+as they are, and show <code>NOT_FOUND</code> if the id isn't in the site's <code>CONCEPT</code> table.</p>
+<h2 id="8-the-three-statements">8. The three statements</h2>
+<table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Output</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codesets</code></td>
+<td>One row per concept each requested code matched, including descendants found through <code>CONCEPT_ANCESTOR</code> and ICD-10-CM prefix matches: matched code, concept name, domain, standard flag, invalid reason, status <code>OK / NOT_FOUND / INVALID / NON_STANDARD_NO_EXPANSION</code>. A code that matches nothing gets one row, status <code>NOT_FOUND</code>. History concepts the site file gives as a <code>concept_id</code> also get one row each (feature <code>ph</code>, the id as <code>requested_code</code>, no vocabulary), so a wrong id shows as <code>NOT_FOUND</code></td>
+<td>Run this first at every site. It is the portability pre-check.</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td><code>cp_id, build_id, person_id, criterion_id, first_date, points</code>: one row per criterion that fired</td>
+<td>Which patients the CP found, and which criterion found each one. <code>criterion_id</code> is the flag reason.</td>
+</tr>
+<tr>
+<td><code>counts</code></td>
+<td>Persons per criterion, <code>__any__</code>, and <code>__denominator__</code>. Every criterion gets a row, including those that flagged nobody (0), and nothing is suppressed: for rare diseases, small counts and zero are the result</td>
+<td>How many patients each criterion found at the site.</td>
+</tr>
+</tbody>
+</table>
+<p><code>first_date</code> is the earliest qualifying event among the positive features in the criterion.
+It is not necessarily the date the rule first became true (for example, the date a
+time window was completed).</p>
+<h2 id="9-repository-layout">9. Repository layout</h2>
+<p>Each disease has its own folder under <code>/cps/</code>, named after its disease id. Site files sit
+in one <code>/sites/</code> folder at the top of the repository (§7).</p>
+<div class="highlight"><pre><span></span><code>/sites/
+  unc_v1.yaml
+/cps/
+  mondo0010619-xlh/
+    mondo0010619-xlh_L1_v1.0.yaml
+    mondo0010619-xlh_L1_v1.0_omop54.b1.sql
+    mondo0010619-xlh_L2A_v2.0.yaml
+    mondo0010619-xlh_L2A_v2.0_omop54.b1.sql
+    CHANGELOG.md
+    translation-status.md
+</code></pre></div>
+<p><code>cpsql build</code> writes each build next to its CP. <code>cpsql refresh cps/&lt;disease-id&gt;/</code> updates
+the two Markdown files:</p>
+<ul>
+<li><strong><code>translation-status.md</code></strong> is fully generated and rewritten on every refresh, so don't
+  edit it by hand. For each data model it shows the newest build, which CP version it was
+  built from, and whether it is <code>current</code>, <code>stale</code> (built from an older CP version than the
+  newest one) or fails <code>cpsql check</code>.</li>
+<li><strong><code>CHANGELOG.md</code></strong> gets one entry per CP version, newest first, with the date, level,
+  author, what it supersedes, and its <code>provenance.change_note</code>. An entry is generated the
+  first time <strong>cpsql</strong> sees that version and is never rewritten afterwards, so people can
+  amend it freely. Later refreshes only add entries for new versions.</li>
+</ul>
+<h2 id="10-open-decisions">10. Open decisions</h2>
+<p>These were settled provisionally and need a decision from you:</p>
+<ol>
+<li><strong>Genetic data.</strong> Whether sites load variant results as discrete rows determines
+   whether <code>genetic_finding</code> is a Lane 1 feature at all.</li>
+<li><strong>Dialects.</strong> The generated SQL runs on DuckDB and parses as PostgreSQL at the moment. SQL Server
+   and Oracle sites would need a translation step, since the SQL uses <code>||</code> string
+   concatenation.</li>
+<li><strong>Vocabularies.</strong> Only ICD10CM, SNOMED, LOINC and RXNORM are admitted for now (plus UCUM
+   for units). Candidates to consider adding:</li>
+<li>CPT4, HCPCS and ICD10PCS for procedures, since US sites often record procedures only in
+     these;</li>
+<li>RxNorm Extension and ATC for medications;</li>
+<li>OMOP Genomic for genetic findings, if a site loads gene-specific variant concepts.</li>
+</ol>
+<p>Adding one means updating the admitted list in the schema, the allowed vocabularies for
+   the relevant modules, and the §3.2 table.
+4. <strong>Encounter context (future work).</strong> Only counting a record if it came from a certain
+   kind of encounter: an inpatient stay, a specialist, or the problem list rather than a
+   billing code. It is one of the briefing's ways to add corroboration when a CP flags too
+   many patients. OMOP holds this in <code>visit_occurrence</code> (visit type), <code>provider</code>
+   (specialty) and <code>*_type_concept_id</code> (record origin), but how reliably sites fill these
+   in varies, so it is deferred until a real CP needs it. It would likely be an optional
+   <code>encounter</code> filter on a feature.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        
+
+<footer class="md-footer">
+  
+    <nav
+      class="md-footer__inner md-grid"
+      aria-label="footer.title"
+    >
+      
+        <a
+          href="../elements/"
+          class="md-footer__link md-footer__link--prev"
+          rel="prev"
+        >
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Schema
+            </div>
+          </div>
+        </a>
+      
+      
+        <a
+          href="../about/"
+          class="md-footer__link md-footer__link--next"
+          rel="next"
+        >
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              About
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        with emoji by
+        <a href="https://github.com/twitter/twemoji" target="_blank" rel="noopener">
+          Twemoji
+        </a>
+      </div>
+      
+<div class="md-social">
+  
+</div>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "header.autohide", "navigation.expand", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../assets/pymdownx-extras/extra-loader-B5CKpNQx.js"></script>
+      
+    
+  </body>
+</html>
