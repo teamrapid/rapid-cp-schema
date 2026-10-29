@@ -1,0 +1,2573 @@
+name: rapid_cp_schema
+description: "Schema for the two files that make up a deployable RAPID computable\
+  \ phenotype (CP):\n\n  1. The CP logic file  <disease-id>_<level>_v<major>.<minor>.yaml\n\
+  \     Data-model-independent. Says WHAT counts as evidence (features, coded in\n\
+  \     source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the\n  \
+  \   evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).\n   \
+  \  Every disjunct / rule / score item carries a stable id (d1, r2, s3) that\n  \
+  \   is reported back as the flag reason.\n\n  2. The build file  <cp-id>_<datamodel>.b<build>.sql\n\
+  \     The generated SQL for one data model (e.g. OMOP 5.4), shared by every\n  \
+  \   site on it, with a YAML comment header that conforms to CPBuild.\n\n  3. Site\
+  \ files  sites/<site>_v<version>.yaml\n     Everything about one site (schemas,\
+  \ vocabulary release, history\n     concepts), applied at run time.\n\nThis schema\
+  \ is deliberately separate from the curation-record schema. The curation record\
+  \ holds the full evidence base and review trail; the CP logic file is the executable\
+  \ subset selected from it. Diseases are identified by Mondo ids only."
+id: https://mendelian.co/schemas/rapid-cp-logic
+version: 0.1.0
+imports:
+- linkml:types
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  MONDO:
+    prefix_prefix: MONDO
+    prefix_reference: http://purl.obolibrary.org/obo/MONDO_
+  HP:
+    prefix_prefix: HP
+    prefix_reference: http://purl.obolibrary.org/obo/HP_
+  rapidcp:
+    prefix_prefix: rapidcp
+    prefix_reference: https://mendelian.co/schemas/rapid-cp-logic/
+default_prefix: rapidcp
+default_range: string
+types:
+  string:
+    name: string
+    definition_uri: https://w3id.org/linkml/String
+    description: A character string
+    notes:
+    - In RDF serializations, a slot with range of string is treated as a literal or
+      type xsd:string. If you are authoring schemas in LinkML YAML, the type is referenced
+      with the lower case "string".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Text
+    base: str
+    uri: xsd:string
+  integer:
+    name: integer
+    definition_uri: https://w3id.org/linkml/Integer
+    description: An integer
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "integer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Integer
+    base: int
+    uri: xsd:integer
+  boolean:
+    name: boolean
+    definition_uri: https://w3id.org/linkml/Boolean
+    description: A binary (true or false) value
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "boolean".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Boolean
+    base: Bool
+    uri: xsd:boolean
+    repr: bool
+  float:
+    name: float
+    definition_uri: https://w3id.org/linkml/Float
+    description: A real number that conforms to the xsd:float specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "float".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:float
+  double:
+    name: double
+    definition_uri: https://w3id.org/linkml/Double
+    description: A real number that conforms to the xsd:double specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "double".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:double
+  decimal:
+    name: decimal
+    definition_uri: https://w3id.org/linkml/Decimal
+    description: A real number with arbitrary precision that conforms to the xsd:decimal
+      specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "decimal".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    broad_mappings:
+    - schema:Number
+    base: Decimal
+    uri: xsd:decimal
+  time:
+    name: time
+    definition_uri: https://w3id.org/linkml/Time
+    description: A time object represents a (local) time of day, independent of any
+      particular day
+    notes:
+    - URI is dateTime because OWL reasoners do not work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "time".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Time
+    base: XSDTime
+    uri: xsd:time
+    repr: str
+  date:
+    name: date
+    definition_uri: https://w3id.org/linkml/Date
+    description: a date (year, month and day) in an idealized calendar
+    notes:
+    - URI is dateTime because OWL reasoners don't work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Date
+    base: XSDDate
+    uri: xsd:date
+    repr: str
+  datetime:
+    name: datetime
+    definition_uri: https://w3id.org/linkml/Datetime
+    description: The combination of a date and time
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:DateTime
+    base: XSDDateTime
+    uri: xsd:dateTime
+    repr: str
+  date_or_datetime:
+    name: date_or_datetime
+    definition_uri: https://w3id.org/linkml/DateOrDatetime
+    description: Either a date or a datetime
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date_or_datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: linkml:DateOrDatetime
+    repr: str
+  uriorcurie:
+    name: uriorcurie
+    definition_uri: https://w3id.org/linkml/Uriorcurie
+    description: a URI or a CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uriorcurie".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: URIorCURIE
+    uri: xsd:anyURI
+    repr: str
+  curie:
+    name: curie
+    definition_uri: https://w3id.org/linkml/Curie
+    conforms_to: https://www.w3.org/TR/curie/
+    description: a compact URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "curie".
+    comments:
+    - in RDF serializations this MUST be expanded to a URI
+    - in non-RDF serializations MAY be serialized as the compact representation
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: Curie
+    uri: xsd:string
+    repr: str
+  uri:
+    name: uri
+    definition_uri: https://w3id.org/linkml/Uri
+    conforms_to: https://www.ietf.org/rfc/rfc3987.txt
+    description: a complete URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uri".
+    comments:
+    - in RDF serializations a slot with range of uri is treated as a literal or type
+      xsd:anyURI unless it is an identifier or a reference to an identifier, in which
+      case it is translated directly to a node
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:URL
+    base: URI
+    uri: xsd:anyURI
+    repr: str
+  ncname:
+    name: ncname
+    definition_uri: https://w3id.org/linkml/Ncname
+    description: Prefix part of CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "ncname".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NCName
+    uri: xsd:string
+    repr: str
+  objectidentifier:
+    name: objectidentifier
+    definition_uri: https://w3id.org/linkml/Objectidentifier
+    description: A URI or CURIE that represents an object in the model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "objectidentifier".
+    comments:
+    - Used for inheritance and type checking
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: ElementIdentifier
+    uri: shex:iri
+    repr: str
+  nodeidentifier:
+    name: nodeidentifier
+    definition_uri: https://w3id.org/linkml/Nodeidentifier
+    description: A URI, CURIE or BNODE that represents a node in a model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "nodeidentifier".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NodeIdentifier
+    uri: shex:nonLiteral
+    repr: str
+  jsonpointer:
+    name: jsonpointer
+    definition_uri: https://w3id.org/linkml/Jsonpointer
+    conforms_to: https://datatracker.ietf.org/doc/html/rfc6901
+    description: A string encoding a JSON Pointer. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to a valid object within the current
+      instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpointer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  jsonpath:
+    name: jsonpath
+    definition_uri: https://w3id.org/linkml/Jsonpath
+    conforms_to: https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html
+    description: A string encoding a JSON Path. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to zero or more valid objects within
+      the current instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  sparqlpath:
+    name: sparqlpath
+    definition_uri: https://w3id.org/linkml/Sparqlpath
+    conforms_to: https://www.w3.org/TR/sparql11-query/#propertypaths
+    description: A string encoding a SPARQL Property Path. The value of the string
+      MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects
+      within the current instance document when encoded as RDF.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "sparqlpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+enums:
+  CPLevel:
+    name: CPLevel
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CPLevel
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      L1:
+        text: L1
+        description: Safe Alone - union of Tier-1 (highly-specific) disjuncts.
+      L2A:
+        text: L2A
+        description: Deterministic rules - Boolean gates.
+      L2B:
+        text: L2B
+        description: Deterministic score - weighted points vs threshold.
+      L3:
+        text: L3
+        description: Profile match - declared here, not generated by cpsql.
+  SearchMode:
+    name: SearchMode
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/SearchMode
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      population:
+        text: population
+        description: Search the whole dataset for the target disease.
+      cluster:
+        text: cluster
+        description: Search only persons carrying an umbrella code (see cluster).
+  FlagRateBasis:
+    name: FlagRateBasis
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/FlagRateBasis
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      measured:
+        text: measured
+        description: From measured prevalence data.
+      class_band:
+        text: class_band
+        description: From Orphanet's prevalence class only (no point figure).
+      none:
+        text: none
+        description: No usable epidemiology - a normal outcome for many rare diseases.
+  ReviewDecision:
+    name: ReviewDecision
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ReviewDecision
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      proceed:
+        text: proceed
+        description: Criteria are sound; the CP can go to sites.
+      revise:
+        text: revise
+        description: Send back for revision.
+  CPStatus:
+    name: CPStatus
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CPStatus
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      draft:
+        text: draft
+        description: Being written; not yet tested at any site.
+      testing:
+        text: testing
+        description: Being tested at one or more sites.
+      accepted:
+        text: accepted
+        description: Accepted at all seed sites.
+      refining:
+        text: refining
+        description: Accepted, but showed an underperformance signature and is being
+          revised.
+      exemplar-candidate:
+        text: exemplar-candidate
+        description: Complex logic required; held for a future trained model. cpsql
+          refuses to build SQL for it.
+      deprecated:
+        text: deprecated
+        description: Superseded or withdrawn; kept for the record.
+  Module:
+    name: Module
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Module
+    description: "The evidence domain a feature belongs to. Drives which OMOP tables\
+      \ are searched and which vocabularies are allowed (see docs/CP_YAML_SPEC.md\
+      \ \xA73.2)."
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      diagnostic_code:
+        text: diagnostic_code
+        description: ICD10CM or SNOMED diagnosis; presence ever.
+      genetic_finding:
+        text: genetic_finding
+        description: Reported pathogenic / likely pathogenic variant in a causal gene.
+      diagnostic_test:
+        text: diagnostic_test
+        description: Confirmatory test or biomarker RESULT (not the order).
+      medication:
+        text: medication
+        description: Disease-specific drug, used as evidence of the diagnosis.
+      procedure:
+        text: procedure
+        description: Diagnostic procedure, or disease-specific therapeutic procedure.
+      phenotype:
+        text: phenotype
+        description: 'Clinical/phenotypic feature: SNOMED, ICD10CM, or LOINC with
+          a result.'
+  CodeSystem:
+    name: CodeSystem
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CodeSystem
+    description: CP-side vocabulary names; cpsql maps each to its Athena vocabulary_id.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      ICD10CM:
+        text: ICD10CM
+        description: Athena vocabulary_id 'ICD10CM'. Dotted codes (E83.31).
+      SNOMED:
+        text: SNOMED
+        description: Athena 'SNOMED'.
+      LOINC:
+        text: LOINC
+        description: Athena 'LOINC' (includes LA answer codes).
+      RXNORM:
+        text: RXNORM
+        description: Athena 'RxNorm'.
+      UCUM:
+        text: UCUM
+        description: Athena 'UCUM'. Result units only.
+  ResultKind:
+    name: ResultKind
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ResultKind
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      numeric:
+        text: numeric
+        description: value_as_number compared to a threshold.
+      qualitative:
+        text: qualitative
+        description: value_as_concept_id in a set of answer concepts.
+  ResultOperator:
+    name: ResultOperator
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ResultOperator
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      gt:
+        text: gt
+        description: x > value
+      gte:
+        text: gte
+        description: x >= value
+      lt:
+        text: lt
+        description: x < value
+      lte:
+        text: lte
+        description: x <= value
+      between:
+        text: between
+        description: value <= x <= value_high
+      above_ref_high:
+        text: above_ref_high
+        description: x > range_high recorded on the row (MEASUREMENT only).
+      below_ref_low:
+        text: below_ref_low
+        description: x < range_low recorded on the row (MEASUREMENT only).
+  DataModel:
+    name: DataModel
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/DataModel
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      omop54:
+        text: omop54
+        description: OMOP CDM v5.4
+      truveta:
+        text: truveta
+        description: Truveta native model (not generated by cpsql yet).
+  SqlDialect:
+    name: SqlDialect
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/SqlDialect
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      postgresql:
+        text: postgresql
+        description: PostgreSQL (default). The tests check the generated SQL parses
+          as PostgreSQL.
+      duckdb:
+        text: duckdb
+        description: DuckDB. The generated SQL runs on it; the synthetic test database
+          uses it.
+slots:
+  computablePhenotype__cp_id:
+    name: computablePhenotype__cp_id
+    description: <disease-id>_<level>_v<major>.<minor>, disease-id = lowercase Mondo
+      id + '-' + disease.slug, e.g. mondo0010619-xlh_L1_v1.0
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cp_id
+    identifier: true
+    alias: cp_id
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: string
+    required: true
+    pattern: ^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+  computablePhenotype__schema_version:
+    name: computablePhenotype__schema_version
+    description: Version of THIS schema the file conforms to, e.g. 0.1.0
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:schema_version
+    alias: schema_version
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: string
+    required: true
+  computablePhenotype__title:
+    name: computablePhenotype__title
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:title
+    alias: title
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: string
+    required: true
+  computablePhenotype__disease:
+    name: computablePhenotype__disease
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:disease
+    alias: disease
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: DiseaseRef
+    required: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__level:
+    name: computablePhenotype__level
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:level
+    alias: level
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: CPLevel
+    required: true
+  computablePhenotype__search_mode:
+    name: computablePhenotype__search_mode
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:search_mode
+    alias: search_mode
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: SearchMode
+    required: true
+  computablePhenotype__cluster:
+    name: computablePhenotype__cluster
+    description: Required iff search_mode = cluster.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cluster
+    alias: cluster
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: ClusterScope
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__status:
+    name: computablePhenotype__status
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:status
+    alias: status
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: CPStatus
+    required: true
+  computablePhenotype__provenance:
+    name: computablePhenotype__provenance
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:provenance
+    alias: provenance
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: CPProvenance
+    required: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__review:
+    name: computablePhenotype__review
+    description: Clinical sign-off. Recorded only; not enforced.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:review
+    alias: review
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: ClinicalReview
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__sites_tested:
+    name: computablePhenotype__sites_tested
+    description: Where this CP version has been run, and with which build. Recorded
+      only.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:sites_tested
+    alias: sites_tested
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: SiteTest
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__expected_flag_rate:
+    name: computablePhenotype__expected_flag_rate
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:expected_flag_rate
+    alias: expected_flag_rate
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: ExpectedFlagRate
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__features:
+    name: computablePhenotype__features
+    description: Atomic evidence items. Logic blocks reference them by id.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:features
+    alias: features
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: Feature
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__disjuncts:
+    name: computablePhenotype__disjuncts
+    description: Level 1 only.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:disjuncts
+    alias: disjuncts
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: Disjunct
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__rules:
+    name: computablePhenotype__rules
+    description: Level 2a only. CP fires if ANY rule fires.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:rules
+    alias: rules
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: Rule
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__score:
+    name: computablePhenotype__score
+    description: Level 2b only.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:score
+    alias: score
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: ScoreModel
+    inlined: true
+    inlined_as_list: true
+  computablePhenotype__absorbed_into:
+    name: computablePhenotype__absorbed_into
+    description: The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0.
+      Empty once the disease stands alone. Cluster CPs themselves are not supported
+      yet; the field and the cluster- naming are reserved so nothing needs renaming
+      later.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:absorbed_into
+    alias: absorbed_into
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: string
+    pattern: ^cluster-[a-z0-9]+_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+  computablePhenotype__notes:
+    name: computablePhenotype__notes
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:notes
+    alias: notes
+    owner: ComputablePhenotype
+    domain_of:
+    - ComputablePhenotype
+    range: string
+  diseaseRef__mondo_id:
+    name: diseaseRef__mondo_id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:mondo_id
+    alias: mondo_id
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: uriorcurie
+    required: true
+    pattern: ^MONDO:[0-9]{7}$
+  diseaseRef__slug:
+    name: diseaseRef__slug
+    description: Short lowercase hyphenated disease name used in file names, e.g.
+      xlh, fabry.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:slug
+    alias: slug
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: string
+    required: true
+    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  diseaseRef__name:
+    name: diseaseRef__name
+    description: Human-readable disease name, for reviewers. Not queried.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:name
+    alias: name
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: string
+    required: true
+  diseaseRef__included_mondo_ids:
+    name: diseaseRef__included_mondo_ids
+    description: Every Mondo id that constitutes this disease entity, mondo_id included.
+      One flat list on every CP, so the dashboard can find a disease's CPs with a
+      single filter. Defaults to [mondo_id]. Recorded, not queried.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:included_mondo_ids
+    alias: included_mondo_ids
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: uriorcurie
+    multivalued: true
+    pattern: ^MONDO:[0-9]{7}$
+  diseaseRef__curation_record_version:
+    name: diseaseRef__curation_record_version
+    description: Version of the curation record (keyed by mondo_id) this CP was built
+      from. Recorded, not queried.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:curation_record_version
+    alias: curation_record_version
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: string
+  clusterScope__umbrella_codes:
+    name: clusterScope__umbrella_codes
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:umbrella_codes
+    alias: umbrella_codes
+    owner: ClusterScope
+    domain_of:
+    - ClusterScope
+    range: CodeRef
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  clusterScope__candidate_mondo_ids:
+    name: clusterScope__candidate_mondo_ids
+    description: 'Documentation only: the diseases under the umbrella. Not queried;
+      each candidate gets its own CP.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:candidate_mondo_ids
+    alias: candidate_mondo_ids
+    owner: ClusterScope
+    domain_of:
+    - ClusterScope
+    range: uriorcurie
+    multivalued: true
+  cPProvenance__authored_by:
+    name: cPProvenance__authored_by
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:authored_by
+    alias: authored_by
+    owner: CPProvenance
+    domain_of:
+    - CPProvenance
+    range: string
+    required: true
+  cPProvenance__authored_date:
+    name: cPProvenance__authored_date
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:authored_date
+    alias: authored_date
+    owner: CPProvenance
+    domain_of:
+    - CPProvenance
+    range: date
+    required: true
+  cPProvenance__kg_extracted_at:
+    name: cPProvenance__kg_extracted_at
+    description: When the MendelGraph subgraph the features were drawn from was extracted
+      (ISO 8601, e.g. 2026-09-24T14:05:00Z).
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:kg_extracted_at
+    alias: kg_extracted_at
+    owner: CPProvenance
+    domain_of:
+    - CPProvenance
+    range: datetime
+  cPProvenance__change_note:
+    name: cPProvenance__change_note
+    description: Why this version exists (PR description summary).
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:change_note
+    alias: change_note
+    owner: CPProvenance
+    domain_of:
+    - CPProvenance
+    range: string
+  cPProvenance__supersedes:
+    name: cPProvenance__supersedes
+    description: Previous cp_id, if any.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:supersedes
+    alias: supersedes
+    owner: CPProvenance
+    domain_of:
+    - CPProvenance
+    range: string
+  historyConcept__vocabulary:
+    name: historyConcept__vocabulary
+    description: SNOMED (the only vocabulary allowed here).
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:vocabulary
+    alias: vocabulary
+    owner: HistoryConcept
+    domain_of:
+    - HistoryConcept
+    range: string
+  historyConcept__code:
+    name: historyConcept__code
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:code
+    alias: code
+    owner: HistoryConcept
+    domain_of:
+    - HistoryConcept
+    range: string
+  historyConcept__concept_id:
+    name: historyConcept__concept_id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:concept_id
+    alias: concept_id
+    owner: HistoryConcept
+    domain_of:
+    - HistoryConcept
+    range: integer
+  historyConcept__label:
+    name: historyConcept__label
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:label
+    alias: label
+    owner: HistoryConcept
+    domain_of:
+    - HistoryConcept
+    range: string
+  historyConcept__include_descendants:
+    name: historyConcept__include_descendants
+    description: Codes only. Default true.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:include_descendants
+    alias: include_descendants
+    owner: HistoryConcept
+    domain_of:
+    - HistoryConcept
+    range: boolean
+  siteTest__site:
+    name: siteTest__site
+    description: Lowercase site name, e.g. unc, truveta, dartnet.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:site
+    alias: site
+    owner: SiteTest
+    domain_of:
+    - SiteTest
+    range: string
+    required: true
+    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  siteTest__site_version:
+    name: siteTest__site_version
+    description: Version of the site file the run used.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:site_version
+    alias: site_version
+    owner: SiteTest
+    domain_of:
+    - SiteTest
+    range: integer
+    required: true
+    minimum_value: 1
+  siteTest__build:
+    name: siteTest__build
+    description: build_id of the build that ran there; must be a build of this CP.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:build
+    alias: build
+    owner: SiteTest
+    domain_of:
+    - SiteTest
+    range: string
+    required: true
+  clinicalReview__reviewer:
+    name: clinicalReview__reviewer
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:reviewer
+    alias: reviewer
+    owner: ClinicalReview
+    domain_of:
+    - ClinicalReview
+    range: string
+    required: true
+  clinicalReview__date:
+    name: clinicalReview__date
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:date
+    alias: date
+    owner: ClinicalReview
+    domain_of:
+    - ClinicalReview
+    range: date
+    required: true
+  clinicalReview__decision:
+    name: clinicalReview__decision
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:decision
+    alias: decision
+    owner: ClinicalReview
+    domain_of:
+    - ClinicalReview
+    range: ReviewDecision
+    required: true
+  clinicalReview__comments:
+    name: clinicalReview__comments
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:comments
+    alias: comments
+    owner: ClinicalReview
+    domain_of:
+    - ClinicalReview
+    range: string
+  expectedFlagRate__low_per_100k:
+    name: expectedFlagRate__low_per_100k
+    description: May be omitted for an open-ended range.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:low_per_100k
+    alias: low_per_100k
+    owner: ExpectedFlagRate
+    domain_of:
+    - ExpectedFlagRate
+    range: float
+    minimum_value: 0
+  expectedFlagRate__high_per_100k:
+    name: expectedFlagRate__high_per_100k
+    description: Required unless basis is none.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:high_per_100k
+    alias: high_per_100k
+    owner: ExpectedFlagRate
+    domain_of:
+    - ExpectedFlagRate
+    range: float
+    minimum_value: 0
+  expectedFlagRate__basis:
+    name: expectedFlagRate__basis
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:basis
+    alias: basis
+    owner: ExpectedFlagRate
+    domain_of:
+    - ExpectedFlagRate
+    range: FlagRateBasis
+    required: true
+  expectedFlagRate__source:
+    name: expectedFlagRate__source
+    description: Which pipeline run or reference produced the range.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:source
+    alias: source
+    owner: ExpectedFlagRate
+    domain_of:
+    - ExpectedFlagRate
+    range: string
+    required: true
+  feature__id:
+    name: feature__id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:id
+    identifier: true
+    alias: id
+    owner: Feature
+    domain_of:
+    - Feature
+    range: string
+    required: true
+    pattern: ^f[0-9]+$
+  feature__module:
+    name: feature__module
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:module
+    alias: module
+    owner: Feature
+    domain_of:
+    - Feature
+    range: Module
+    required: true
+  feature__name:
+    name: feature__name
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:name
+    alias: name
+    owner: Feature
+    domain_of:
+    - Feature
+    range: string
+    required: true
+  feature__specificity_tier:
+    name: feature__specificity_tier
+    description: Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental).
+      L1 disjuncts may only use tier 1.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:specificity_tier
+    alias: specificity_tier
+    owner: Feature
+    domain_of:
+    - Feature
+    range: integer
+    required: true
+    minimum_value: 1
+    maximum_value: 5
+  feature__hpo_id:
+    name: feature__hpo_id
+    description: 'Phenotype features: the HPO term this realises (annotation only,
+      not queried).'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:hpo_id
+    alias: hpo_id
+    owner: Feature
+    domain_of:
+    - Feature
+    range: uriorcurie
+  feature__codes:
+    name: feature__codes
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:codes
+    alias: codes
+    owner: Feature
+    domain_of:
+    - Feature
+    range: CodeRef
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  feature__result:
+    name: feature__result
+    description: Required for diagnostic_test and for LOINC-coded phenotype.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:result
+    alias: result
+    owner: Feature
+    domain_of:
+    - Feature
+    range: ResultCriterion
+    inlined: true
+    inlined_as_list: true
+  feature__genetic:
+    name: feature__genetic
+    description: Required for genetic_finding.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:genetic
+    alias: genetic
+    owner: Feature
+    domain_of:
+    - Feature
+    range: GeneticCriterion
+    inlined: true
+    inlined_as_list: true
+  feature__include_personal_history:
+    name: feature__include_personal_history
+    description: 'diagnostic_code and coded phenotype features only. Default true:
+      also count OBSERVATION rows recording the patient''s own history of the condition.
+      Set false to count only direct records.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:include_personal_history
+    alias: include_personal_history
+    owner: Feature
+    domain_of:
+    - Feature
+    range: boolean
+  feature__text_terms:
+    name: feature__text_terms
+    description: Names and synonyms for what the feature describes (a disease, a finding,
+      a test or a drug), for a future text-search (NLP) step. Carried, never used
+      by the OMOP generator.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:text_terms
+    alias: text_terms
+    owner: Feature
+    domain_of:
+    - Feature
+    range: string
+    multivalued: true
+  codeRef__vocabulary:
+    name: codeRef__vocabulary
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:vocabulary
+    alias: vocabulary
+    owner: CodeRef
+    domain_of:
+    - CodeRef
+    range: CodeSystem
+    required: true
+  codeRef__code:
+    name: codeRef__code
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:code
+    alias: code
+    owner: CodeRef
+    domain_of:
+    - CodeRef
+    range: string
+    required: true
+  codeRef__label:
+    name: codeRef__label
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:label
+    alias: label
+    owner: CodeRef
+    domain_of:
+    - CodeRef
+    range: string
+  codeRef__include_descendants:
+    name: codeRef__include_descendants
+    description: Default true for a feature's main codes, false for result value and
+      unit codes. SNOMED/LOINC/RxNorm expand via CONCEPT_ANCESTOR; ICD10CM expands
+      by code prefix.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:include_descendants
+    alias: include_descendants
+    owner: CodeRef
+    domain_of:
+    - CodeRef
+    range: boolean
+  resultCriterion__kind:
+    name: resultCriterion__kind
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:kind
+    alias: kind
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: ResultKind
+    required: true
+  resultCriterion__operator:
+    name: resultCriterion__operator
+    description: numeric only
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:operator
+    alias: operator
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: ResultOperator
+  resultCriterion__value:
+    name: resultCriterion__value
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:value
+    alias: value
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: float
+  resultCriterion__value_high:
+    name: resultCriterion__value_high
+    description: between only
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:value_high
+    alias: value_high
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: float
+  resultCriterion__units:
+    name: resultCriterion__units
+    description: UCUM units the threshold applies to. Strongly recommended for numeric.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:units
+    alias: units
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: CodeRef
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  resultCriterion__value_concepts:
+    name: resultCriterion__value_concepts
+    description: 'qualitative only: accepted answers (e.g. LOINC LA6576-8 Positive).'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:value_concepts
+    alias: value_concepts
+    owner: ResultCriterion
+    domain_of:
+    - ResultCriterion
+    range: CodeRef
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  geneticCriterion__gene_symbol:
+    name: geneticCriterion__gene_symbol
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:gene_symbol
+    alias: gene_symbol
+    owner: GeneticCriterion
+    domain_of:
+    - GeneticCriterion
+    range: string
+    required: true
+  geneticCriterion__hgnc_id:
+    name: geneticCriterion__hgnc_id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:hgnc_id
+    alias: hgnc_id
+    owner: GeneticCriterion
+    domain_of:
+    - GeneticCriterion
+    range: string
+    pattern: ^HGNC:[0-9]+$
+  geneticCriterion__interpretations:
+    name: geneticCriterion__interpretations
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:interpretations
+    alias: interpretations
+    owner: GeneticCriterion
+    domain_of:
+    - GeneticCriterion
+    range: CodeRef
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  geneticCriterion__require_gene_text_match:
+    name: geneticCriterion__require_gene_text_match
+    description: Default true when codes are generic LOINC panels.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:require_gene_text_match
+    alias: require_gene_text_match
+    owner: GeneticCriterion
+    domain_of:
+    - GeneticCriterion
+    range: boolean
+  disjunct__id:
+    name: disjunct__id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:id
+    identifier: true
+    alias: id
+    owner: Disjunct
+    domain_of:
+    - Disjunct
+    range: string
+    required: true
+    pattern: ^d[0-9]+$
+  disjunct__feature:
+    name: disjunct__feature
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:feature
+    alias: feature
+    owner: Disjunct
+    domain_of:
+    - Disjunct
+    range: string
+    required: true
+  disjunct__min_distinct_dates:
+    name: disjunct__min_distinct_dates
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_distinct_dates
+    alias: min_distinct_dates
+    owner: Disjunct
+    domain_of:
+    - Disjunct
+    range: integer
+    minimum_value: 1
+  disjunct__min_span_days:
+    name: disjunct__min_span_days
+    description: Records must stretch across at least this many days, first to last.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_span_days
+    alias: min_span_days
+    owner: Disjunct
+    domain_of:
+    - Disjunct
+    range: integer
+    minimum_value: 1
+  disjunct__label:
+    name: disjunct__label
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:label
+    alias: label
+    owner: Disjunct
+    domain_of:
+    - Disjunct
+    range: string
+  rule__id:
+    name: rule__id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:id
+    identifier: true
+    alias: id
+    owner: Rule
+    domain_of:
+    - Rule
+    range: string
+    required: true
+    pattern: ^r[0-9]+$
+  rule__label:
+    name: rule__label
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:label
+    alias: label
+    owner: Rule
+    domain_of:
+    - Rule
+    range: string
+  rule__expr:
+    name: rule__expr
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:expr
+    alias: expr
+    owner: Rule
+    domain_of:
+    - Rule
+    range: Expr
+    required: true
+    inlined: true
+    inlined_as_list: true
+  expr__feature:
+    name: expr__feature
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:feature
+    alias: feature
+    owner: Expr
+    domain_of:
+    - Expr
+    range: string
+  expr__min_distinct_dates:
+    name: expr__min_distinct_dates
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_distinct_dates
+    alias: min_distinct_dates
+    owner: Expr
+    domain_of:
+    - Expr
+    range: integer
+    minimum_value: 1
+  expr__min_span_days:
+    name: expr__min_span_days
+    description: Records must stretch across at least this many days, first to last.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_span_days
+    alias: min_span_days
+    owner: Expr
+    domain_of:
+    - Expr
+    range: integer
+    minimum_value: 1
+  expr__all_of:
+    name: expr__all_of
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:all_of
+    alias: all_of
+    owner: Expr
+    domain_of:
+    - Expr
+    range: Expr
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  expr__any_of:
+    name: expr__any_of
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:any_of
+    alias: any_of
+    owner: Expr
+    domain_of:
+    - Expr
+    range: Expr
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  expr__none_of:
+    name: expr__none_of
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:none_of
+    alias: none_of
+    owner: Expr
+    domain_of:
+    - Expr
+    range: Expr
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  expr__at_least:
+    name: expr__at_least
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:at_least
+    alias: at_least
+    owner: Expr
+    domain_of:
+    - Expr
+    range: integer
+    minimum_value: 1
+  expr__of:
+    name: expr__of
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:of
+    alias: of
+    owner: Expr
+    domain_of:
+    - Expr
+    range: Expr
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  expr__within:
+    name: expr__within
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:within
+    alias: within
+    owner: Expr
+    domain_of:
+    - Expr
+    range: Within
+    inlined: true
+    inlined_as_list: true
+  within__days:
+    name: within__days
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:days
+    alias: days
+    owner: Within
+    domain_of:
+    - Within
+    range: integer
+    required: true
+    minimum_value: 0
+  within__in_order:
+    name: within__in_order
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:in_order
+    alias: in_order
+    owner: Within
+    domain_of:
+    - Within
+    range: boolean
+  within__of:
+    name: within__of
+    description: Feature ids, at least two.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:of
+    alias: of
+    owner: Within
+    domain_of:
+    - Within
+    range: string
+    required: true
+    multivalued: true
+  scoreModel__threshold:
+    name: scoreModel__threshold
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:threshold
+    alias: threshold
+    owner: ScoreModel
+    domain_of:
+    - ScoreModel
+    range: float
+    required: true
+  scoreModel__items:
+    name: scoreModel__items
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:items
+    alias: items
+    owner: ScoreModel
+    domain_of:
+    - ScoreModel
+    range: ScoreItem
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  scoreItem__id:
+    name: scoreItem__id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:id
+    identifier: true
+    alias: id
+    owner: ScoreItem
+    domain_of:
+    - ScoreItem
+    range: string
+    required: true
+    pattern: ^s[0-9]+$
+  scoreItem__feature:
+    name: scoreItem__feature
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:feature
+    alias: feature
+    owner: ScoreItem
+    domain_of:
+    - ScoreItem
+    range: string
+    required: true
+  scoreItem__points:
+    name: scoreItem__points
+    description: May be negative.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:points
+    alias: points
+    owner: ScoreItem
+    domain_of:
+    - ScoreItem
+    range: float
+    required: true
+  scoreItem__min_distinct_dates:
+    name: scoreItem__min_distinct_dates
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_distinct_dates
+    alias: min_distinct_dates
+    owner: ScoreItem
+    domain_of:
+    - ScoreItem
+    range: integer
+    minimum_value: 1
+  scoreItem__min_span_days:
+    name: scoreItem__min_span_days
+    description: Records must stretch across at least this many days, first to last.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:min_span_days
+    alias: min_span_days
+    owner: ScoreItem
+    domain_of:
+    - ScoreItem
+    range: integer
+    minimum_value: 1
+  cPBuild__generator:
+    name: cPBuild__generator
+    description: cpsql version that wrote the SQL, e.g. 'cpsql 0.1.0'.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:generator
+    alias: generator
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: string
+  cPBuild__cp_logic_sha256:
+    name: cPBuild__cp_logic_sha256
+    description: sha256 of the CP's logic (disease ids, level, search_mode, cluster,
+      features, disjuncts, rules, score) the SQL was generated from. Lifecycle and
+      documentation fields are excluded, so editing them doesn't invalidate a build.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cp_logic_sha256
+    alias: cp_logic_sha256
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: string
+  cPBuild__build_id:
+    name: cPBuild__build_id
+    description: <cp_id>_<datamodel>.b<build>, e.g. mondo0010619-xlh_L1_v1.0_omop54.b1
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:build_id
+    identifier: true
+    alias: build_id
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: string
+    required: true
+    pattern: ^.+_v[0-9]+\.[0-9]+_[a-z0-9]+\.b[0-9]+$
+  cPBuild__cp_id:
+    name: cPBuild__cp_id
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cp_id
+    alias: cp_id
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: string
+    required: true
+  cPBuild__datamodel:
+    name: cPBuild__datamodel
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:datamodel
+    alias: datamodel
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: DataModel
+    required: true
+  cPBuild__build:
+    name: cPBuild__build
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:build
+    alias: build
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: integer
+    required: true
+    minimum_value: 1
+  cPBuild__change_note:
+    name: cPBuild__change_note
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:change_note
+    alias: change_note
+    owner: CPBuild
+    domain_of:
+    - CPBuild
+    range: string
+  siteProfile__site:
+    name: siteProfile__site
+    description: Lowercase site name, e.g. unc.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:site
+    alias: site
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+    required: true
+    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  siteProfile__version:
+    name: siteProfile__version
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:version
+    alias: version
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: integer
+    required: true
+    minimum_value: 1
+  siteProfile__datamodel:
+    name: siteProfile__datamodel
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:datamodel
+    alias: datamodel
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: DataModel
+    required: true
+  siteProfile__cdm_version:
+    name: siteProfile__cdm_version
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cdm_version
+    alias: cdm_version
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+  siteProfile__dialect:
+    name: siteProfile__dialect
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:dialect
+    alias: dialect
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: SqlDialect
+  siteProfile__vocabulary_version:
+    name: siteProfile__vocabulary_version
+    description: The site's Athena release, from its VOCABULARY table.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:vocabulary_version
+    alias: vocabulary_version
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+    required: true
+  siteProfile__cdm_schema:
+    name: siteProfile__cdm_schema
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:cdm_schema
+    alias: cdm_schema
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+    required: true
+  siteProfile__vocab_schema:
+    name: siteProfile__vocab_schema
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:vocab_schema
+    alias: vocab_schema
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+    required: true
+  siteProfile__source_value_fallback:
+    name: siteProfile__source_value_fallback
+    description: Also match raw ICD-10-CM strings in *_source_value. Default true.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:source_value_fallback
+    alias: source_value_fallback
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: boolean
+  siteProfile__personal_history_concepts:
+    name: siteProfile__personal_history_concepts
+    description: 'Concepts that mark an OBSERVATION row as the patient''s own history,
+      with the condition in value_as_concept_id. Default: SNOMED CT 417662000 History
+      of clinical finding in subject. Family-history concepts are deliberately not
+      listed, so family history never matches.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:personal_history_concepts
+    alias: personal_history_concepts
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: HistoryConcept
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  siteProfile__updated:
+    name: siteProfile__updated
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:updated
+    alias: updated
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: date
+    required: true
+  siteProfile__change_note:
+    name: siteProfile__change_note
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:change_note
+    alias: change_note
+    owner: SiteProfile
+    domain_of:
+    - SiteProfile
+    range: string
+classes:
+  ComputablePhenotype:
+    name: ComputablePhenotype
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ComputablePhenotype
+    description: One versioned CP. File name must equal cp_id + ".yaml".
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - computablePhenotype__cp_id
+    - computablePhenotype__schema_version
+    - computablePhenotype__title
+    - computablePhenotype__disease
+    - computablePhenotype__level
+    - computablePhenotype__search_mode
+    - computablePhenotype__cluster
+    - computablePhenotype__status
+    - computablePhenotype__provenance
+    - computablePhenotype__review
+    - computablePhenotype__sites_tested
+    - computablePhenotype__expected_flag_rate
+    - computablePhenotype__features
+    - computablePhenotype__disjuncts
+    - computablePhenotype__rules
+    - computablePhenotype__score
+    - computablePhenotype__absorbed_into
+    - computablePhenotype__notes
+    attributes:
+      cp_id:
+        name: cp_id
+        description: <disease-id>_<level>_v<major>.<minor>, disease-id = lowercase
+          Mondo id + '-' + disease.slug, e.g. mondo0010619-xlh_L1_v1.0
+        identifier: true
+        required: true
+        pattern: ^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+      schema_version:
+        name: schema_version
+        description: Version of THIS schema the file conforms to, e.g. 0.1.0
+        required: true
+      title:
+        name: title
+        required: true
+      disease:
+        name: disease
+        range: DiseaseRef
+        required: true
+        inlined: true
+      level:
+        name: level
+        range: CPLevel
+        required: true
+      search_mode:
+        name: search_mode
+        range: SearchMode
+        required: true
+      cluster:
+        name: cluster
+        description: Required iff search_mode = cluster.
+        range: ClusterScope
+        inlined: true
+      status:
+        name: status
+        range: CPStatus
+        required: true
+      provenance:
+        name: provenance
+        range: CPProvenance
+        required: true
+        inlined: true
+      review:
+        name: review
+        description: Clinical sign-off. Recorded only; not enforced.
+        range: ClinicalReview
+        inlined: true
+      sites_tested:
+        name: sites_tested
+        description: Where this CP version has been run, and with which build. Recorded
+          only.
+        range: SiteTest
+        multivalued: true
+        inlined_as_list: true
+      expected_flag_rate:
+        name: expected_flag_rate
+        range: ExpectedFlagRate
+        inlined: true
+      features:
+        name: features
+        description: Atomic evidence items. Logic blocks reference them by id.
+        range: Feature
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      disjuncts:
+        name: disjuncts
+        description: Level 1 only.
+        range: Disjunct
+        multivalued: true
+        inlined_as_list: true
+      rules:
+        name: rules
+        description: Level 2a only. CP fires if ANY rule fires.
+        range: Rule
+        multivalued: true
+        inlined_as_list: true
+      score:
+        name: score
+        description: Level 2b only.
+        range: ScoreModel
+        inlined: true
+      absorbed_into:
+        name: absorbed_into
+        description: The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0.
+          Empty once the disease stands alone. Cluster CPs themselves are not supported
+          yet; the field and the cluster- naming are reserved so nothing needs renaming
+          later.
+        pattern: ^cluster-[a-z0-9]+_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+      notes:
+        name: notes
+    class_uri: rapidcp:ComputablePhenotype
+    tree_root: true
+  DiseaseRef:
+    name: DiseaseRef
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/DiseaseRef
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - diseaseRef__mondo_id
+    - diseaseRef__slug
+    - diseaseRef__name
+    - diseaseRef__included_mondo_ids
+    - diseaseRef__curation_record_version
+    attributes:
+      mondo_id:
+        name: mondo_id
+        range: uriorcurie
+        required: true
+        pattern: ^MONDO:[0-9]{7}$
+      slug:
+        name: slug
+        description: Short lowercase hyphenated disease name used in file names, e.g.
+          xlh, fabry.
+        required: true
+        pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+      name:
+        name: name
+        description: Human-readable disease name, for reviewers. Not queried.
+        required: true
+      included_mondo_ids:
+        name: included_mondo_ids
+        description: Every Mondo id that constitutes this disease entity, mondo_id
+          included. One flat list on every CP, so the dashboard can find a disease's
+          CPs with a single filter. Defaults to [mondo_id]. Recorded, not queried.
+        range: uriorcurie
+        multivalued: true
+        pattern: ^MONDO:[0-9]{7}$
+      curation_record_version:
+        name: curation_record_version
+        description: Version of the curation record (keyed by mondo_id) this CP was
+          built from. Recorded, not queried.
+    class_uri: rapidcp:DiseaseRef
+  ClusterScope:
+    name: ClusterScope
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ClusterScope
+    description: Cluster-filtered search. The universe is persons with any of these
+      umbrella codes (searched like a diagnostic_code feature); every criterion is
+      then restricted to that universe.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - clusterScope__umbrella_codes
+    - clusterScope__candidate_mondo_ids
+    attributes:
+      umbrella_codes:
+        name: umbrella_codes
+        range: CodeRef
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      candidate_mondo_ids:
+        name: candidate_mondo_ids
+        description: 'Documentation only: the diseases under the umbrella. Not queried;
+          each candidate gets its own CP.'
+        range: uriorcurie
+        multivalued: true
+    class_uri: rapidcp:ClusterScope
+  CPProvenance:
+    name: CPProvenance
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CPProvenance
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - cPProvenance__authored_by
+    - cPProvenance__authored_date
+    - cPProvenance__kg_extracted_at
+    - cPProvenance__change_note
+    - cPProvenance__supersedes
+    attributes:
+      authored_by:
+        name: authored_by
+        required: true
+      authored_date:
+        name: authored_date
+        range: date
+        required: true
+      kg_extracted_at:
+        name: kg_extracted_at
+        description: When the MendelGraph subgraph the features were drawn from was
+          extracted (ISO 8601, e.g. 2026-09-24T14:05:00Z).
+        range: datetime
+      change_note:
+        name: change_note
+        description: Why this version exists (PR description summary).
+      supersedes:
+        name: supersedes
+        description: Previous cp_id, if any.
+    class_uri: rapidcp:CPProvenance
+  HistoryConcept:
+    name: HistoryConcept
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/HistoryConcept
+    description: Either a SNOMED CT code (vocabulary + code), looked up at the site
+      with its descendants unless include_descendants is false, or a raw OMOP concept_id
+      used as is, e.g. a site-local concept.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - historyConcept__vocabulary
+    - historyConcept__code
+    - historyConcept__concept_id
+    - historyConcept__label
+    - historyConcept__include_descendants
+    attributes:
+      vocabulary:
+        name: vocabulary
+        description: SNOMED (the only vocabulary allowed here).
+      code:
+        name: code
+      concept_id:
+        name: concept_id
+        range: integer
+      label:
+        name: label
+      include_descendants:
+        name: include_descendants
+        description: Codes only. Default true.
+        range: boolean
+    class_uri: rapidcp:HistoryConcept
+  SiteTest:
+    name: SiteTest
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/SiteTest
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - siteTest__site
+    - siteTest__site_version
+    - siteTest__build
+    attributes:
+      site:
+        name: site
+        description: Lowercase site name, e.g. unc, truveta, dartnet.
+        required: true
+        pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+      site_version:
+        name: site_version
+        description: Version of the site file the run used.
+        range: integer
+        required: true
+        minimum_value: 1
+      build:
+        name: build
+        description: build_id of the build that ran there; must be a build of this
+          CP.
+        required: true
+    class_uri: rapidcp:SiteTest
+  ClinicalReview:
+    name: ClinicalReview
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ClinicalReview
+    description: Expert sign-off on the disease and its criteria, before the CP is
+      tested at a site.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - clinicalReview__reviewer
+    - clinicalReview__date
+    - clinicalReview__decision
+    - clinicalReview__comments
+    attributes:
+      reviewer:
+        name: reviewer
+        required: true
+      date:
+        name: date
+        range: date
+        required: true
+      decision:
+        name: decision
+        range: ReviewDecision
+        required: true
+      comments:
+        name: comments
+    class_uri: rapidcp:ClinicalReview
+  ExpectedFlagRate:
+    name: ExpectedFlagRate
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ExpectedFlagRate
+    description: Range of patients per 100,000 a correct CP should flag at a site
+      (prevalence x ascertainment), from the Expected Flag Rate Pipeline. A wide range,
+      not a target; feeds the flag-rate gauge.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - expectedFlagRate__low_per_100k
+    - expectedFlagRate__high_per_100k
+    - expectedFlagRate__basis
+    - expectedFlagRate__source
+    attributes:
+      low_per_100k:
+        name: low_per_100k
+        description: May be omitted for an open-ended range.
+        range: float
+        minimum_value: 0
+      high_per_100k:
+        name: high_per_100k
+        description: Required unless basis is none.
+        range: float
+        minimum_value: 0
+      basis:
+        name: basis
+        range: FlagRateBasis
+        required: true
+      source:
+        name: source
+        description: Which pipeline run or reference produced the range.
+        required: true
+    class_uri: rapidcp:ExpectedFlagRate
+  Feature:
+    name: Feature
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Feature
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - feature__id
+    - feature__module
+    - feature__name
+    - feature__specificity_tier
+    - feature__hpo_id
+    - feature__codes
+    - feature__result
+    - feature__genetic
+    - feature__include_personal_history
+    - feature__text_terms
+    attributes:
+      id:
+        name: id
+        identifier: true
+        required: true
+        pattern: ^f[0-9]+$
+      module:
+        name: module
+        range: Module
+        required: true
+      name:
+        name: name
+        required: true
+      specificity_tier:
+        name: specificity_tier
+        description: Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental).
+          L1 disjuncts may only use tier 1.
+        range: integer
+        required: true
+        minimum_value: 1
+        maximum_value: 5
+      hpo_id:
+        name: hpo_id
+        description: 'Phenotype features: the HPO term this realises (annotation only,
+          not queried).'
+        range: uriorcurie
+      codes:
+        name: codes
+        range: CodeRef
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      result:
+        name: result
+        description: Required for diagnostic_test and for LOINC-coded phenotype.
+        range: ResultCriterion
+        inlined: true
+      genetic:
+        name: genetic
+        description: Required for genetic_finding.
+        range: GeneticCriterion
+        inlined: true
+      include_personal_history:
+        name: include_personal_history
+        description: 'diagnostic_code and coded phenotype features only. Default true:
+          also count OBSERVATION rows recording the patient''s own history of the
+          condition. Set false to count only direct records.'
+        range: boolean
+      text_terms:
+        name: text_terms
+        description: Names and synonyms for what the feature describes (a disease,
+          a finding, a test or a drug), for a future text-search (NLP) step. Carried,
+          never used by the OMOP generator.
+        multivalued: true
+    class_uri: rapidcp:Feature
+  CodeRef:
+    name: CodeRef
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CodeRef
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - codeRef__vocabulary
+    - codeRef__code
+    - codeRef__label
+    - codeRef__include_descendants
+    attributes:
+      vocabulary:
+        name: vocabulary
+        range: CodeSystem
+        required: true
+      code:
+        name: code
+        required: true
+      label:
+        name: label
+      include_descendants:
+        name: include_descendants
+        description: Default true for a feature's main codes, false for result value
+          and unit codes. SNOMED/LOINC/RxNorm expand via CONCEPT_ANCESTOR; ICD10CM
+          expands by code prefix.
+        range: boolean
+    class_uri: rapidcp:CodeRef
+  ResultCriterion:
+    name: ResultCriterion
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ResultCriterion
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - resultCriterion__kind
+    - resultCriterion__operator
+    - resultCriterion__value
+    - resultCriterion__value_high
+    - resultCriterion__units
+    - resultCriterion__value_concepts
+    attributes:
+      kind:
+        name: kind
+        range: ResultKind
+        required: true
+      operator:
+        name: operator
+        description: numeric only
+        range: ResultOperator
+      value:
+        name: value
+        range: float
+      value_high:
+        name: value_high
+        description: between only
+        range: float
+      units:
+        name: units
+        description: UCUM units the threshold applies to. Strongly recommended for
+          numeric.
+        range: CodeRef
+        multivalued: true
+        inlined_as_list: true
+      value_concepts:
+        name: value_concepts
+        description: 'qualitative only: accepted answers (e.g. LOINC LA6576-8 Positive).'
+        range: CodeRef
+        multivalued: true
+        inlined_as_list: true
+    class_uri: rapidcp:ResultCriterion
+  GeneticCriterion:
+    name: GeneticCriterion
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/GeneticCriterion
+    description: A row qualifies if its concept is in the feature's codes AND (when
+      given) its value_as_concept_id is an accepted interpretation AND (when require_gene_text_match)
+      the gene symbol appears in the row's source text.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - geneticCriterion__gene_symbol
+    - geneticCriterion__hgnc_id
+    - geneticCriterion__interpretations
+    - geneticCriterion__require_gene_text_match
+    attributes:
+      gene_symbol:
+        name: gene_symbol
+        required: true
+      hgnc_id:
+        name: hgnc_id
+        pattern: ^HGNC:[0-9]+$
+      interpretations:
+        name: interpretations
+        range: CodeRef
+        multivalued: true
+        inlined_as_list: true
+      require_gene_text_match:
+        name: require_gene_text_match
+        description: Default true when codes are generic LOINC panels.
+        range: boolean
+    class_uri: rapidcp:GeneticCriterion
+  Disjunct:
+    name: Disjunct
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Disjunct
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - disjunct__id
+    - disjunct__feature
+    - disjunct__min_distinct_dates
+    - disjunct__min_span_days
+    - disjunct__label
+    attributes:
+      id:
+        name: id
+        identifier: true
+        required: true
+        pattern: ^d[0-9]+$
+      feature:
+        name: feature
+        required: true
+      min_distinct_dates:
+        name: min_distinct_dates
+        range: integer
+        minimum_value: 1
+      min_span_days:
+        name: min_span_days
+        description: Records must stretch across at least this many days, first to
+          last.
+        range: integer
+        minimum_value: 1
+      label:
+        name: label
+    class_uri: rapidcp:Disjunct
+  Rule:
+    name: Rule
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Rule
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - rule__id
+    - rule__label
+    - rule__expr
+    attributes:
+      id:
+        name: id
+        identifier: true
+        required: true
+        pattern: ^r[0-9]+$
+      label:
+        name: label
+      expr:
+        name: expr
+        range: Expr
+        required: true
+        inlined: true
+    class_uri: rapidcp:Rule
+  Expr:
+    name: Expr
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Expr
+    description: 'Exactly one of: feature | all_of | any_of | none_of | at_least+of
+      | within. none_of = NOT(any of). A rule must contain at least one positive feature.
+      min_distinct_dates / min_span_days apply to a feature leaf.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - expr__feature
+    - expr__min_distinct_dates
+    - expr__min_span_days
+    - expr__all_of
+    - expr__any_of
+    - expr__none_of
+    - expr__at_least
+    - expr__of
+    - expr__within
+    attributes:
+      feature:
+        name: feature
+      min_distinct_dates:
+        name: min_distinct_dates
+        range: integer
+        minimum_value: 1
+      min_span_days:
+        name: min_span_days
+        description: Records must stretch across at least this many days, first to
+          last.
+        range: integer
+        minimum_value: 1
+      all_of:
+        name: all_of
+        range: Expr
+        multivalued: true
+        inlined_as_list: true
+      any_of:
+        name: any_of
+        range: Expr
+        multivalued: true
+        inlined_as_list: true
+      none_of:
+        name: none_of
+        range: Expr
+        multivalued: true
+        inlined_as_list: true
+      at_least:
+        name: at_least
+        range: integer
+        minimum_value: 1
+      of:
+        name: of
+        range: Expr
+        multivalued: true
+        inlined_as_list: true
+      within:
+        name: within
+        range: Within
+        inlined: true
+    class_uri: rapidcp:Expr
+  Within:
+    name: Within
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Within
+    description: A record of each listed feature, all falling within `days` of each
+      other. With in_order, the records must also occur in the listed order (the same
+      day counts as in order).
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - within__days
+    - within__in_order
+    - within__of
+    attributes:
+      days:
+        name: days
+        range: integer
+        required: true
+        minimum_value: 0
+      in_order:
+        name: in_order
+        range: boolean
+      of:
+        name: of
+        description: Feature ids, at least two.
+        required: true
+        multivalued: true
+    class_uri: rapidcp:Within
+  ScoreModel:
+    name: ScoreModel
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ScoreModel
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - scoreModel__threshold
+    - scoreModel__items
+    attributes:
+      threshold:
+        name: threshold
+        range: float
+        required: true
+      items:
+        name: items
+        range: ScoreItem
+        required: true
+        multivalued: true
+        inlined_as_list: true
+    class_uri: rapidcp:ScoreModel
+  ScoreItem:
+    name: ScoreItem
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ScoreItem
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - scoreItem__id
+    - scoreItem__feature
+    - scoreItem__points
+    - scoreItem__min_distinct_dates
+    - scoreItem__min_span_days
+    attributes:
+      id:
+        name: id
+        identifier: true
+        required: true
+        pattern: ^s[0-9]+$
+      feature:
+        name: feature
+        required: true
+      points:
+        name: points
+        description: May be negative.
+        range: float
+        required: true
+      min_distinct_dates:
+        name: min_distinct_dates
+        range: integer
+        minimum_value: 1
+      min_span_days:
+        name: min_span_days
+        description: Records must stretch across at least this many days, first to
+          last.
+        range: integer
+        minimum_value: 1
+    class_uri: rapidcp:ScoreItem
+  CPBuild:
+    name: CPBuild
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/CPBuild
+    description: 'Header of a build SQL file (<build_id>.sql): the YAML between "--
+      cpsql-build" and "-- end-cpsql-build", with the "-- " prefixes removed. Only
+      CP-dependent fields; site settings are in site files.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - cPBuild__generator
+    - cPBuild__cp_logic_sha256
+    - cPBuild__build_id
+    - cPBuild__cp_id
+    - cPBuild__datamodel
+    - cPBuild__build
+    - cPBuild__change_note
+    attributes:
+      generator:
+        name: generator
+        description: cpsql version that wrote the SQL, e.g. 'cpsql 0.1.0'.
+      cp_logic_sha256:
+        name: cp_logic_sha256
+        description: sha256 of the CP's logic (disease ids, level, search_mode, cluster,
+          features, disjuncts, rules, score) the SQL was generated from. Lifecycle
+          and documentation fields are excluded, so editing them doesn't invalidate
+          a build.
+      build_id:
+        name: build_id
+        description: <cp_id>_<datamodel>.b<build>, e.g. mondo0010619-xlh_L1_v1.0_omop54.b1
+        identifier: true
+        required: true
+        pattern: ^.+_v[0-9]+\.[0-9]+_[a-z0-9]+\.b[0-9]+$
+      cp_id:
+        name: cp_id
+        required: true
+      datamodel:
+        name: datamodel
+        range: DataModel
+        required: true
+      build:
+        name: build
+        range: integer
+        required: true
+        minimum_value: 1
+      change_note:
+        name: change_note
+    class_uri: rapidcp:CPBuild
+  SiteProfile:
+    name: SiteProfile
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/SiteProfile
+    description: 'Site file, sites/<site>_v<version>.yaml: everything about running
+      builds at one site. Applied at run time by `cpsql render --site`, so one build
+      serves every site on a data model. Any change is a new version (new file); old
+      versions are kept so past runs can be reproduced.'
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slots:
+    - siteProfile__site
+    - siteProfile__version
+    - siteProfile__datamodel
+    - siteProfile__cdm_version
+    - siteProfile__dialect
+    - siteProfile__vocabulary_version
+    - siteProfile__cdm_schema
+    - siteProfile__vocab_schema
+    - siteProfile__source_value_fallback
+    - siteProfile__personal_history_concepts
+    - siteProfile__updated
+    - siteProfile__change_note
+    attributes:
+      site:
+        name: site
+        description: Lowercase site name, e.g. unc.
+        required: true
+        pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+      version:
+        name: version
+        range: integer
+        required: true
+        minimum_value: 1
+      datamodel:
+        name: datamodel
+        range: DataModel
+        required: true
+      cdm_version:
+        name: cdm_version
+      dialect:
+        name: dialect
+        range: SqlDialect
+      vocabulary_version:
+        name: vocabulary_version
+        description: The site's Athena release, from its VOCABULARY table.
+        required: true
+      cdm_schema:
+        name: cdm_schema
+        required: true
+      vocab_schema:
+        name: vocab_schema
+        required: true
+      source_value_fallback:
+        name: source_value_fallback
+        description: Also match raw ICD-10-CM strings in *_source_value. Default true.
+        range: boolean
+      personal_history_concepts:
+        name: personal_history_concepts
+        description: 'Concepts that mark an OBSERVATION row as the patient''s own
+          history, with the condition in value_as_concept_id. Default: SNOMED CT 417662000
+          History of clinical finding in subject. Family-history concepts are deliberately
+          not listed, so family history never matches.'
+        range: HistoryConcept
+        multivalued: true
+        inlined_as_list: true
+      updated:
+        name: updated
+        range: date
+        required: true
+      change_note:
+        name: change_note
+    class_uri: rapidcp:SiteProfile
+metamodel_version: 1.12.0
+source_file: rapid_cp_schema.yaml
+source_file_date: '2026-10-29T11:54:15'
+source_file_size: 19734
+
