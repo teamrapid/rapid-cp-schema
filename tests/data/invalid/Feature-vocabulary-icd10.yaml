@@ -1,0 +1,8 @@
+# Vocabulary ICD10 is not in CodeSystem (names are exact).
+# expect: 'ICD10' is not one of
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10, code: '2043855'}

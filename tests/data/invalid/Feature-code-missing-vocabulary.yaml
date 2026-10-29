@@ -1,0 +1,8 @@
+# A code needs its vocabulary.
+# expect: 'vocabulary' is a required property
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {code: E83.31}

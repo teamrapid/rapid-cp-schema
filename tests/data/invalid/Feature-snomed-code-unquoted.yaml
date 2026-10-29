@@ -1,0 +1,9 @@
+# Spec §3.1: SNOMED and RxNorm codes must be quoted; unquoted they are read as integers.
+# expect: 41345002 is not of type 'string'
+id: f5
+module: phenotype
+name: Rickets
+specificity_tier: 3
+hpo_id: HP:0002748
+codes:
+- {vocabulary: SNOMED, code: 41345002}

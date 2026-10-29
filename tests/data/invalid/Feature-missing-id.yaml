@@ -1,0 +1,7 @@
+# Required feature field id is missing.
+# expect: 'id' is a required property
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

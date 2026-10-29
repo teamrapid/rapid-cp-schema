@@ -1,0 +1,8 @@
+# Feature ids are f<n>.
+# expect: does not match .* in /id
+id: F1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

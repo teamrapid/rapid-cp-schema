@@ -1,0 +1,8 @@
+# specificity_tier is an integer.
+# expect: '1' is not of type 'integer'
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: '1'
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

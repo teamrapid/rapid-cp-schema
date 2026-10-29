@@ -1,0 +1,9 @@
+# include_personal_history is a boolean.
+# expect: 'no' is not of type 'boolean'
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
+include_personal_history: 'no'

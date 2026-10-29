@@ -1,0 +1,9 @@
+# A numeric threshold is a number.
+# expect: 'high' is not of type 'number'
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result: {kind: numeric, operator: gt, value: high}

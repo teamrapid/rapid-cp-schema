@@ -1,0 +1,8 @@
+# Vocabulary SNOMEDCT is not in CodeSystem (names are exact).
+# expect: 'SNOMEDCT' is not one of
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: SNOMEDCT, code: '2043855'}

@@ -1,0 +1,3 @@
+# Required feature field codes is missing.
+# expect: 'codes' is a required property
+{id: f1, module: diagnostic_code, name: XLH diagnosis code, specificity_tier: 1}

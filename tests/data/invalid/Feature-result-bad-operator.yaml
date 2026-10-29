@@ -1,0 +1,9 @@
+# Operators are gt, gte, lt, lte, between, above_ref_high, below_ref_low.
+# expect: 'ge' is not one of
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result: {kind: numeric, operator: ge, value: 100}

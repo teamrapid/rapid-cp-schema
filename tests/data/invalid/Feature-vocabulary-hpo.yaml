@@ -1,0 +1,8 @@
+# Vocabulary HPO is not in CodeSystem (names are exact).
+# expect: 'HPO' is not one of
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: HPO, code: '2043855'}

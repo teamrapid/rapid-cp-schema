@@ -1,0 +1,4 @@
+# updated must be an ISO date.
+# expect: is not a 'date' in /updated
+{site: unc, version: 1, datamodel: omop54, cdm_version: '5.4', dialect: postgresql, vocabulary_version: v5.0 30-AUG-26,
+  cdm_schema: cdm, vocab_schema: vocab, updated: Sept 2026}

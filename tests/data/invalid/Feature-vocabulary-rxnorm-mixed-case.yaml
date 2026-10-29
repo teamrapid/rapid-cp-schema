@@ -1,0 +1,8 @@
+# Vocabulary RxNorm is not in CodeSystem (names are exact).
+# expect: 'RxNorm' is not one of
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: RxNorm, code: '2043855'}

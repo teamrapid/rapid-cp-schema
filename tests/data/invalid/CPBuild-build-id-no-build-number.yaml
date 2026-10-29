@@ -1,0 +1,4 @@
+# build_id must end in .b<build>.
+# expect: does not match .* in /build_id
+{generator: cpsql 0.1.0, build_id: mondo0010619-xlh_L1_v1.0_omop54, cp_id: mondo0010619-xlh_L1_v1.0, datamodel: omop54,
+  build: 1}

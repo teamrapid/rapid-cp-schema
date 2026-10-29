@@ -1,0 +1,4 @@
+# Required site field updated is missing.
+# expect: 'updated' is a required property
+{site: unc, version: 1, datamodel: omop54, cdm_version: '5.4', dialect: postgresql, vocabulary_version: v5.0 30-AUG-26,
+  cdm_schema: cdm, vocab_schema: vocab}

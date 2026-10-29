@@ -1,0 +1,4 @@
+# datamodel must be omop54 or truveta.
+# expect: 'OMOP' is not one of
+{generator: cpsql 0.1.0, build_id: mondo0010619-xlh_L1_v1.0_omop54.b1, cp_id: mondo0010619-xlh_L1_v1.0, datamodel: OMOP,
+  build: 1}

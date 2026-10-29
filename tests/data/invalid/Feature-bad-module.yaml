@@ -1,0 +1,8 @@
+# module drug is not in Module.
+# expect: 'drug' is not one of
+id: f2
+module: drug
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: RXNORM, code: '2043855', label: burosumab}

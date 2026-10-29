@@ -1,0 +1,8 @@
+# include_descendants is a boolean.
+# expect: 'yes' is not of type 'boolean'
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, include_descendants: 'yes'}

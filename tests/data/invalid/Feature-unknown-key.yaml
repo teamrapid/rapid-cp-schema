@@ -1,0 +1,8 @@
+# Typo in a feature key (specifity_tier).
+# expect: 'specifity_tier' was unexpected
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
+specifity_tier: 1
