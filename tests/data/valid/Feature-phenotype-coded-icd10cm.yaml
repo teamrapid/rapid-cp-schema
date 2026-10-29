@@ -1,0 +1,8 @@
+# Spec §3.2: a coded phenotype may use ICD10CM and needs no result.
+id: f10
+module: phenotype
+name: Short stature
+specificity_tier: 4
+codes:
+- {vocabulary: ICD10CM, code: R62.52}
+include_personal_history: true

@@ -1,0 +1,8 @@
+# Spec §3.4: genetic block with only the required gene_symbol.
+id: f3
+module: genetic_finding
+name: PHEX pathogenic variant
+specificity_tier: 1
+codes:
+- {vocabulary: LOINC, code: 53037-8, label: Genetic variation clinical significance}
+genetic: {gene_symbol: PHEX}

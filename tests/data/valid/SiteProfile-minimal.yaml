@@ -1,0 +1,3 @@
+# Site file with required fields only.
+{site: unc, version: 1, datamodel: omop54, vocabulary_version: v5.0 30-AUG-26, cdm_schema: cdm, vocab_schema: vocab,
+  updated: '2026-09-29'}

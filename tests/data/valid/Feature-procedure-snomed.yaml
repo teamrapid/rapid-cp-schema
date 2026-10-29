@@ -1,0 +1,7 @@
+# Spec §3.2: procedure features are SNOMED-coded.
+id: f9
+module: procedure
+name: Guided growth surgery
+specificity_tier: 3
+codes:
+- {vocabulary: SNOMED, code: '179097002'}

@@ -1,0 +1,14 @@
+# UCUM codes with brackets and braces (SPEC.md §5.2).
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result:
+  kind: numeric
+  operator: lt
+  value: 50
+  units:
+  - {vocabulary: UCUM, code: 'mm[Hg]'}
+  - {vocabulary: UCUM, code: '{cells}/uL'}

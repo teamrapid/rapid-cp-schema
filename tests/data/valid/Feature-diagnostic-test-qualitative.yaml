@@ -1,0 +1,11 @@
+# Spec §3.3: qualitative result with accepted answer codes.
+id: f7
+module: diagnostic_test
+name: PHEX sequencing positive
+specificity_tier: 1
+codes:
+- {vocabulary: SNOMED, code: '117040002'}
+result:
+  kind: qualitative
+  value_concepts:
+  - {vocabulary: LOINC, code: LA6576-8, label: Positive}

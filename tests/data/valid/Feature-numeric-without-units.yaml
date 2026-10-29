@@ -1,0 +1,8 @@
+# Spec §3.3: a numeric threshold without units is compared whatever the unit; cpsql warns, it is not an error.
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result: {kind: numeric, operator: gte, value: 100}

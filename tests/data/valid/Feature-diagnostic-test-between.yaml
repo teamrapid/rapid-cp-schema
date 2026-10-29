@@ -1,0 +1,14 @@
+# Spec §3.3: numeric between with value, value_high and units.
+id: f8
+module: diagnostic_test
+name: TmP/GFR low
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 2777-1}
+result:
+  kind: numeric
+  operator: between
+  value: 0.3
+  value_high: 0.8
+  units:
+  - {vocabulary: UCUM, code: mmol/L}
