@@ -1,0 +1,11 @@
+# A result block on a medication is never evaluated (drug_exposure has no result). The spec does not
+# forbid it; listed because it silently does nothing.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: RXNORM, code: '2043855', label: burosumab}
+result: {kind: numeric, operator: gt, value: 1}

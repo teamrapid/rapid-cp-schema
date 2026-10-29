@@ -1,0 +1,16 @@
+# Spec §3.2: genetic_finding features are LOINC or SNOMED.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f3
+module: genetic_finding
+name: PHEX pathogenic variant
+specificity_tier: 1
+codes:
+- {vocabulary: RXNORM, code: '2043855'}
+genetic:
+  gene_symbol: PHEX
+  hgnc_id: HGNC:8918
+  interpretations:
+  - {vocabulary: LOINC, code: LA6668-3}
+  - {vocabulary: LOINC, code: LA26332-9}
+  require_gene_text_match: true

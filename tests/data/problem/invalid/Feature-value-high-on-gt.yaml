@@ -1,0 +1,10 @@
+# Schema: value_high is for between only.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result: {kind: numeric, operator: gt, value: 1, value_high: 10}

@@ -1,0 +1,15 @@
+# Spec §3.1: result units are UCUM.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f6
+module: diagnostic_test
+name: Raised FGF23
+specificity_tier: 2
+codes:
+- {vocabulary: LOINC, code: 53304-2}
+result:
+  kind: numeric
+  operator: gt
+  value: 100
+  units:
+  - {vocabulary: SNOMED, code: '258797006'}

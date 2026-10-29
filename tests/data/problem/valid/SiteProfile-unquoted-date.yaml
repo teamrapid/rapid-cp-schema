@@ -1,0 +1,6 @@
+# updated: 2026-09-29 written unquoted, as most authors would. YAML reads it as a date, and
+# linkml-validate then rejects it ("is not of type 'string'"). The spec examples quote dates.
+# Should validate but is rejected against schema v0.1.0, with the error(s) below.
+# expect: datetime.date\(2026, 9, 29\) is not of type 'string' in /updated
+{site: unc, version: 1, datamodel: omop54, cdm_version: '5.4', dialect: postgresql, vocabulary_version: v5.0 30-AUG-26,
+  cdm_schema: cdm, vocab_schema: vocab, updated: 2026-09-29}

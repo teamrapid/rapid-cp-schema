@@ -1,0 +1,21 @@
+# provenance.kg_extracted_at written unquoted. YAML reads it as a datetime, and linkml-validate
+# rejects it. Same YAML date issue as the authored_date and site file cases.
+# Should validate but is rejected against schema v0.1.0, with the error(s) below.
+# expect: is not of type 'string', 'null' in /provenance/kg_extracted_at
+cp_id: mondo0010619-xlh_L1_v1.0
+schema_version: 0.1.0
+title: X-linked hypophosphatemia, Level 1
+disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
+level: L1
+search_mode: population
+status: draft
+provenance: {authored_by: example, authored_date: '2026-10-27', kg_extracted_at: 2026-09-24T14:05:00Z}
+features:
+- id: f1
+  module: diagnostic_code
+  name: XLH diagnosis code
+  specificity_tier: 1
+  codes:
+  - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
+disjuncts:
+- {id: d1, feature: f1}

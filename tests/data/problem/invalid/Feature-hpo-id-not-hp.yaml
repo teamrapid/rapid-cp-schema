@@ -1,0 +1,10 @@
+# hpo_id holds an HPO term, not a Mondo id.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f5
+module: phenotype
+name: Rickets
+specificity_tier: 3
+hpo_id: MONDO:0010619
+codes:
+- {vocabulary: SNOMED, code: '41345002', label: Rickets}

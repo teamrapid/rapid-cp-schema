@@ -1,0 +1,11 @@
+# Spec §3.3: a qualitative result matches a set of accepted answers; none are given.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f4
+module: phenotype
+name: Low serum phosphate
+specificity_tier: 3
+hpo_id: HP:0002148
+codes:
+- {vocabulary: LOINC, code: 2777-1}
+result: {kind: qualitative}

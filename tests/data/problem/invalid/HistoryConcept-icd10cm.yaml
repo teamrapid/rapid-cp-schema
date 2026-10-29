@@ -1,0 +1,4 @@
+# HistoryConcept vocabulary: SNOMED is the only vocabulary allowed.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+{vocabulary: ICD10CM, code: Z86.39}

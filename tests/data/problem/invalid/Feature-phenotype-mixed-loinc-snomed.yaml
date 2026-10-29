@@ -1,0 +1,12 @@
+# Spec §3.2: a phenotype feature with LOINC codes must be all-LOINC.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f4
+module: phenotype
+name: Low serum phosphate
+specificity_tier: 3
+hpo_id: HP:0002148
+codes:
+- {vocabulary: LOINC, code: 2777-1}
+- {vocabulary: SNOMED, code: '4996001'}
+result: {kind: numeric, operator: below_ref_low}

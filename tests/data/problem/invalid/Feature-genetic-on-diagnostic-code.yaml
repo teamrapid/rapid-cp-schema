@@ -1,0 +1,10 @@
+# A genetic block only means something on genetic_finding. The spec does not forbid it elsewhere.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
+genetic: {gene_symbol: PHEX}

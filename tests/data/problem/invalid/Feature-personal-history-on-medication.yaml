@@ -1,0 +1,10 @@
+# Spec §3.2: include_personal_history applies to diagnostic_code and coded phenotype features only.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f2
+module: medication
+name: burosumab
+specificity_tier: 1
+codes:
+- {vocabulary: RXNORM, code: '2043855', label: burosumab}
+include_personal_history: false

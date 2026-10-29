@@ -1,0 +1,9 @@
+# Spec §3.2: diagnostic_code features are ICD10CM or SNOMED.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_tier: 1
+codes:
+- {vocabulary: LOINC, code: 2777-1}

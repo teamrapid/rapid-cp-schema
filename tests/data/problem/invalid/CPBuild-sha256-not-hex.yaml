@@ -1,0 +1,5 @@
+# cp_logic_sha256 should be 64 hex characters.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+{generator: cpsql 0.1.0, build_id: mondo0010619-xlh_L1_v1.0_omop54.b1, cp_id: mondo0010619-xlh_L1_v1.0, datamodel: omop54,
+  build: 1, cp_logic_sha256: abc}

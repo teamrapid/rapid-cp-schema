@@ -1,0 +1,4 @@
+# HistoryConcept is either vocabulary+code or a concept_id, not both.
+# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+{vocabulary: SNOMED, code: '417662000', concept_id: 2000001234}
