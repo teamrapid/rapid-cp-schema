@@ -291,9 +291,10 @@ schema.
   - `valid/`: must validate. It currently holds an L1 and an L2A XLH CP, a site file and a build
     header, all built from the spec's own snippets. **They are illustrative and not clinically
     reviewed.**
-  - `invalid/`: must fail validation.
+  - `invalid/`: must fail validation, for the reason stated in the file's `# expect:` lines.
   - `problem/invalid/`: should fail but doesn't yet. This is where the nine-violation file lives
-    until §5.1 lands.
+    until §5.1 lands, together with one file per rule the schema doesn't enforce.
+  - `problem/valid/`: should validate but is rejected.
 - **A new rule in the schema comes with an invalid example** that it rejects.
 - **Schema version:** bump `version` in the schema for every released change. CP files record the
   schema version they conform to in `schema_version`.
