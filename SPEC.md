@@ -253,7 +253,9 @@ they are ready for deployment, so a lifecycle status in the file carries no info
    `CPBuild` and `SiteProfile` belong in the public schema? Who turns a CP into a query at a site
    that doesn't use cpsql? **Decided (schema 0.2.0): no.** Both classes were removed, with
    `HistoryConcept`, `DataModel`, `SqlDialect`, and `site_version` and `build` on `SiteTest`. The
-   second question is still open.
+   second question is answered too: each site writes its own queries, following the recommended
+   OMOP 5.4 rules in [docs/applying-cps-omop54.md](docs/applying-cps-omop54.md), and returns
+   counts as [docs/results-file-spec.md](docs/results-file-spec.md) defines.
 5. **Mimics and hard exclusions.** `none_of` exists, but the spec says the mimic and
    hard-exclusion modules are "not yet specified". In rare disease, mimics are often where
    precision is won or lost. A disease's differential diagnoses are knowledge, which Mondo could
@@ -281,6 +283,12 @@ they are ready for deployment, so a lifecycle status in the file carries no info
     already exist. A paragraph saying why this format differs (it is data-model independent and
     uses source-vocabulary codes), or an export to Circe JSON, would help adoption at OHDSI
     sites. This is not a reason to replace the format.
+12. **Results-file gaps.** The [results-file specification](docs/results-file-spec.md) v1.0
+    covers L1 and L2A criteria only. It has no rows or checks yet for L2B score items, no place
+    for the number of patients with an umbrella code in a cluster CP, and no column for the
+    site's vocabulary release. Its Frictionless schema
+    ([docs/results-file/](docs/results-file/)) matches: `criterion_id` allows only `d` and `r`
+    ids.
 
 ## 7. Rejected directions
 

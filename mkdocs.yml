@@ -62,7 +62,9 @@ watch:
 nav:
   - Home: index.md
   - Schema: elements/index.md
-  - CP YAML specification: cp-yaml-spec.md
+  - Applying CPs in OMOP 5.4: applying-cps-omop54.md
+  - Results-file specification: results-file-spec.md
+  - CP YAML specification (v0.1.0): cp-yaml-spec.md
   - About: about.md
 
 exclude_docs: |
