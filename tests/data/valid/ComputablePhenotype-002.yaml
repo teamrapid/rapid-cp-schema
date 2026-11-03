@@ -1,7 +1,7 @@
 # Level 2A CP for X-linked hypophosphatemia, using the rule examples in CP_YAML_SPEC.md v0.1.0 §5.2.
 # Illustrative only: not a clinically reviewed CP.
 cp_id: mondo0010619-xlh_L2A_v2.0
-schema_version: 0.1.0
+schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 2A
 disease:
   mondo_id: MONDO:0010619
@@ -12,7 +12,6 @@ search_mode: cluster
 cluster:
   umbrella_codes:
     - {vocabulary: ICD10CM, code: E83.3, label: Disorders of phosphorus metabolism and phosphatases}
-status: draft
 provenance:
   authored_by: example
   authored_date: "2026-10-27"

@@ -1,8 +1,8 @@
 # Spec §2: included_mondo_ids lists every Mondo id of the entity, mondo_id included.
-# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L1_v1.0
-schema_version: 0.1.0
+schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
 disease:
   mondo_id: MONDO:0010619
@@ -11,7 +11,6 @@ disease:
   included_mondo_ids: ['MONDO:0008660']
 level: L1
 search_mode: population
-status: draft
 provenance: {authored_by: example, authored_date: '2026-10-27'}
 features:
 - id: f1

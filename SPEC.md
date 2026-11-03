@@ -52,7 +52,7 @@ diagnosed**. They do not run against registry data.
 | L2A | Deterministic rules | `rules`: Boolean gates (`all_of`, `any_of`, `none_of`, `at_least`, `within`) |
 | L2B | Deterministic score | `score`: weighted points against a threshold |
 | L3 | Profile match | Declared only. It ranks candidate diseases against each other |
-| beyond | Trained models | Out of scope. Such a CP is marked `status: exemplar-candidate` |
+| beyond | Trained models | Out of scope |
 
 Year one is deliberately engineering-first: mostly L1 CPs built from single specific markers,
 largely ICD-10-CM codes. The first batch is about 400 diseases, and the five-year target is about
@@ -84,7 +84,8 @@ largely ICD-10-CM codes. The first batch is about 400 diseases, and the five-yea
   `https://mendelian.co/schemas/rapid-cp-logic`, CC0. It came with the prose spec
   `CP_YAML_SPEC.md`, now at [docs/cp-yaml-spec.md](docs/cp-yaml-spec.md).
 - **Imported here** as `src/rapid_cp_schema/schema/rapid_cp_schema.yaml`, with **two changes**,
-  both needed by the tooling. Everything else, including the `id`, is still v0.1.0 as received:
+  both needed by the tooling. Everything else, including the `id`, was v0.1.0 as received, until
+  0.2.0 removed the cpsql references, the build and site classes and `status` (§5.7, §6 Q4):
   - `name: rapid-cp-logic` → `name: rapid_cp_schema`, because the project template needs it for
     the generated Python module;
   - the `rapidcp` prefix (the `default_prefix`) is declared as
@@ -96,7 +97,7 @@ largely ICD-10-CM codes. The first batch is about 400 diseases, and the five-yea
   by pull request.
 - **Timing:** Mendelian asked to wait until UNC (Emily Pfaff's team) has looked at the first test
   CPs before the repository is set up publicly and PRs start. Those test CPs were written against
-  v0.1.0, so **changes must not break v0.1.0 CP files** until that feedback is in.
+  v0.1.0; 0.2.0 no longer accepts them as they are (see §8, Compatibility).
 
 ## 4. Design choices to keep
 
@@ -150,8 +151,8 @@ How to fix them:
 - **Level as a type designator** fixes 7: `L1Phenotype` has `disjuncts`, `L2APhenotype` has
   `rules`, and `L2BPhenotype` has `score`. Forbidding the other levels' blocks with
   `maximum_cardinality: 0` was tried and gave a misleading error, which is why the subclass route
-  is preferred. **But** a type designator changes what a v0.1.0 file must contain, so it needs a
-  plan for staying compatible with the test CPs (see §3, Timing).
+  is preferred. **But** a type designator changes what a CP file must contain, so it is a
+  breaking change (see §8, Compatibility).
 - **Typed references** (`range: Feature`, `inlined: false`) on `Disjunct.feature`,
   `ScoreItem.feature`, `Expr.feature` and `Within.of` fix 6. The default validator did not check
   that a referenced id exists, so this needs a referential-integrity check.
@@ -211,6 +212,11 @@ phenotypic features. Keep `hpo_id` readable during the transition.
 an **enum with a definition for each tier**. Examples belong in the documentation, not the
 schema.
 
+### 5.7 `status` removed (0.2.0)
+
+The `status` slot and the `CPStatus` enum were removed. CPs are published on GitHub only when
+they are ready for deployment, so a lifecycle status in the file carries no information.
+
 ## 6. Open questions
 
 1. **Evidence per feature.** Nothing records *why* a feature counts as evidence for the disease,
@@ -245,7 +251,9 @@ schema.
    doesn't say what the score does mean.
 4. **Build and site files.** UNC receives YAML only, and SQL generation stays with Mendelian. Do
    `CPBuild` and `SiteProfile` belong in the public schema? Who turns a CP into a query at a site
-   that doesn't use cpsql?
+   that doesn't use cpsql? **Decided (schema 0.2.0): no.** Both classes were removed, with
+   `HistoryConcept`, `DataModel`, `SqlDialect`, and `site_version` and `build` on `SiteTest`. The
+   second question is still open.
 5. **Mimics and hard exclusions.** `none_of` exists, but the spec says the mimic and
    hard-exclusion modules are "not yet specified". In rare disease, mimics are often where
    precision is won or lost. A disease's differential diagnoses are knowledge, which Mondo could
@@ -288,8 +296,8 @@ schema.
 ## 8. Working conventions
 
 - **Example data** goes in `tests/data/`, named `<ClassName>-<id>.yaml`:
-  - `valid/`: must validate. It currently holds an L1 and an L2A XLH CP, a site file and a build
-    header, all built from the spec's own snippets. **They are illustrative and not clinically
+  - `valid/`: must validate. It currently holds an L1 and an L2A XLH CP and feature fragments,
+    all built from the spec's own snippets. **They are illustrative and not clinically
     reviewed.**
   - `invalid/`: must fail validation, for the reason stated in the file's `# expect:` lines.
   - `problem/invalid/`: should fail but doesn't yet. This is where the nine-violation file lives
@@ -298,8 +306,9 @@ schema.
 - **A new rule in the schema comes with an invalid example** that it rejects.
 - **Schema version:** bump `version` in the schema for every released change. CP files record the
   schema version they conform to in `schema_version`.
-- **Compatibility:** until UNC's feedback on the test CPs is in, every change has to keep v0.1.0
-  CP files valid.
+- **Compatibility:** schema 0.2.0 deliberately broke v0.1.0 CP files (§5.7, §6 Q4). Breaking
+  changes are allowed, but each one bumps the minor version while the schema is 0.x, is recorded
+  in §5 with its reason, and updates the test data in the same change.
 
 ## 9. People and context
 

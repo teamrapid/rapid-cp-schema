@@ -12,8 +12,8 @@ The filenames of all example data must conform to the scheme `classname-###.yaml
 where classname must be a the name of a class from the schema. "###" can be a number
 or one or more other characters allowed in filenames. The classname is derived by
 splitting at the first "-" and taking the part before the "-". Any class can be the
-target, so a rule local to one class can be tested on a fragment (`Feature-…`,
-`HistoryConcept-…`) rather than a whole CP.
+target, so a rule local to one class can be tested on a fragment (`Feature-…`)
+rather than a whole CP.
 
 `tests/test_data.py` validates every file with the LinkML validator:
 

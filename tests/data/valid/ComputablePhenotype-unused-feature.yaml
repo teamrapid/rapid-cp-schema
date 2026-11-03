@@ -1,12 +1,11 @@
 # Spec §3: a feature may be listed without being used; it is carried for traceability. Here a Tier 3
 # feature sits next to an L1 CP's disjuncts without being referenced.
 cp_id: mondo0010619-xlh_L1_v1.0
-schema_version: 0.1.0
+schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
 disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
 level: L1
 search_mode: population
-status: draft
 provenance: {authored_by: example, authored_date: '2026-10-27'}
 features:
 - id: f1

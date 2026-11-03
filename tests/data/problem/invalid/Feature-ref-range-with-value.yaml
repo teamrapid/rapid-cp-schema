@@ -1,5 +1,5 @@
 # Spec §3.3: above_ref_high uses the row's own range; a value is ignored and misleading.
-# Should fail validation but passes against schema v0.1.0. Move to tests/data/invalid/
+# Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f4
 module: phenotype
