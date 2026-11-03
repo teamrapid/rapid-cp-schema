@@ -1,4 +1,4 @@
-# Spec §2: included_mondo_ids lists every Mondo id of the entity, mondo_id included.
+# Included_mondo_ids lists every Mondo id of the entity, mondo_id included.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L1_v1.0

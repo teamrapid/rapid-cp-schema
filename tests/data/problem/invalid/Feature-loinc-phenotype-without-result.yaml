@@ -1,4 +1,4 @@
-# Spec §3.2: a LOINC-coded phenotype needs a result.
+# A LOINC-coded phenotype needs a result.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f4

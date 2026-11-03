@@ -37,7 +37,11 @@ Each CP version is one YAML file named after its `cp_id`, for example
 | `_v2` | Major version: goes up when the CP's structure changes, such as a criterion added or removed or the level changed |
 | `.0` | Minor version: goes up when details inside the structure change, such as codes, thresholds or points |
 
-Everything in the name is lowercase except the level.
+Everything in the name is lowercase except the level, so two names can't differ only in case and
+collide on a case-insensitive file system. Names starting `cluster-` are reserved for future
+cluster CPs. They will be named `cluster-<umbrella-code>_<level>_v<major>.<minor>`, with the
+umbrella code lowercase, prefixed with its vocabulary and without dots, e.g.
+`cluster-icd10e833_L2A_v1.0`.
 
 - **Versions are separate files.** A new version never overwrites an old one. Mendelian tracks
   which versions are published; sites run only published versions.
@@ -46,6 +50,17 @@ Everything in the name is lowercase except the level.
 - **Reading the YAML.** Codes, dates and version numbers are quoted (`"82236004"`,
   `"2026-09-24"`), so they should be read as text, not numbers or dates. A code can otherwise lose
   a leading zero.
+
+Which part of the version goes up depends on what changed:
+
+- **Major** (`v1.3` → `v2.0`): the structure changes. A disjunct, rule or score item is added or
+  removed, the level changes, the search mode or cluster changes, or a feature's module changes.
+  Major numbers are never reused.
+- **Minor** (`v1.0` → `v1.1`): the structure stays the same but details inside it change. For
+  example, codes are added to or removed from a feature, a threshold or `min_distinct_dates`
+  changes, or score points are re-weighted. Minor goes back to 0 on a major bump.
+- **Neither**: only fields that don't affect which patients are flagged change: `title`,
+  `review`, `sites_tested`, `provenance`, `expected_flag_rate`, `notes` and `absorbed_into`.
 
 ## 3. Top-level fields
 
@@ -107,7 +122,7 @@ Each entry under `codes` is written like
 | Field | Meaning |
 | --- | --- |
 | `vocabulary` | `ICD10CM`, `SNOMED`, `LOINC` or `RXNORM`, plus `UCUM` for result units only. In OMOP these are the `vocabulary_id` values `ICD10CM`, `SNOMED`, `LOINC`, `RxNorm` and `UCUM`. |
-| `code` | The code as written in that vocabulary, e.g. `E83.31` (ICD-10-CM codes are dotted). Matches OMOP's `concept_code`. |
+| `code` | The code as written in that vocabulary, e.g. `E83.31`. Matches OMOP's `concept_code`. ICD-10-CM codes are dotted; one written without the dot, such as `E8331`, is read as `E83.31`. |
 | `label` | Optional, for readers. |
 | `include_descendants` | Also match the more specific codes beneath it. Default `true` for a feature's codes, `false` for result values and units. |
 
@@ -125,7 +140,8 @@ listed answers.
 | `below_ref_low` | below the lower limit of the normal range recorded with that result | — |
 
 - `units`: UCUM units the threshold applies to, e.g. `{vocabulary: UCUM, code: mg/dL}`. With none
-  given, values in any unit are compared.
+  given, values in any unit are compared. The reference-range operators are usually the safer
+  choice: they need no units and are age-appropriate wherever the lab supplies ranges.
 - `value_concepts` (qualitative only): the accepted answers, e.g. LOINC `LA6576-8` (Positive).
 
 ### 4.3 Genetic findings
@@ -158,7 +174,7 @@ disjuncts:
 
 A patient is flagged if **any** rule's condition holds. Each rule has an `id` (`r1`…), an optional
 `label`, and an `expr`. Conditions nest as deeply as needed, and every rule contains at least one
-feature that isn't negated.
+feature that isn't negated, because a rule made only of `none_of` would match almost everyone.
 
 | Form | True when | Example |
 | --- | --- | --- |
@@ -194,15 +210,65 @@ Any feature reference (a disjunct, a rule's `feature`, a score item) can add:
 - `min_distinct_dates`: the feature must appear on at least this many different days (default 1).
   Days are counted, not records, so duplicate records don't count twice.
 - `min_span_days`: the feature's records must stretch across at least this many days, from first
-  to last.
+  to last. This separates a condition that keeps being recorded from a code entered once in error.
 
 ### 5.5 Cluster mode
 
 With `search_mode: cluster`, the first step finds every patient with any of
 `cluster.umbrella_codes`, searched like a diagnostic code with descendants included (e.g. `E83.3`
-also covers `E83.30`, `E83.31`…). The logic is then evaluated only for those patients: a patient
-who meets a criterion but has no umbrella code is not flagged. Each candidate disease under an
-umbrella has its own CP file with the same umbrella codes.
+also covers `E83.30`, `E83.31`…), except that records of the patient's own history don't count.
+The logic is then evaluated only for those patients: a patient who meets a criterion but has no
+umbrella code is not flagged. Each candidate disease under an umbrella has its own CP file with
+the same umbrella codes.
+
+### 5.6 Rules a valid CP file follows
+
+A CP file that breaks any of these rules is wrong, even where the schema doesn't reject it yet.
+
+**The file as a whole**
+
+- `cp_id` agrees with the file name, `level`, `disease.mondo_id` and `disease.slug` (section 2).
+- `included_mondo_ids`, when given, includes `mondo_id`.
+- `supersedes`, when given, is a `cp_id`.
+- `schema_version` is a schema version number, e.g. `0.2.0`.
+- A `cluster` block is given when `search_mode` is `cluster`, and only then. Umbrella codes are
+  ICD-10-CM or SNOMED CT.
+- Each level carries its own logic block and no other: `disjuncts` (at least one) for L1, `rules`
+  for L2A, `score` for L2B, and none for L3.
+- `expected_flag_rate`: with `basis: none`, no numbers are given. Otherwise `high_per_100k` is
+  required, `low_per_100k` may be left out for an open-ended range, and `low_per_100k` is not
+  above `high_per_100k`.
+
+**Features**
+
+- Feature ids are unique, and so are the ids of disjuncts, rules and score items, since each is
+  reported as a criterion.
+- Every feature has at least one code, in a vocabulary its module allows (section 4).
+  `UCUM` is used for result units only, and units are always `UCUM`.
+- SNOMED CT and RxNorm codes are quoted, so YAML doesn't read them as numbers.
+- `result` is given where the module needs it (`diagnostic_test`, measured `phenotype`) and not
+  elsewhere; `genetic` is given on `genetic_finding` features only.
+- A `phenotype` feature with LOINC codes is all-LOINC. A coded (SNOMED CT or ICD-10-CM) phenotype
+  goes in a separate feature.
+- `include_personal_history` is set only on `diagnostic_code` and coded `phenotype` features.
+- `hpo_id` is an HPO term (`HP:…`).
+- A `numeric` result has an `operator` and no `value_concepts`. `gt`, `gte`, `lt` and `lte` need
+  a `value`; `between` needs `value` and `value_high`, with `value` not above `value_high`;
+  `above_ref_high` and `below_ref_low` take neither. `value_high` is used only with `between`.
+- A `qualitative` result has `value_concepts` and no `operator`.
+
+**Logic**
+
+- Every disjunct, rule leaf, score item and `within.of` entry names a feature listed under
+  `features`.
+- Every disjunct names a Tier 1 feature.
+- Each `expr` node is exactly one of the forms in section 5.2. `at_least` and `of` come together,
+  and `at_least` is not more than the number of conditions in `of`. Lists of conditions are not
+  empty.
+- `min_distinct_dates` and `min_span_days` are set on a feature reference only, not on a node
+  that combines conditions.
+- `within.of` lists at least two feature ids.
+- Every rule has at least one feature that isn't under `none_of` (section 5.2).
 
 ## 6. Applying a CP in OMOP 5.4
 
@@ -230,7 +296,7 @@ the others follow directly from the CP file.
 
 ## 7. Recommended matching rules in OMOP 5.4
 
-These are recommendations: they describe how Mendelian applies CP files, and following them keeps
+These are recommendations and following them keeps
 results comparable across sites.
 
 ### 7.1 Where to search
@@ -319,112 +385,7 @@ What a criterion's count means:
 A patient who meets several criteria is counted under each, so criterion counts can add up to
 more than the flagged total; the `summary` row counts each patient once.
 
-## 9. Worked example: X-linked hypophosphatemia
-
-Two example CPs for X-linked hypophosphatemia (XLH) show the whole path from file to results. Both
-are excerpts: required fields that don't affect the queries, such as `disease` and `provenance`,
-are left out. Their codes have not yet been confirmed against a pinned vocabulary release, and the
-counts below are made up.
-
-### 9.1 Level 1, whole population
-
-```yaml
-cp_id: mondo0010619-xlh_L1_v1.0
-level: L1
-search_mode: population
-features:
-  - id: f1
-    module: diagnostic_code
-    name: XLH diagnosis (SNOMED)
-    specificity_tier: 1
-    codes:
-      - {vocabulary: SNOMED, code: "82236004"}
-  - id: f2
-    module: genetic_finding
-    name: Pathogenic / likely pathogenic PHEX variant
-    specificity_tier: 1
-    codes:
-      - {vocabulary: LOINC, code: "53037-8"}
-    genetic:
-      gene_symbol: PHEX
-      interpretations:
-        - {vocabulary: LOINC, code: LA6668-3}
-        - {vocabulary: LOINC, code: LA26332-9}
-  - id: f3
-    module: medication
-    name: Burosumab
-    specificity_tier: 2
-    codes:
-      - {vocabulary: RXNORM, code: "2043855"}
-disjuncts:
-  - {id: d1, feature: f1}
-  - {id: d2, feature: f2}
-```
-
-1. **Codes.** `f1`: SNOMED CT `82236004` plus its descendants. `f2`: LOINC `53037-8` plus
-   descendants; answers `LA6668-3` and `LA26332-9` exactly. `f3` isn't used by the logic, so it
-   needs no query.
-2. **Records.** `f1`: `condition_occurrence` and `observation` rows with one of `f1`'s concepts in
-   the standard or source column, plus `observation` rows recording the patient's own history of
-   XLH. `f2`: `measurement` and `observation` rows with `53037-8`, a Pathogenic or Likely
-   pathogenic answer in `value_as_concept_id`, and "PHEX" in the row's text.
-3. **Logic.** A patient is flagged if they have any `f1` record (`d1`) or any `f2` record (`d2`).
-4. **Results.** One `summary` row and a `count` row for `d1` and `d2`:
-
-```csv
-site_code,result_spec_version,generated_at,cp_name,run_date,data_snapshot_date,row_type,criterion_id,population_n,population_basis,population_basis_note,count_value,count_status
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo0010619-xlh_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,31,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo0010619-xlh_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,24,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo0010619-xlh_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,9,exact
-```
-
-Here 2 of the 31 patients met both disjuncts, so the criterion counts add up to 33. A count of 9
-may be hidden where a site's rules require it
-([Results-File Specification](results-file-spec.md), section 4.3).
-
-### 9.2 Level 2A, E83.3 cluster
-
-```yaml
-cp_id: mondo0010619-xlh_L2A_v2.0
-level: L2A
-search_mode: cluster
-cluster:
-  umbrella_codes:
-    - {vocabulary: ICD10CM, code: E83.3}
-features:
-  - {id: f1, module: diagnostic_code, ...}  # SNOMED 82236004, XLH
-  - {id: f2, module: diagnostic_code, ...}  # ICD-10-CM E83.31, familial hypophosphatemia
-  - {id: f3, module: phenotype, ...}        # LOINC 2777-1, result below_ref_low
-  - {id: f4, module: phenotype, ...}        # SNOMED 41345002, rickets
-  - {id: f5, module: medication, ...}       # RxNorm 2043855, burosumab
-rules:
-  - id: r1
-    expr: {feature: f1}
-  - id: r2
-    expr:
-      all_of:
-        - {feature: f2}
-        - any_of:
-            - {feature: f3, min_distinct_dates: 2}
-            - {feature: f4}
-  - id: r3
-    expr:
-      all_of:
-        - {feature: f2}
-        - {feature: f5}
-```
-
-1. **Cluster.** Find patients with any ICD-10-CM code starting `E83.3` (`E83.3`, `E83.30`,
-   `E83.31`, `E83.32`…). Only they are evaluated.
-2. **Features.** `f3` matches `measurement` rows for LOINC `2777-1` whose `value_as_number` is
-   below that row's `range_low`. `f5` matches any burosumab product, through the ingredient's
-   descendants.
-3. **Logic.** `r1`: an XLH code. `r2`: E83.31, and either low phosphate on at least 2 different
-   days or rickets. `r3`: E83.31 and burosumab. A patient is flagged if any rule holds.
-4. **Results.** One `summary` row with the site population (not the cluster size), and `count`
-   rows for `r1`, `r2` and `r3`, each counting only patients in the cluster.
-
-## 10. Before running, and open points
+## 9. Before running, and open points
 
 Mendelian recommends two quick checks before the first run of each CP version. Neither touches
 patient data.
@@ -444,4 +405,3 @@ Open points Mendelian is working on:
   code.
 - Genetic findings rely on variant results being stored as structured rows. Where they aren't,
   those features will find nobody, and the approach needs discussing with Mendelian.
-- The codes in the XLH examples are still to be confirmed against a pinned vocabulary release.

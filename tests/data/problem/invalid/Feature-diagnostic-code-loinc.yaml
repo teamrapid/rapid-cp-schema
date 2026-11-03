@@ -1,4 +1,4 @@
-# Spec §3.2: diagnostic_code features are ICD10CM or SNOMED.
+# Diagnostic_code features are ICD10CM or SNOMED.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f1

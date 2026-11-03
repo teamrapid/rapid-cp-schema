@@ -1,14 +1,14 @@
-# Breaks nine rules of CP_YAML_SPEC.md v0.1.0, yet validates cleanly against schema v0.2.0.
+# Breaks nine rules of docs/applying-cps-omop54.md §5.6, yet validates cleanly against schema v0.2.0.
 # Move to tests/data/invalid/ once the schema rejects it. See SPEC.md, "Constraint layer".
-#  1. search_mode: cluster with no cluster block            (spec §2)
-#  2. medication feature coded in LOINC                      (spec §3.2)
-#  3. diagnostic_test feature with no result                 (spec §3.2)
-#  4. two features with the same id (f1)                     (spec §3)
-#  5. L1 disjunct on a Tier 3 feature                        (spec §5.1)
-#  6. disjunct referencing a feature that doesn't exist      (spec §5)
-#  7. L2A rules block on an L1 CP                            (spec §2)
-#  8. one expr node that is both feature and all_of          (spec §5.2)
-#  9. rule made only of none_of                              (spec §5.2)
+#  1. search_mode: cluster with no cluster block
+#  2. medication feature coded in LOINC
+#  3. diagnostic_test feature with no result
+#  4. two features with the same id (f1)
+#  5. L1 disjunct on a Tier 3 feature
+#  6. disjunct referencing a feature that doesn't exist
+#  7. L2A rules block on an L1 CP
+#  8. one expr node that is both feature and all_of
+#  9. rule made only of none_of
 cp_id: mondo0010619-xlh_L1_v1.0
 schema_version: 0.2.0
 title: Broken XLH CP

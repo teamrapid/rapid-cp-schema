@@ -1,4 +1,4 @@
-# Spec §3.2: procedure features are SNOMED only (CPT4/HCPCS/ICD10PCS are open, spec §10.3).
+# Procedure features are SNOMED only (CPT4/HCPCS/ICD10PCS are an open question, SPEC.md §6 Q7).
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f9

@@ -1,4 +1,4 @@
-# Spec §3.3: a numeric threshold without units is compared whatever the unit; cpsql warns, it is not an error.
+# A numeric threshold without units is compared whatever the unit; it is not an error.
 id: f6
 module: diagnostic_test
 name: Raised FGF23

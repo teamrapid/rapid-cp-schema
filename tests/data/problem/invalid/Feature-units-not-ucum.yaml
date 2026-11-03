@@ -1,4 +1,4 @@
-# Spec §3.1: result units are UCUM.
+# Result units are UCUM.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f6

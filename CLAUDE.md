@@ -8,8 +8,6 @@ LinkML schema for RAPID TA1 computable phenotypes (CPs), generated from the
 [linkml-project-copier](https://github.com/linkml/linkml-project-copier) template.
 **Read `SPEC.md` before changing the schema** — it holds the purpose, provenance, agreed
 changes (§5), open questions (§6), rejected directions (§7) and working conventions (§8).
-`docs/cp-yaml-spec.md` is Mendelian's field-by-field prose spec (v0.1.0), kept verbatim — do not
-edit it.
 
 ## Commands
 

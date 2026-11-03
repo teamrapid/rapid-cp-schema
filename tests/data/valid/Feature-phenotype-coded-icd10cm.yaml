@@ -1,4 +1,4 @@
-# Spec §3.2: a coded phenotype may use ICD10CM and needs no result.
+# A coded phenotype may use ICD10CM and needs no result.
 id: f10
 module: phenotype
 name: Short stature

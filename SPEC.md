@@ -3,9 +3,8 @@
 Status: **draft**, 2026-10-27. Seeded from Mendelian's `rapid-cp-logic` v0.1.0.
 
 This document says what the schema is for, where it came from, what has been agreed about
-changing it, and what is still open. The field-by-field reading of the schema, and how each field
-turns into OMOP SQL, is Mendelian's [CP YAML specification](docs/cp-yaml-spec.md) (v0.1.0, kept
-verbatim). This file sits above it.
+changing it, and what is still open. The field-by-field reading of the schema, and how a site applies a CP to OMOP 5.4 data, is in
+[docs/applying-cps-omop54.md](docs/applying-cps-omop54.md). This file sits above it.
 
 ## 1. What this repository is
 
@@ -81,8 +80,9 @@ largely ICD-10-CM codes. The first batch is about 400 diseases, and the five-yea
 ## 3. Provenance of the schema
 
 - **Author:** Mendelian (Elena Marchini and colleagues), as `rapid-cp-logic` v0.1.0, id
-  `https://mendelian.co/schemas/rapid-cp-logic`, CC0. It came with the prose spec
-  `CP_YAML_SPEC.md`, now at [docs/cp-yaml-spec.md](docs/cp-yaml-spec.md).
+  `https://mendelian.co/schemas/rapid-cp-logic`, CC0. It came with a prose spec,
+  `CP_YAML_SPEC.md`, which also described Mendelian's in-house `cpsql` tool. Its still-relevant
+  content is now in [docs/applying-cps-omop54.md](docs/applying-cps-omop54.md).
 - **Imported here** as `src/rapid_cp_schema/schema/rapid_cp_schema.yaml`, with **two changes**,
   both needed by the tooling. Everything else, including the `id`, was v0.1.0 as received, until
   0.2.0 removed the cpsql references, the build and site classes and `status` (§5.7, §6 Q4):
@@ -103,13 +103,12 @@ largely ICD-10-CM codes. The first batch is about 400 diseases, and the five-yea
 
 The v0.1.0 design gets these right, and changes should preserve them:
 
-- **Logic, build and site are separate files**, each versioned for its own reason. A mapping fix,
-  a logic change and a site change are different kinds of edit.
+- **The CP file holds only the logic**, versioned for its own reason. How a site runs it is the
+  site's business (see [docs/applying-cps-omop54.md](docs/applying-cps-omop54.md)).
 - **Codes stay in their source vocabularies** (ICD10CM, SNOMED, LOINC, RxNorm), never as OMOP
   `concept_id`s. A CP then carries across sites and vocabulary releases.
 - **Versions are defined by their effect on the logic.** Structural changes bump the major
   version, detail changes bump the minor, and lifecycle or documentation edits don't bump it.
-- **Builds are fingerprinted** against the logic fields only.
 - **Stable criterion ids** come back as flag reasons.
 - **Counts are never suppressed, and zero is a result.** That is right for rare disease.
 - **Personal history counts and family history doesn't.** The handling of this in OMOP
@@ -122,21 +121,22 @@ Agreed with Mendelian in October 2026 after a first review. They are in rough PR
 
 ### 5.1 Constraint layer (first PR)
 
-v0.1.0 enforces almost none of the spec's rules. The file
+v0.1.0 enforces almost none of the rules in
+[docs/applying-cps-omop54.md](docs/applying-cps-omop54.md) §5.6. The file
 `tests/data/problem/invalid/ComputablePhenotype-nine-violations.yaml` breaks nine of them and
 still passes `linkml-validate` with "No issues found" (checked 2026-10-23):
 
-| # | Broken rule | Spec |
-|---|---|---|
-| 1 | `search_mode: cluster` with no `cluster` block | §2 |
-| 2 | `medication` feature coded in LOINC | §3.2 |
-| 3 | `diagnostic_test` with no `result` | §3.2 |
-| 4 | Two features with the same id | §3 |
-| 5 | L1 disjunct on a Tier 3 feature | §5.1 |
-| 6 | Disjunct referencing a feature that doesn't exist (`f99`) | §5 |
-| 7 | L2A `rules` block on an L1 CP | §2 |
-| 8 | One `expr` node that is both `feature` and `all_of` | §5.2 |
-| 9 | Rule made only of `none_of` | §5.2 |
+| # | Broken rule |
+|---|---|
+| 1 | `search_mode: cluster` with no `cluster` block |
+| 2 | `medication` feature coded in LOINC |
+| 3 | `diagnostic_test` with no `result` |
+| 4 | Two features with the same id |
+| 5 | L1 disjunct on a Tier 3 feature |
+| 6 | Disjunct referencing a feature that doesn't exist (`f99`) |
+| 7 | L2A `rules` block on an L1 CP |
+| 8 | One `expr` node that is both `feature` and `all_of` |
+| 9 | Rule made only of `none_of` |
 
 `cpsql validate` catches all nine today, but nobody outside Mendelian can run it.
 
@@ -256,14 +256,14 @@ they are ready for deployment, so a lifecycle status in the file carries no info
    second question is answered too: each site writes its own queries, following the recommended
    OMOP 5.4 rules in [docs/applying-cps-omop54.md](docs/applying-cps-omop54.md), and returns
    counts as [docs/results-file-spec.md](docs/results-file-spec.md) defines.
-5. **Mimics and hard exclusions.** `none_of` exists, but the spec says the mimic and
+5. **Mimics and hard exclusions.** `none_of` exists, but the v0.1.0 spec said the mimic and
    hard-exclusion modules are "not yet specified". In rare disease, mimics are often where
    precision is won or lost. A disease's differential diagnoses are knowledge, which Mondo could
    supply, not site configuration.
 6. **`first_date`** is the earliest qualifying event, not the date a rule became true. Is that
    acceptable for later time-to-diagnosis analyses?
 7. **Vocabularies.** Only ICD10CM, SNOMED, LOINC and RXNORM are admitted, plus UCUM for units.
-   Candidates (spec §10):
+   Candidates:
    - CPT4, HCPCS and ICD10PCS for procedures;
    - RxNorm Extension and ATC for drugs;
    - OMOP Genomic.
@@ -289,6 +289,12 @@ they are ready for deployment, so a lifecycle status in the file carries no info
     site's vocabulary release. Its Frictionless schema
     ([docs/results-file/](docs/results-file/)) matches: `criterion_id` allows only `d` and `r`
     ids.
+13. **Encounter context.** Counting a record only if it came from a certain kind of encounter: an
+    inpatient stay, a specialist, or the problem list rather than a billing code. It is one way to
+    add corroboration when a CP flags too many patients. OMOP holds this in `visit_occurrence`
+    (visit type), `provider` (specialty) and `*_type_concept_id` (record origin), but how reliably
+    sites fill these in varies, so it is deferred until a real CP needs it. It would likely be an
+    optional `encounter` filter on a feature.
 
 ## 7. Rejected directions
 
@@ -305,7 +311,7 @@ they are ready for deployment, so a lifecycle status in the file carries no info
 
 - **Example data** goes in `tests/data/`, named `<ClassName>-<id>.yaml`:
   - `valid/`: must validate. It currently holds an L1 and an L2A XLH CP and feature fragments,
-    all built from the spec's own snippets. **They are illustrative and not clinically
+    all built from the v0.1.0 spec's own snippets. **They are illustrative and not clinically
     reviewed.**
   - `invalid/`: must fail validation, for the reason stated in the file's `# expect:` lines.
   - `problem/invalid/`: should fail but doesn't yet. This is where the nine-violation file lives

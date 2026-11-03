@@ -1,4 +1,4 @@
-# Spec §5.4: cluster mode with ICD10CM and SNOMED umbrella codes and documented candidates.
+# Cluster mode with ICD10CM and SNOMED umbrella codes and documented candidates.
 cp_id: mondo0010619-xlh_L2A_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 2A

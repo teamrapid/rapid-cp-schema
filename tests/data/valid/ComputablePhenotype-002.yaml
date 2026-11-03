@@ -1,4 +1,4 @@
-# Level 2A CP for X-linked hypophosphatemia, using the rule examples in CP_YAML_SPEC.md v0.1.0 §5.2.
+# Level 2A CP for X-linked hypophosphatemia, using the rule examples from the v0.1.0 spec.
 # Illustrative only: not a clinically reviewed CP.
 cp_id: mondo0010619-xlh_L2A_v2.0
 schema_version: 0.2.0

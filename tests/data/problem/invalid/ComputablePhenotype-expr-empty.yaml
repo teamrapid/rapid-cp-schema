@@ -1,4 +1,4 @@
-# Spec §5.2: an expr node is exactly one kind; zero is not one.
+# An expr node is exactly one kind; zero is not one.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L2A_v1.0

@@ -1,4 +1,4 @@
-# Spec §2: each level must carry its own logic block.
+# Each level must carry its own logic block.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L1_v1.0

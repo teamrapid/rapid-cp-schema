@@ -1,4 +1,4 @@
-# Spec §2: with basis measured or class_band, low_per_100k may be left out (open-ended range).
+# With basis measured or class_band, low_per_100k may be left out (open-ended range).
 cp_id: mondo0010619-xlh_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1

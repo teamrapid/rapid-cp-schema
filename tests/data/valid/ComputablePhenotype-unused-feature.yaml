@@ -1,4 +1,4 @@
-# Spec §3: a feature may be listed without being used; it is carried for traceability. Here a Tier 3
+# A feature may be listed without being used; it is carried for traceability. Here a Tier 3
 # feature sits next to an L1 CP's disjuncts without being referenced.
 cp_id: mondo0010619-xlh_L1_v1.0
 schema_version: 0.2.0

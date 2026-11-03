@@ -1,4 +1,4 @@
-# Level 1 CP for X-linked hypophosphatemia, assembled from the snippets in CP_YAML_SPEC.md v0.1.0.
+# Level 1 CP for X-linked hypophosphatemia, assembled from the snippets in the v0.1.0 spec.
 # Illustrative only: not a clinically reviewed CP.
 cp_id: mondo0010619-xlh_L1_v1.0
 schema_version: 0.2.0

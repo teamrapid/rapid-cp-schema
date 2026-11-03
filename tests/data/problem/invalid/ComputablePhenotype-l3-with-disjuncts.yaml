@@ -1,4 +1,4 @@
-# Spec §2: L3 is declared only and has no block of its own, so it may not carry L1's.
+# L3 is declared only and has no block of its own, so it may not carry L1's.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L3_v1.0

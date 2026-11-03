@@ -1,4 +1,4 @@
-# Spec §3.4: genetic block with only the required gene_symbol.
+# Genetic block with only the required gene_symbol.
 id: f3
 module: genetic_finding
 name: PHEX pathogenic variant

@@ -1,4 +1,4 @@
-# Spec §2: cp_id must match disease.slug.
+# Cp_id must match disease.slug.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-fabry_L1_v1.0

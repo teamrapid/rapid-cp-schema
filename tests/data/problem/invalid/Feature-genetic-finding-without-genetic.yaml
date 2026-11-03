@@ -1,4 +1,4 @@
-# Spec §3.2: genetic_finding needs a genetic block.
+# Genetic_finding needs a genetic block.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f3

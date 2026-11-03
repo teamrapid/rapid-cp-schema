@@ -1,4 +1,4 @@
-# Spec §2: L1 must carry disjuncts; an empty list passes.
+# L1 must carry disjuncts; an empty list passes.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L1_v1.0

@@ -1,5 +1,5 @@
-# Spec §2 lists cluster as needed "if cluster". The spec does not forbid it in population mode, but
-# cluster is part of the logic fingerprint (§6), so a cluster block that is ignored is misleading.
+# A cluster block is given only when search_mode is cluster; in population mode it would be ignored,
+# which is misleading.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L1_v1.0

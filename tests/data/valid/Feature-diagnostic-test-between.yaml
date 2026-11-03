@@ -1,4 +1,4 @@
-# Spec §3.3: numeric between with value, value_high and units.
+# Numeric between with value, value_high and units.
 id: f8
 module: diagnostic_test
 name: TmP/GFR low

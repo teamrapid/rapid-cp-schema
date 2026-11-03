@@ -1,4 +1,4 @@
-# Spec §2: cp_id must match level (L2A vs L1).
+# Cp_id must match level (L2A vs L1).
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 cp_id: mondo0010619-xlh_L2A_v1.0

@@ -1,4 +1,4 @@
-# Spec §5.3: L2B score; points may be negative and appear as flag reasons.
+# L2B score; points may be negative and appear as flag reasons.
 cp_id: mondo0010619-xlh_L2B_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 2B

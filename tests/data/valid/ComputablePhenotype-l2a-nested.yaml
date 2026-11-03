@@ -1,5 +1,5 @@
 # L2A CP using every Expr node kind, nested, including within inside none_of
-# (spec §5.2: "the diagnosis, but not treated within a year").
+# ("the diagnosis, but not treated within a year").
 cp_id: mondo0010619-xlh_L2A_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 2A

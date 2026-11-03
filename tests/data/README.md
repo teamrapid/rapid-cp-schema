@@ -24,6 +24,6 @@ rather than a whole CP.
 | `problem/invalid/` | the file still validates (strict xfail). When the schema starts rejecting it, the test fails: move it to `invalid/` and add an `# expect:` line |
 | `problem/valid/` | the file is still rejected with exactly the errors its `# expect:` lines record (strict xfail). When it validates, move it to `valid/` |
 
-Each file starts with a comment saying what it tests and, where there is one, the section
-of `docs/cp-yaml-spec.md` it comes from. Each `invalid` and `problem` file differs from a
+Each file starts with a comment saying what it tests. The rules come from
+[`docs/applying-cps-omop54.md`](../../docs/applying-cps-omop54.md), mostly its section 5.6. Each `invalid` and `problem` file differs from a
 valid CP in one respect only, so it fails (or should fail) for one reason.

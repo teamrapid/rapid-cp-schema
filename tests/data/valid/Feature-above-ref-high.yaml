@@ -1,4 +1,4 @@
-# Spec §3.3: reference-range operator needs no value.
+# Reference-range operator needs no value.
 id: f4
 module: phenotype
 name: High alkaline phosphatase

@@ -1,4 +1,4 @@
-# Spec §3.1: ICD10CM codes typed without the dot are normalised (E8331 -> E83.31), so they are allowed.
+# ICD10CM codes typed without the dot are normalised (E8331 -> E83.31), so they are allowed.
 cp_id: mondo0010619-xlh_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
