@@ -60,7 +60,7 @@ Which part of the version goes up depends on what changed:
   example, codes are added to or removed from a feature, a threshold or `min_distinct_dates`
   changes, or score points are re-weighted. Minor goes back to 0 on a major bump.
 - **Neither**: only fields that don't affect which patients are flagged change: `title`,
-  `review`, `sites_tested`, `provenance`, `expected_flag_rate`, `notes` and `absorbed_into`.
+  `review`, `provenance`, `expected_flag_rate`, `notes` and `absorbed_into`.
 
 ## 3. Top-level fields
 
@@ -81,7 +81,6 @@ its history; they can be read but aren't needed to build queries.
 | `provenance` | yes | no | `authored_by`, `authored_date`, `kg_extracted_at`, `change_note`, `supersedes` (the version this one replaces). |
 | `review` | no | no | Clinical sign-off: `reviewer`, `date`, `decision` (`proceed` or `revise`), `comments`. |
 | `expected_flag_rate` | no | no | The range of patients per 100,000 a correct CP should flag: `low_per_100k`, `high_per_100k`, `basis`, `source`. Mendelian compares each site's results against it. |
-| `sites_tested` | no | no | Mendelian's record of where this version has run. |
 | `absorbed_into` | no | no | Reserved for future cluster CPs. |
 | `notes` | no | no | Free text. |
 

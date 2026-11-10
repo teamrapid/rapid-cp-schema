@@ -45,8 +45,6 @@ disjuncts:
 - {id: d2, feature: f2}
 - {id: d3, feature: f3}
 review: {reviewer: example, date: '2026-10-27', decision: proceed, comments: Looks sound.}
-sites_tested:
-- {site: unc}
 expected_flag_rate: {low_per_100k: 0.5, high_per_100k: 5, basis: measured, source: EFR run 12}
 absorbed_into: cluster-icd10e833_L2A_v1.0
 notes: Free text.

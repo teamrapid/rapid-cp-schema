@@ -17,7 +17,8 @@ LINKML_SCHEMA_SOURCE_DIR="src/rapid_cp_schema/schema"
 LINKML_GENERATORS_CONFIG_YAML=config.yaml
 
 ## pass args if gendoc ignores config.yaml (i.e. --no-mergeimports)
-LINKML_GENERATORS_DOC_ARGS=
+## --truncate-descriptions false: show full descriptions in tables (default cuts them at 80 chars)
+LINKML_GENERATORS_DOC_ARGS="--truncate-descriptions false"
 
 ## pass args to workaround genowl rdfs config bug (linkml#1453)
 ##   (i.e. --no-type-objects --no-metaclasses --metadata-profile=rdfs)

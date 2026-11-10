@@ -2,7 +2,7 @@
 # Schema: rapid_cp_schema
 #
 # id: https://mendelian.co/schemas/rapid-cp-logic
-# description: Schema for the RAPID computable phenotype (CP) logic: <disease-id>_<level>_v<major>.<minor>.yaml Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (d1, r2, s3) that is reported back as the flag reason.
+# description: Schema for RAPID computable phenotype (CP) logic files, named `<disease-id>_<level>_v<major>.<minor>.yaml`. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`) that is reported back as the flag reason.
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
@@ -95,7 +95,7 @@ class ScoreItemId(extended_str):
 @dataclass(repr=False)
 class ComputablePhenotype(YAMLRoot):
     """
-    One versioned CP. File name must equal cp_id + ".yaml".
+    One versioned CP. File name must equal `cp_id` + `.yaml`.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -114,7 +114,6 @@ class ComputablePhenotype(YAMLRoot):
     features: Union[dict[Union[str, FeatureId], Union[dict, "Feature"]], list[Union[dict, "Feature"]]] = empty_dict()
     cluster: Optional[Union[dict, "ClusterScope"]] = None
     review: Optional[Union[dict, "ClinicalReview"]] = None
-    sites_tested: Optional[Union[Union[dict, "SiteTest"], list[Union[dict, "SiteTest"]]]] = empty_list()
     expected_flag_rate: Optional[Union[dict, "ExpectedFlagRate"]] = None
     disjuncts: Optional[Union[dict[Union[str, DisjunctId], Union[dict, "Disjunct"]], list[Union[dict, "Disjunct"]]]] = empty_dict()
     rules: Optional[Union[dict[Union[str, RuleId], Union[dict, "Rule"]], list[Union[dict, "Rule"]]]] = empty_dict()
@@ -168,8 +167,6 @@ class ComputablePhenotype(YAMLRoot):
         if self.review is not None and not isinstance(self.review, ClinicalReview):
             self.review = ClinicalReview(**as_dict(self.review))
 
-        self._normalize_inlined_as_list(slot_name="sites_tested", slot_type=SiteTest, key_name="site", keyed=False)
-
         if self.expected_flag_rate is not None and not isinstance(self.expected_flag_rate, ExpectedFlagRate):
             self.expected_flag_rate = ExpectedFlagRate(**as_dict(self.expected_flag_rate))
 
@@ -191,6 +188,9 @@ class ComputablePhenotype(YAMLRoot):
 
 @dataclass(repr=False)
 class DiseaseRef(YAMLRoot):
+    """
+    The disease a CP is for, identified by an anchor Mondo id.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["DiseaseRef"]
@@ -233,8 +233,8 @@ class DiseaseRef(YAMLRoot):
 @dataclass(repr=False)
 class ClusterScope(YAMLRoot):
     """
-    Cluster-filtered search. The universe is persons with any of these umbrella codes (searched like a diagnostic_code
-    feature); every criterion is then restricted to that universe.
+    Limits the search to patients who have at least one of the umbrella codes. Every criterion is then evaluated only
+    for those patients.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -260,6 +260,9 @@ class ClusterScope(YAMLRoot):
 
 @dataclass(repr=False)
 class CPProvenance(YAMLRoot):
+    """
+    Who wrote this CP version and when.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["CPProvenance"]
@@ -292,26 +295,6 @@ class CPProvenance(YAMLRoot):
 
         if self.supersedes is not None and not isinstance(self.supersedes, str):
             self.supersedes = str(self.supersedes)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass(repr=False)
-class SiteTest(YAMLRoot):
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = RAPIDCP["SiteTest"]
-    class_class_curie: ClassVar[str] = "rapidcp:SiteTest"
-    class_name: ClassVar[str] = "SiteTest"
-    class_model_uri: ClassVar[URIRef] = RAPIDCP.SiteTest
-
-    site: str = None
-
-    def __post_init__(self, *_: str, **kwargs: Any):
-        if self._is_empty(self.site):
-            self.MissingRequiredField("site")
-        if not isinstance(self.site, str):
-            self.site = str(self.site)
 
         super().__post_init__(**kwargs)
 
@@ -358,8 +341,7 @@ class ClinicalReview(YAMLRoot):
 @dataclass(repr=False)
 class ExpectedFlagRate(YAMLRoot):
     """
-    Range of patients per 100,000 a correct CP should flag at a site (prevalence x ascertainment), from the Expected
-    Flag Rate Pipeline. A wide range, not a target.
+    Range of patients per 100,000 a correct CP should flag at a site.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -395,6 +377,10 @@ class ExpectedFlagRate(YAMLRoot):
 
 @dataclass(repr=False)
 class Feature(YAMLRoot):
+    """
+    One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where
+    the module needs one. Logic blocks refer to features by id.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Feature"]
@@ -459,6 +445,9 @@ class Feature(YAMLRoot):
 
 @dataclass(repr=False)
 class CodeRef(YAMLRoot):
+    """
+    A code written as it appears in its source vocabulary, never as an OMOP `concept_id`.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["CodeRef"]
@@ -493,6 +482,9 @@ class CodeRef(YAMLRoot):
 
 @dataclass(repr=False)
 class ResultCriterion(YAMLRoot):
+    """
+    The result a test or measurement record must have to count: a numeric comparison or a set of accepted answers.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ResultCriterion"]
@@ -532,8 +524,10 @@ class ResultCriterion(YAMLRoot):
 @dataclass(repr=False)
 class GeneticCriterion(YAMLRoot):
     """
-    A row qualifies if its concept is in the feature's codes AND (when given) its value_as_concept_id is an accepted
-    interpretation AND (when require_gene_text_match) the gene symbol appears in the row's source text.
+    The variant result a `genetic_finding` feature looks for: a causal gene and the interpretations that count, such
+    as pathogenic or likely pathogenic. A record matches when it carries one of the feature's codes, its
+    interpretation is one of those listed (if any are), and, when `require_gene_text_match` is `true`, the gene symbol
+    appears in the record's text.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -566,6 +560,10 @@ class GeneticCriterion(YAMLRoot):
 
 @dataclass(repr=False)
 class Disjunct(YAMLRoot):
+    """
+    A Level 1 criterion: one S1 feature that is enough on its own to flag a patient. Its id is reported with the
+    counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Disjunct"]
@@ -604,6 +602,10 @@ class Disjunct(YAMLRoot):
 
 @dataclass(repr=False)
 class Rule(YAMLRoot):
+    """
+    A Level 2A criterion: a Boolean condition over features. A patient is flagged if any rule holds; each rule's id is
+    reported with the counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Rule"]
@@ -635,8 +637,9 @@ class Rule(YAMLRoot):
 @dataclass(repr=False)
 class Expr(YAMLRoot):
     """
-    Exactly one of: feature | all_of | any_of | none_of | at_least+of | within. none_of = NOT(any of). A rule must
-    contain at least one positive feature. min_distinct_dates / min_span_days apply to a feature leaf.
+    One condition in a Level 2A rule. Each node uses exactly one form: `feature`, `all_of`, `any_of`, `none_of` (none
+    of the listed conditions holds), `at_least` with `of`, or `within`. A rule must contain at least one feature that
+    isn't under `none_of`. `min_distinct_dates` and `min_span_days` apply only to a `feature` node.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -693,7 +696,7 @@ class Expr(YAMLRoot):
 @dataclass(repr=False)
 class Within(YAMLRoot):
     """
-    A record of each listed feature, all falling within `days` of each other. With in_order, the records must also
+    A record of each listed feature, all falling within `days` of each other. With `in_order`, the records must also
     occur in the listed order (the same day counts as in order).
     """
     _inherited_slots: ClassVar[list[str]] = []
@@ -727,6 +730,9 @@ class Within(YAMLRoot):
 
 @dataclass(repr=False)
 class ScoreModel(YAMLRoot):
+    """
+    The Level 2B logic: a patient is flagged when the points of the items that apply add up to the threshold.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ScoreModel"]
@@ -752,6 +758,9 @@ class ScoreModel(YAMLRoot):
 
 @dataclass(repr=False)
 class ScoreItem(YAMLRoot):
+    """
+    A Level 2B score item: points added when its feature is present. Its id is reported with the counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ScoreItem"]
@@ -792,7 +801,10 @@ class ScoreItem(YAMLRoot):
 
 # Enumerations
 class CPLevel(EnumDefinitionImpl):
-
+    """
+    How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1),
+    `rules` (L2A) or `score` (L2B); L3 has none yet.
+    """
     L1 = PermissibleValue(
         text="L1",
         description="Safe Alone - union of S1 (highly specific) disjuncts.")
@@ -808,23 +820,29 @@ class CPLevel(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="CPLevel",
+        description="""How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1), `rules` (L2A) or `score` (L2B); L3 has none yet.""",
     )
 
 class SearchMode(EnumDefinitionImpl):
-
+    """
+    Which patients a CP searches: the whole dataset, or only those with an umbrella code.
+    """
     population = PermissibleValue(
         text="population",
         description="Search the whole dataset for the target disease.")
     cluster = PermissibleValue(
         text="cluster",
-        description="Search only persons carrying an umbrella code (see cluster).")
+        description="Search only persons carrying an umbrella code (see `cluster`).")
 
     _defn = EnumDefinition(
         name="SearchMode",
+        description="Which patients a CP searches: the whole dataset, or only those with an umbrella code.",
     )
 
 class FlagRateBasis(EnumDefinitionImpl):
-
+    """
+    Where the numbers in an expected flag rate come from.
+    """
     measured = PermissibleValue(
         text="measured",
         description="From measured prevalence data.")
@@ -837,10 +855,13 @@ class FlagRateBasis(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="FlagRateBasis",
+        description="Where the numbers in an expected flag rate come from.",
     )
 
 class ReviewDecision(EnumDefinitionImpl):
-
+    """
+    The outcome of a clinical review of a CP.
+    """
     proceed = PermissibleValue(
         text="proceed",
         description="Criteria are sound; the CP can go to sites.")
@@ -850,6 +871,7 @@ class ReviewDecision(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="ReviewDecision",
+        description="The outcome of a clinical review of a CP.",
     )
 
 class Module(EnumDefinitionImpl):
@@ -886,19 +908,19 @@ class CodeSystem(EnumDefinitionImpl):
     """
     ICD10CM = PermissibleValue(
         text="ICD10CM",
-        description="Athena vocabulary_id 'ICD10CM'. Dotted codes (E83.31).")
+        description="Athena `vocabulary_id` `ICD10CM`. Dotted codes (`E83.31`).")
     SNOMED = PermissibleValue(
         text="SNOMED",
-        description="Athena 'SNOMED'.")
+        description="Athena `SNOMED`.")
     LOINC = PermissibleValue(
         text="LOINC",
-        description="Athena 'LOINC' (includes LA answer codes).")
+        description="Athena `LOINC` (includes LA answer codes).")
     RXNORM = PermissibleValue(
         text="RXNORM",
-        description="Athena 'RxNorm'.")
+        description="Athena `RxNorm`.")
     UCUM = PermissibleValue(
         text="UCUM",
-        description="Athena 'UCUM'. Result units only.")
+        description="Athena `UCUM`. Result units only.")
 
     _defn = EnumDefinition(
         name="CodeSystem",
@@ -906,44 +928,51 @@ class CodeSystem(EnumDefinitionImpl):
     )
 
 class ResultKind(EnumDefinitionImpl):
-
+    """
+    Whether a result is compared with a threshold or matched against a set of accepted answers.
+    """
     numeric = PermissibleValue(
         text="numeric",
-        description="value_as_number compared to a threshold.")
+        description="`value_as_number` compared to a threshold.")
     qualitative = PermissibleValue(
         text="qualitative",
-        description="value_as_concept_id in a set of answer concepts.")
+        description="`value_as_concept_id` in a set of answer concepts.")
 
     _defn = EnumDefinition(
         name="ResultKind",
+        description="Whether a result is compared with a threshold or matched against a set of accepted answers.",
     )
 
 class ResultOperator(EnumDefinitionImpl):
-
+    """
+    How a `numeric` result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the
+    result.
+    """
     gt = PermissibleValue(
         text="gt",
-        description="x > value")
+        description="`x > value`")
     gte = PermissibleValue(
         text="gte",
-        description="x >= value")
+        description="`x >= value`")
     lt = PermissibleValue(
         text="lt",
-        description="x < value")
+        description="`x < value`")
     lte = PermissibleValue(
         text="lte",
-        description="x <= value")
+        description="`x <= value`")
     between = PermissibleValue(
         text="between",
-        description="value <= x <= value_high")
+        description="`value <= x <= value_high`")
     above_ref_high = PermissibleValue(
         text="above_ref_high",
-        description="x > range_high recorded on the row (MEASUREMENT only).")
+        description="`x > range_high`, the upper limit recorded on the same row (`measurement` only).")
     below_ref_low = PermissibleValue(
         text="below_ref_low",
-        description="x < range_low recorded on the row (MEASUREMENT only).")
+        description="`x < range_low`, the lower limit recorded on the same row (`measurement` only).")
 
     _defn = EnumDefinition(
         name="ResultOperator",
+        description="""How a `numeric` result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the result.""",
     )
 
 # Slots
@@ -977,9 +1006,6 @@ slots.computablePhenotype__provenance = Slot(uri=RAPIDCP.provenance, name="compu
 
 slots.computablePhenotype__review = Slot(uri=RAPIDCP.review, name="computablePhenotype__review", curie=RAPIDCP.curie('review'),
                    model_uri=RAPIDCP.computablePhenotype__review, domain=None, range=Optional[Union[dict, ClinicalReview]])
-
-slots.computablePhenotype__sites_tested = Slot(uri=RAPIDCP.sites_tested, name="computablePhenotype__sites_tested", curie=RAPIDCP.curie('sites_tested'),
-                   model_uri=RAPIDCP.computablePhenotype__sites_tested, domain=None, range=Optional[Union[Union[dict, SiteTest], list[Union[dict, SiteTest]]]])
 
 slots.computablePhenotype__expected_flag_rate = Slot(uri=RAPIDCP.expected_flag_rate, name="computablePhenotype__expected_flag_rate", curie=RAPIDCP.curie('expected_flag_rate'),
                    model_uri=RAPIDCP.computablePhenotype__expected_flag_rate, domain=None, range=Optional[Union[dict, ExpectedFlagRate]])
@@ -1041,10 +1067,6 @@ slots.cPProvenance__change_note = Slot(uri=RAPIDCP.change_note, name="cPProvenan
 
 slots.cPProvenance__supersedes = Slot(uri=RAPIDCP.supersedes, name="cPProvenance__supersedes", curie=RAPIDCP.curie('supersedes'),
                    model_uri=RAPIDCP.cPProvenance__supersedes, domain=None, range=Optional[str])
-
-slots.siteTest__site = Slot(uri=RAPIDCP.site, name="siteTest__site", curie=RAPIDCP.curie('site'),
-                   model_uri=RAPIDCP.siteTest__site, domain=None, range=str,
-                   pattern=re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$'))
 
 slots.clinicalReview__reviewer = Slot(uri=RAPIDCP.reviewer, name="clinicalReview__reviewer", curie=RAPIDCP.curie('reviewer'),
                    model_uri=RAPIDCP.clinicalReview__reviewer, domain=None, range=str)

@@ -2,12 +2,12 @@ id: https://mendelian.co/schemas/rapid-cp-logic
 name: rapid_cp_schema
 version: "0.2.0"
 description: >-
-  Schema for the RAPID computable phenotype (CP) logic:
-  <disease-id>_<level>_v<major>.<minor>.yaml
+  Schema for RAPID computable phenotype (CP) logic files, named
+  `<disease-id>_<level>_v<major>.<minor>.yaml`.
   Data-model-independent. Says WHAT counts as evidence (features, coded in
   source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the
   evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).
-  Every disjunct / rule / score item carries a stable id (d1, r2, s3) that
+  Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`) that
   is reported back as the flag reason.
 
 license: https://creativecommons.org/publicdomain/zero/1.0/
@@ -24,6 +24,7 @@ imports:
 
 enums:
   CPLevel:
+    description: "How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1), `rules` (L2A) or `score` (L2B); L3 has none yet."
     permissible_values:
       L1:  {description: "Safe Alone - union of S1 (highly specific) disjuncts."}
       L2A: {description: "Deterministic rules - Boolean gates."}
@@ -31,17 +32,20 @@ enums:
       L3:  {description: "Profile match - declared here, not in scope."}
 
   SearchMode:
+    description: "Which patients a CP searches: the whole dataset, or only those with an umbrella code."
     permissible_values:
       population: {description: "Search the whole dataset for the target disease."}
-      cluster:    {description: "Search only persons carrying an umbrella code (see cluster)."}
+      cluster:    {description: "Search only persons carrying an umbrella code (see `cluster`)."}
 
   FlagRateBasis:
+    description: "Where the numbers in an expected flag rate come from."
     permissible_values:
       measured: {description: "From measured prevalence data."}
       class_band: {description: "From Orphanet's prevalence class only (no point figure)."}
       none: {description: "No usable epidemiology - a normal outcome for many rare diseases."}
 
   ReviewDecision:
+    description: "The outcome of a clinical review of a CP."
     permissible_values:
       proceed: {description: "Criteria are sound; the CP can go to sites."}
       revise: {description: "Send back for revision."}
@@ -61,54 +65,48 @@ enums:
   CodeSystem:
     description: CP-side vocabulary names.
     permissible_values:
-      ICD10CM: {description: "Athena vocabulary_id 'ICD10CM'. Dotted codes (E83.31)."}
-      SNOMED: {description: "Athena 'SNOMED'."}
-      LOINC: {description: "Athena 'LOINC' (includes LA answer codes)."}
-      RXNORM: {description: "Athena 'RxNorm'."}
-      UCUM: {description: "Athena 'UCUM'. Result units only."}
+      ICD10CM: {description: "Athena `vocabulary_id` `ICD10CM`. Dotted codes (`E83.31`)."}
+      SNOMED: {description: "Athena `SNOMED`."}
+      LOINC: {description: "Athena `LOINC` (includes LA answer codes)."}
+      RXNORM: {description: "Athena `RxNorm`."}
+      UCUM: {description: "Athena `UCUM`. Result units only."}
 
   ResultKind:
+    description: "Whether a result is compared with a threshold or matched against a set of accepted answers."
     permissible_values:
-      numeric: {description: "value_as_number compared to a threshold."}
-      qualitative: {description: "value_as_concept_id in a set of answer concepts."}
+      numeric: {description: "`value_as_number` compared to a threshold."}
+      qualitative: {description: "`value_as_concept_id` in a set of answer concepts."}
 
   ResultOperator:
+    description: "How a `numeric` result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the result."
     permissible_values:
-      gt: {description: "x > value"}
-      gte: {description: "x >= value"}
-      lt: {description: "x < value"}
-      lte: {description: "x <= value"}
-      between: {description: "value <= x <= value_high"}
-      above_ref_high: {description: "x > range_high recorded on the row (MEASUREMENT only)."}
-      below_ref_low: {description: "x < range_low recorded on the row (MEASUREMENT only)."}
+      gt: {description: "`x > value`"}
+      gte: {description: "`x >= value`"}
+      lt: {description: "`x < value`"}
+      lte: {description: "`x <= value`"}
+      between: {description: "`value <= x <= value_high`"}
+      above_ref_high: {description: "`x > range_high`, the upper limit recorded on the same row (`measurement` only)."}
+      below_ref_low: {description: "`x < range_low`, the lower limit recorded on the same row (`measurement` only)."}
 
 classes:
 
-  # ------------------------------------------------------------------
-  # CP logic file
-  # ------------------------------------------------------------------
   ComputablePhenotype:
     tree_root: true
-    description: One versioned CP. File name must equal cp_id + ".yaml".
+    description: "One versioned CP. File name must equal `cp_id` + `.yaml`."
     attributes:
       cp_id:
         identifier: true
         required: true
         pattern: "^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\\.[0-9]+$"
-        description: "<disease-id>_<level>_v<major>.<minor>, disease-id = lowercase Mondo id + '-' + disease.slug, e.g. mondo0010619-xlh_L1_v1.0"
-      schema_version: {required: true, description: "Version of THIS schema the file conforms to, e.g. 0.2.0"}
+        description: "Name of the CP version, built from the disease, level and version. Format: `<disease-id>_<level>_v<major>.<minor>`, where `<disease-id>` is the lowercase Mondo id + '-' + disease.slug, e.g. `mondo0010619-xlh_L1_v1.0`"
+      schema_version: {required: true, description: "Version of THIS schema the file conforms to, e.g. `0.2.0`"}
       title: {required: true}
       disease: {range: DiseaseRef, required: true, inlined: true}
       level: {range: CPLevel, required: true}
       search_mode: {range: SearchMode, required: true}
-      cluster: {range: ClusterScope, inlined: true, description: "Required iff search_mode = cluster."}
+      cluster: {range: ClusterScope, inlined: true, description: "Required if and only if `search_mode` is `cluster`."}
       provenance: {range: CPProvenance, required: true, inlined: true}
       review: {range: ClinicalReview, inlined: true, description: "Clinical sign-off. Recorded only; not enforced."}
-      sites_tested:
-        range: SiteTest
-        multivalued: true
-        inlined_as_list: true
-        description: Where this CP version has been run. Recorded only.
       expected_flag_rate: {range: ExpectedFlagRate, inlined: true}
       features:
         range: Feature
@@ -123,51 +121,50 @@ classes:
         pattern: "^cluster-[a-z0-9]+_(L1|L2A|L2B|L3)_v[0-9]+\\.[0-9]+$"
         description: >-
           The cluster CP that currently handles this disease, e.g.
-          cluster-icd10n18x_L2A_v1.0. Empty once the disease stands alone.
+          `cluster-icd10n18x_L2A_v1.0`. Empty once the disease stands alone.
           Cluster CPs themselves are not supported yet; the field and the
-          cluster- naming are reserved so nothing needs renaming later.
+          `cluster-` naming are reserved so nothing needs renaming later.
       notes: {}
 
   DiseaseRef:
+    description: "The disease a CP is for, identified by an anchor Mondo id."
     attributes:
       mondo_id: {range: uriorcurie, required: true, pattern: "^MONDO:[0-9]{7}$"}
       slug:
         required: true
         pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
-        description: "Short lowercase hyphenated disease name used in file names, e.g. xlh, fabry."
+        description: "Short lowercase hyphenated disease name used in file names, e.g. `xlh`, `fabry`."
       name: {required: true, description: "Human-readable disease name, for reviewers. Not queried."}
       included_mondo_ids:
         range: uriorcurie
         multivalued: true
         pattern: "^MONDO:[0-9]{7}$"
         description: >-
-          Every Mondo id that constitutes this disease entity, mondo_id included.
-          Defaults to [mondo_id]. Recorded, not queried.
+          Every Mondo id that constitutes this disease entity, `mondo_id` included.
+          Defaults to `[mondo_id]`. Recorded, not queried.
       curation_record_version:
         description: >-
-          Version of the curation record (keyed by mondo_id) this CP was built
+          Version of the curation record (keyed by `mondo_id`) this CP was built
           from. Recorded, not queried.
+
+
 
   ClusterScope:
     description: >-
-      Cluster-filtered search. The universe is persons with any of these
-      umbrella codes (searched like a diagnostic_code feature); every
-      criterion is then restricted to that universe.
+      Limits the search to patients who have at least one of the umbrella codes.
+      Every criterion is then evaluated only for those patients.
     attributes:
       umbrella_codes: {range: CodeRef, multivalued: true, inlined_as_list: true, required: true}
       candidate_mondo_ids: {range: uriorcurie, multivalued: true, description: "Documentation only: the diseases under the umbrella. Not queried; each candidate gets its own CP."}
 
   CPProvenance:
+    description: "Who wrote this CP version and when."
     attributes:
       authored_by: {required: true}
       authored_date: {range: date, required: true}
-      kg_extracted_at: {range: datetime, description: "When Mendelian extracted the source data behind the features (ISO 8601, e.g. 2026-09-24T14:05:00Z)."}
+      kg_extracted_at: {range: datetime, description: "When Mendelian extracted the source data behind the features (ISO 8601, e.g. `2026-09-24T14:05:00Z`)."}
       change_note: {description: "Why this version exists (PR description summary)."}
-      supersedes: {description: "Previous cp_id, if any."}
-
-  SiteTest:
-    attributes:
-      site: {required: true, pattern: "^[a-z0-9]+(-[a-z0-9]+)*$", description: "Lowercase site name, e.g. unc, truveta, dartnet."}
+      supersedes: {description: "Previous `cp_id`, if any."}
 
   ClinicalReview:
     description: Expert sign-off on the disease and its criteria, before the CP is tested at a site.
@@ -179,16 +176,15 @@ classes:
 
   ExpectedFlagRate:
     description: >-
-      Range of patients per 100,000 a correct CP should flag at a site
-      (prevalence x ascertainment), from the Expected Flag Rate Pipeline. A wide
-      range, not a target.
+      Range of patients per 100,000 a correct CP should flag at a site.
     attributes:
       low_per_100k: {range: float, minimum_value: 0, description: "May be omitted for an open-ended range."}
-      high_per_100k: {range: float, minimum_value: 0, description: "Required unless basis is none."}
+      high_per_100k: {range: float, minimum_value: 0, description: "Required unless `basis` is `none`."}
       basis: {range: FlagRateBasis, required: true}
       source: {required: true, description: "Which pipeline run or reference produced the range."}
 
   Feature:
+    description: "One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where the module needs one. Logic blocks refer to features by id."
     attributes:
       id: {identifier: true, required: true, pattern: "^f[0-9]+$"}
       module: {range: Module, required: true}
@@ -201,21 +197,23 @@ classes:
         description: "Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features."
       hpo_id: {range: uriorcurie, description: "Phenotype features: the HPO term this realises (annotation only, not queried)."}
       codes: {range: CodeRef, multivalued: true, inlined_as_list: true, required: true}
-      result: {range: ResultCriterion, inlined: true, description: "Required for diagnostic_test and for LOINC-coded phenotype."}
-      genetic: {range: GeneticCriterion, inlined: true, description: "Required for genetic_finding."}
+      result: {range: ResultCriterion, inlined: true, description: "Required for `diagnostic_test` features and for LOINC-coded `phenotype` features."}
+      genetic: {range: GeneticCriterion, inlined: true, description: "Required for `genetic_finding` features."}
       include_personal_history:
         range: boolean
         description: >-
-          diagnostic_code and coded phenotype features only. Default true: also
-          count OBSERVATION rows recording the patient's own history of the
-          condition. Set false to count only direct records.
+          `diagnostic_code` and coded `phenotype` features only. Default `true`: also
+          count `observation` rows recording the patient's own history of the
+          condition. Set `false` to count only direct records.
       text_terms:
         multivalued: true
         description: >-
           Names and synonyms for what the feature describes (a disease, a finding, a test
           or a drug), for a future text-search (NLP) step.
 
+
   CodeRef:
+    description: "A code written as it appears in its source vocabulary, never as an OMOP `concept_id`."
     attributes:
       vocabulary: {range: CodeSystem, required: true}
       code: {required: true}
@@ -223,31 +221,36 @@ classes:
       include_descendants:
         range: boolean
         description: >-
-          Default true for a feature's main codes, false for result value and unit
-          codes. SNOMED/LOINC/RxNorm expand via CONCEPT_ANCESTOR; ICD10CM expands
+          Default `true` for a feature's main codes, `false` for result value and unit
+          codes. SNOMED/LOINC/RxNorm expand via `CONCEPT_ANCESTOR`; ICD10CM expands
           by code prefix.
 
+
   ResultCriterion:
+    description: "The result a test or measurement record must have to count: a numeric comparison or a set of accepted answers."
     attributes:
       kind: {range: ResultKind, required: true}
-      operator: {range: ResultOperator, description: "numeric only"}
+      operator: {range: ResultOperator, description: "`numeric` only"}
       value: {range: float}
-      value_high: {range: float, description: "between only"}
-      units: {range: CodeRef, multivalued: true, inlined_as_list: true, description: "UCUM units the threshold applies to. Strongly recommended for numeric."}
-      value_concepts: {range: CodeRef, multivalued: true, inlined_as_list: true, description: "qualitative only: accepted answers (e.g. LOINC LA6576-8 Positive)."}
+      value_high: {range: float, description: "`between` only"}
+      units: {range: CodeRef, multivalued: true, inlined_as_list: true, description: "UCUM units the threshold applies to. Strongly recommended for `numeric`."}
+      value_concepts: {range: CodeRef, multivalued: true, inlined_as_list: true, description: "`qualitative` only: accepted answers (e.g. LOINC `LA6576-8` Positive)."}
 
   GeneticCriterion:
     description: >-
-      A row qualifies if its concept is in the feature's codes AND (when given)
-      its value_as_concept_id is an accepted interpretation AND (when
-      require_gene_text_match) the gene symbol appears in the row's source text.
+      The variant result a `genetic_finding` feature looks for: a causal gene and
+      the interpretations that count, such as pathogenic or likely pathogenic.
+      A record matches when it carries one of the feature's codes, its
+      interpretation is one of those listed (if any are), and, when
+      `require_gene_text_match` is `true`, the gene symbol appears in the record's text.
     attributes:
       gene_symbol: {required: true}
       hgnc_id: {pattern: "^HGNC:[0-9]+$"}
       interpretations: {range: CodeRef, multivalued: true, inlined_as_list: true}
-      require_gene_text_match: {range: boolean, description: "Default true when codes are generic LOINC panels."}
+      require_gene_text_match: {range: boolean, description: "Default `true` when codes are generic LOINC panels."}
 
   Disjunct:
+    description: "A Level 1 criterion: one S1 feature that is enough on its own to flag a patient. Its id is reported with the counts."
     attributes:
       id: {identifier: true, required: true, pattern: "^d[0-9]+$"}
       feature: {required: true}
@@ -256,6 +259,7 @@ classes:
       label: {}
 
   Rule:
+    description: "A Level 2A criterion: a Boolean condition over features. A patient is flagged if any rule holds; each rule's id is reported with the counts."
     attributes:
       id: {identifier: true, required: true, pattern: "^r[0-9]+$"}
       label: {}
@@ -263,9 +267,11 @@ classes:
 
   Expr:
     description: >-
-      Exactly one of: feature | all_of | any_of | none_of | at_least+of | within.
-      none_of = NOT(any of). A rule must contain at least one positive feature.
-      min_distinct_dates / min_span_days apply to a feature leaf.
+      One condition in a Level 2A rule. Each node uses exactly one form: `feature`,
+      `all_of`, `any_of`, `none_of` (none of the listed conditions holds),
+      `at_least` with `of`, or `within`. A rule must contain at least one feature
+      that isn't under `none_of`. `min_distinct_dates` and `min_span_days` apply
+      only to a `feature` node.
     attributes:
       feature: {}
       min_distinct_dates: {range: integer, minimum_value: 1}
@@ -280,7 +286,7 @@ classes:
   Within:
     description: >-
       A record of each listed feature, all falling within `days` of each other.
-      With in_order, the records must also occur in the listed order (the same day
+      With `in_order`, the records must also occur in the listed order (the same day
       counts as in order).
     attributes:
       days: {range: integer, required: true, minimum_value: 0}
@@ -288,11 +294,13 @@ classes:
       of: {multivalued: true, required: true, description: "Feature ids, at least two."}
 
   ScoreModel:
+    description: "The Level 2B logic: a patient is flagged when the points of the items that apply add up to the threshold."
     attributes:
       threshold: {range: float, required: true}
       items: {range: ScoreItem, multivalued: true, inlined_as_list: true, required: true}
 
   ScoreItem:
+    description: "A Level 2B score item: points added when its feature is present. Its id is reported with the counts."
     attributes:
       id: {identifier: true, required: true, pattern: "^s[0-9]+$"}
       feature: {required: true}

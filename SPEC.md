@@ -87,7 +87,9 @@ the target over five years is about 2,700 diseases.
   - references to Mendelian's in-house tools for validation and query generation are removed;
   - the build and site classes needed by those tools are removed;
   - the `status` slot and the `CPStatus` enum are removed. CPs are published on GitHub only when
-    they are ready for deployment, so a lifecycle status in the file carries no information.
+    they are ready for deployment, so a lifecycle status in the file carries no information;
+  - the `sites_tested` slot and the `SiteTest` class are removed. Where a CP has run is recorded
+    by the results files sites send back, so the CP file doesn't repeat it.
 - **Licence:** CC0 1.0, as declared in the original schema.
 - **Ownership:** Mendelian agreed to move the schema to this programme-neutral home in the
   `teamrapid` GitHub org. **Mendelian remain the owners and maintainers**, and others contribute
