@@ -67,10 +67,16 @@ and this section consistent when the conventions change.
 
 ## Constraints on changes
 
-- Bump the schema `version` for every released change. Breaking changes are allowed (0.2.0
-  broke v0.1.0 CP files on purpose), but bump the minor version while the schema is 0.x, record
-  the change and its reason in `SPEC.md` §3, and update the test data in the same change
-  (`SPEC.md` §8).
+- Don't change the schema `version` in a normal PR. A PR that changes the schema, docs or
+  examples adds a line under "Unreleased" in `CHANGELOG.md` (Keep a Changelog headings). CI,
+  dependency and template-only PRs don't need one.
+- Releases are a separate PR: bump `version` (patch for compatible changes; minor if anything
+  breaks CP files, while the schema is 0.x), move the "Unreleased" lines under the new version,
+  and run `just gen-python`. After it merges, tag `vX.Y.Z` and publish a GitHub release. Steps:
+  `CONTRIBUTING.md`, "Releases"; rule: `SPEC.md` §8.
+- Breaking changes are allowed (0.2.0 broke v0.1.0 CP files on purpose). The PR that makes one
+  records it and its reason in `SPEC.md` §3, marks it **Breaking** in `CHANGELOG.md`, and updates
+  the test data.
 - Do not invent a RAPID prefix, PURL or schema `id`; the current `rapidcp` expansion is a
   placeholder pending agreement with the TA1 group (`SPEC.md` §5.3).
 - Codes stay in source vocabularies (ICD10CM, SNOMED, LOINC, RxNorm), never OMOP `concept_id`s.

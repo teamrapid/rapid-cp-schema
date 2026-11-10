@@ -17,6 +17,8 @@ in a pull request.
 * [Best Practices](#best-practices)
   * [How to write a great issue](#great-issues)
   * [How to create a great pull/merge request](#great-pulls)
+* [Versions and the changelog](#versions)
+* [Releases](#releases)
 
 <a id="code-of-conduct"></a>
 
@@ -77,6 +79,7 @@ Please submit a [Pull Request][pulls] to submit a new term for consideration.
     - PRs that do not pass GitHub actions should never be merged
     - In the case of git conflicts, the contributor should try and resolve the conflict
     - If a PR fails a GitHub action check, the contributor should try and resolve the issue in a timely fashion
+    - PRs do not change the schema `version`; a PR that changes the schema, the documentation or the examples adds a line under "Unreleased" in [CHANGELOG.md](CHANGELOG.md) (see [Versions and the changelog](#versions))
 
 ### Understanding LinkML
 
@@ -113,6 +116,45 @@ Core developers should read the material on the [LinkML site](https://linkml.io/
 - Reuse
     - Existing scheme elements should be reused where appropriate, rather than making duplicative elements
     - More specific classes can be created by refinining classes using inheritance (`is_a`)
+
+<a id="versions"></a>
+
+## Versions and the changelog
+
+The schema `version` (in `src/rapid_cp_schema/schema/rapid_cp_schema.yaml`) changes only in a
+release pull request. Other pull requests leave it alone.
+
+A pull request that changes the schema, the documentation or the examples adds a line under
+"Unreleased" in [CHANGELOG.md](CHANGELOG.md), under the matching
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) heading (Added, Changed, Deprecated,
+Removed, Fixed). A change that breaks existing CP files starts its line with **Breaking:**, and
+is also recorded in [SPEC.md](SPEC.md) §3 with its reason. Pull requests that only touch CI,
+dependencies or the project template don't need a line.
+
+<a id="releases"></a>
+
+## Releases
+
+A release is its own pull request, opened from a branch such as `release-vX.Y.Z`. It:
+
+1. Picks the new version. While the schema is 0.x, the minor version goes up if any
+   "Unreleased" line is marked **Breaking**, and the patch version goes up otherwise.
+2. Sets `version` in `src/rapid_cp_schema/schema/rapid_cp_schema.yaml`.
+3. In `CHANGELOG.md`, moves the "Unreleased" lines under a new `## [X.Y.Z] - YYYY-MM-DD`
+   heading, leaves "Unreleased" empty, and updates the comparison links at the bottom.
+4. Regenerates the datamodel with `just gen-python`, and checks that `just test` passes.
+
+After the release pull request merges, the release is tagged and published from `main`:
+
+```sh
+git switch main
+git pull
+git tag vX.Y.Z
+git push origin vX.Y.Z
+gh release create vX.Y.Z --title vX.Y.Z --notes-file <file with the X.Y.Z changelog section>
+```
+
+The GitHub release notes are the new version's section of `CHANGELOG.md`.
 
 [about-branches]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches
 [about-issues]: https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues
