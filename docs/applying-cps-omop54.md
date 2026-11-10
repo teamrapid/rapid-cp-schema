@@ -1,7 +1,7 @@
 # Applying RAPID CP files in OMOP 5.4
 
 What a computable phenotype (CP) file contains, and how a site applies it to OMOP CDM 5.4 data.
-Written by Mendelian for the sites that run RAPID CPs; follows schema 0.2.0.
+Written by Mendelian for the sites that run RAPID CPs.
 
 ## 1. About this document
 
@@ -10,7 +10,8 @@ on its own OMOP CDM 5.4 data, runs them, and returns counts in the format set by
 [Results-File Specification](results-file-spec.md).
 
 - **What a site receives.** One CP file per CP version. The files follow this repository's LinkML
-  schema, `rapid_cp_schema.yaml`, currently version 0.2.0.
+  schema, `rapid_cp_schema.yaml`. Its versions and what changed in each are listed in the
+  [changelog](https://github.com/teamrapid/rapid-cp-schema/blob/main/CHANGELOG.md).
 - **What is fixed.** What a CP file means: which evidence each feature describes and how features
   combine into a flag (sections 3 to 5).
 - **What each site decides.** How it searches its data for that evidence. Section 7 gives
@@ -70,7 +71,7 @@ its history; they can be read but aren't needed to build queries.
 | Field | Required | Used by queries | Meaning |
 | --- | --- | --- | --- |
 | `cp_id` | yes | no | The CP version's name (section 2). |
-| `schema_version` | yes | no | Version of the LinkML schema the file follows, currently `0.2.0`. |
+| `schema_version` | yes | no | Version of the LinkML schema the file follows, e.g. `0.2.0`. |
 | `title` | yes | no | A readable name for the CP. |
 | `disease` | yes | no | The disease entity: `mondo_id` (primary Mondo id), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
 | `level` | yes | query | `L1`, `L2A`, `L2B` or `L3`. Decides which logic block the file carries (section 5). |

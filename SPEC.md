@@ -310,11 +310,18 @@ This is a breaking change. Still to decide:
     until §5.1 lands, together with one file per rule the schema doesn't enforce.
   - `problem/valid/`: should validate but is rejected.
 - **A new rule in the schema comes with an invalid example** that it rejects.
-- **Schema version:** bump `version` in the schema for every released change. CP files record the
-  schema version they conform to in `schema_version`.
-- **Compatibility:** schema 0.2.0 deliberately broke v0.1.0 CP files (§3). Breaking changes are
-  allowed, but each one bumps the minor version while the schema is 0.x, is recorded in §3 with
-  its reason, and updates the test data in the same change.
+- **Versions and changelog:** a pull request does not change the schema `version`. A pull
+  request that changes the schema, the documentation or the examples adds a line under
+  "Unreleased" in `CHANGELOG.md`. A separate release pull request bumps `version`, moves the
+  "Unreleased" lines under the new version and regenerates the datamodel. After it merges, the
+  release is tagged `vX.Y.Z` and published as a GitHub release. The steps are in
+  [CONTRIBUTING.md](CONTRIBUTING.md#releases). CP files record the schema version they conform
+  to in `schema_version`.
+- **Compatibility:** while the schema is 0.x, a release bumps the minor version if any of its
+  changes breaks existing CP files, and the patch version otherwise. Schema 0.2.0 deliberately
+  broke v0.1.0 CP files (§3). Breaking changes are allowed, but the pull request that makes one
+  records it in §3 with its reason, marks it **Breaking** in the changelog, and updates the test
+  data.
 
 ## 9. People and context
 
