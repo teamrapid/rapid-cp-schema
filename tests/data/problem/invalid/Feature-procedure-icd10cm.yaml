@@ -1,9 +1,9 @@
-# Procedure features are SNOMED only (CPT4/HCPCS/ICD10PCS are an open question, SPEC.md §6 Q7).
+# Procedure features are SNOMED only (CPT4/HCPCS/ICD10PCS are an open question, SPEC.md §6 Q6).
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
 id: f9
 module: procedure
 name: Osteotomy
-specificity_tier: 3
+specificity_grade: 3
 codes:
 - {vocabulary: ICD10CM, code: Z98.890}

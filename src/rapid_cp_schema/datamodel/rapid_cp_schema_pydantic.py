@@ -93,7 +93,7 @@ linkml_meta = LinkMLMeta({'default_prefix': 'rapidcp',
 class CPLevel(str, Enum):
     L1 = "L1"
     """
-    Safe Alone - union of Tier-1 (highly-specific) disjuncts.
+    Safe Alone - union of S1 (highly specific) disjuncts.
     """
     L2A = "L2A"
     """
@@ -415,7 +415,7 @@ class Feature(ConfiguredBaseModel):
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature', 'Disjunct', 'Rule', 'ScoreItem']} })
     module: Module = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     name: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef', 'Feature']} })
-    specificity_tier: int = Field(default=..., description="""Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use tier 1.""", ge=1, le=5, json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
+    specificity_grade: int = Field(default=..., description="""Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.""", ge=1, le=5, json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     hpo_id: Optional[str] = Field(default=None, description="""Phenotype features: the HPO term this realises (annotation only, not queried).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     codes: list[CodeRef] = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     result: Optional[ResultCriterion] = Field(default=None, description="""Required for diagnostic_test and for LOINC-coded phenotype.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })

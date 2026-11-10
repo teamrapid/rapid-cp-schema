@@ -405,7 +405,7 @@ class Feature(YAMLRoot):
     id: Union[str, FeatureId] = None
     module: Union[str, "Module"] = None
     name: str = None
-    specificity_tier: int = None
+    specificity_grade: int = None
     codes: Union[Union[dict, "CodeRef"], list[Union[dict, "CodeRef"]]] = None
     hpo_id: Optional[Union[str, URIorCURIE]] = None
     result: Optional[Union[dict, "ResultCriterion"]] = None
@@ -429,10 +429,10 @@ class Feature(YAMLRoot):
         if not isinstance(self.name, str):
             self.name = str(self.name)
 
-        if self._is_empty(self.specificity_tier):
-            self.MissingRequiredField("specificity_tier")
-        if not isinstance(self.specificity_tier, int):
-            self.specificity_tier = int(self.specificity_tier)
+        if self._is_empty(self.specificity_grade):
+            self.MissingRequiredField("specificity_grade")
+        if not isinstance(self.specificity_grade, int):
+            self.specificity_grade = int(self.specificity_grade)
 
         if self._is_empty(self.codes):
             self.MissingRequiredField("codes")
@@ -795,7 +795,7 @@ class CPLevel(EnumDefinitionImpl):
 
     L1 = PermissibleValue(
         text="L1",
-        description="Safe Alone - union of Tier-1 (highly-specific) disjuncts.")
+        description="Safe Alone - union of S1 (highly specific) disjuncts.")
     L2A = PermissibleValue(
         text="L2A",
         description="Deterministic rules - Boolean gates.")
@@ -1080,8 +1080,8 @@ slots.feature__module = Slot(uri=RAPIDCP.module, name="feature__module", curie=R
 slots.feature__name = Slot(uri=RAPIDCP.name, name="feature__name", curie=RAPIDCP.curie('name'),
                    model_uri=RAPIDCP.feature__name, domain=None, range=str)
 
-slots.feature__specificity_tier = Slot(uri=RAPIDCP.specificity_tier, name="feature__specificity_tier", curie=RAPIDCP.curie('specificity_tier'),
-                   model_uri=RAPIDCP.feature__specificity_tier, domain=None, range=int)
+slots.feature__specificity_grade = Slot(uri=RAPIDCP.specificity_grade, name="feature__specificity_grade", curie=RAPIDCP.curie('specificity_grade'),
+                   model_uri=RAPIDCP.feature__specificity_grade, domain=None, range=int)
 
 slots.feature__hpo_id = Slot(uri=RAPIDCP.hpo_id, name="feature__hpo_id", curie=RAPIDCP.curie('hpo_id'),
                    model_uri=RAPIDCP.feature__hpo_id, domain=None, range=Optional[Union[str, URIorCURIE]])

@@ -96,7 +96,7 @@ the record only and needs no query.
 | `id` | yes | `f1`, `f2`, … Referenced by the logic. |
 | `module` | yes | The kind of evidence (table below). |
 | `name` | yes | A readable name, e.g. "Low serum phosphate". |
-| `specificity_tier` | yes | 1 (confirmatory) to 5 (incidental). Level 1 uses only Tier 1 features. |
+| `specificity_grade` | yes | 1 (confirmatory) to 5 (incidental), written S1 to S5 in prose. Level 1 uses only S1 features. |
 | `codes` | yes | One or more code references. A record matching any one of them counts. |
 | `result` | tests and measured phenotypes | The result that must be found (4.2). |
 | `genetic` | genetic findings | The gene and accepted interpretations (4.3). |
@@ -162,7 +162,7 @@ yet, so sites don't receive L3 files to run.
 
 ### 5.1 Level 1: disjuncts
 
-A patient is flagged if **any** disjunct is met. Each disjunct names one Tier 1 feature.
+A patient is flagged if **any** disjunct is met. Each disjunct names one S1 feature.
 
 ```yaml
 disjuncts:
@@ -261,7 +261,7 @@ A CP file that breaks any of these rules is wrong, even where the schema doesn't
 
 - Every disjunct, rule leaf, score item and `within.of` entry names a feature listed under
   `features`.
-- Every disjunct names a Tier 1 feature.
+- Every disjunct names an S1 feature.
 - Each `expr` node is exactly one of the forms in section 5.2. `at_least` and `of` come together,
   and `at_least` is not more than the number of conditions in `of`. Lists of conditions are not
   empty.

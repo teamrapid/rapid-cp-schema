@@ -16,13 +16,13 @@ features:
 - id: f1
   module: diagnostic_code
   name: XLH diagnosis code
-  specificity_tier: 1
+  specificity_grade: 1
   codes:
   - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
 - id: f2
   module: medication
   name: burosumab
-  specificity_tier: 1
+  specificity_grade: 1
   codes:
   - {vocabulary: RXNORM, code: '2043855', label: burosumab}
 disjuncts:

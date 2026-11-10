@@ -25,7 +25,7 @@ imports:
 enums:
   CPLevel:
     permissible_values:
-      L1:  {description: "Safe Alone - union of Tier-1 (highly-specific) disjuncts."}
+      L1:  {description: "Safe Alone - union of S1 (highly specific) disjuncts."}
       L2A: {description: "Deterministic rules - Boolean gates."}
       L2B: {description: "Deterministic score - weighted points vs threshold."}
       L3:  {description: "Profile match - declared here, not in scope."}
@@ -193,12 +193,12 @@ classes:
       id: {identifier: true, required: true, pattern: "^f[0-9]+$"}
       module: {range: Module, required: true}
       name: {required: true}
-      specificity_tier:
+      specificity_grade:
         range: integer
         minimum_value: 1
         maximum_value: 5
         required: true
-        description: "Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use tier 1."
+        description: "Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features."
       hpo_id: {range: uriorcurie, description: "Phenotype features: the HPO term this realises (annotation only, not queried)."}
       codes: {range: CodeRef, multivalued: true, inlined_as_list: true, required: true}
       result: {range: ResultCriterion, inlined: true, description: "Required for diagnostic_test and for LOINC-coded phenotype."}

@@ -3,7 +3,7 @@
 id: f5
 module: phenotype
 name: Rickets
-specificity_tier: 3
+specificity_grade: 3
 hpo_id: HP:0002748
 codes:
 - {vocabulary: SNOMED, code: 41345002}

@@ -5,7 +5,7 @@
 id: f2
 module: medication
 name: burosumab
-specificity_tier: 1
+specificity_grade: 1
 codes:
 - {vocabulary: RXNORM, code: '2043855', label: burosumab}
 result: {kind: numeric, operator: gt, value: 1}

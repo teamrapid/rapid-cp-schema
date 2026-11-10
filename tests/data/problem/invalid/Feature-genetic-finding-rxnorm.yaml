@@ -4,7 +4,7 @@
 id: f3
 module: genetic_finding
 name: PHEX pathogenic variant
-specificity_tier: 1
+specificity_grade: 1
 codes:
 - {vocabulary: RXNORM, code: '2043855'}
 genetic:

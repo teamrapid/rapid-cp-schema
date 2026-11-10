@@ -2,7 +2,7 @@
 id: f10
 module: phenotype
 name: Short stature
-specificity_tier: 4
+specificity_grade: 4
 codes:
 - {vocabulary: ICD10CM, code: R62.52}
 include_personal_history: true
