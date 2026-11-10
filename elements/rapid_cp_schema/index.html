@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -405,28 +432,7 @@
 
 
 <h1 id="rapid_cp_schema">rapid_cp_schema</h1>
-<p>Schema for the two files that make up a deployable RAPID computable phenotype (CP):</p>
-<ol>
-<li>
-<p>The CP logic file  <disease-id>_<level>_v<major>.<minor>.yaml
-     Data-model-independent. Says WHAT counts as evidence (features, coded in
-     source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the
-     evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).
-     Every disjunct / rule / score item carries a stable id (d1, r2, s3) that
-     is reported back as the flag reason.</p>
-</li>
-<li>
-<p>The build file  <cp-id>_<datamodel>.b<build>.sql
-     The generated SQL for one data model (e.g. OMOP 5.4), shared by every
-     site on it, with a YAML comment header that conforms to CPBuild.</p>
-</li>
-<li>
-<p>Site files  sites/<site>_v<version>.yaml
-     Everything about one site (schemas, vocabulary release, history
-     concepts), applied at run time.</p>
-</li>
-</ol>
-<p>This schema is deliberately separate from the curation-record schema. The curation record holds the full evidence base and review trail; the CP logic file is the executable subset selected from it. Diseases are identified by Mondo ids only.</p>
+<p>Schema for RAPID computable phenotype (CP) logic files, named <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;.yaml</code>. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (<code>d1</code>, <code>r2</code>, <code>s3</code>) that is reported back as the flag reason.</p>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic">https://mendelian.co/schemas/rapid-cp-logic</a></p>
 
 

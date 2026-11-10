@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -474,6 +501,7 @@
 
 
 <h1 id="enum-resultoperator">Enum: ResultOperator</h1>
+<p><em>How a <code>numeric</code> result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the result.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ResultOperator">rapidcp:ResultOperator</a></p>
 <h2 id="permissible-values">Permissible Values</h2>
@@ -489,37 +517,37 @@
 <tr>
 <td>gt</td>
 <td>None</td>
-<td>x &gt; value</td>
+<td><code>x &gt; value</code></td>
 </tr>
 <tr>
 <td>gte</td>
 <td>None</td>
-<td>x &gt;= value</td>
+<td><code>x &gt;= value</code></td>
 </tr>
 <tr>
 <td>lt</td>
 <td>None</td>
-<td>x &lt; value</td>
+<td><code>x &lt; value</code></td>
 </tr>
 <tr>
 <td>lte</td>
 <td>None</td>
-<td>x &lt;= value</td>
+<td><code>x &lt;= value</code></td>
 </tr>
 <tr>
 <td>between</td>
 <td>None</td>
-<td>value &lt;= x &lt;= value_high</td>
+<td><code>value &lt;= x &lt;= value_high</code></td>
 </tr>
 <tr>
 <td>above_ref_high</td>
 <td>None</td>
-<td>x &gt; range_high recorded on the row (MEASUREMENT only)</td>
+<td><code>x &gt; range_high</code>, the upper limit recorded on the same row (<code>measurement</code> only).</td>
 </tr>
 <tr>
 <td>below_ref_low</td>
 <td>None</td>
-<td>x &lt; range_low recorded on the row (MEASUREMENT only)</td>
+<td><code>x &lt; range_low</code>, the lower limit recorded on the same row (<code>measurement</code> only).</td>
 </tr>
 </tbody>
 </table>
@@ -534,7 +562,7 @@
 <tbody>
 <tr>
 <td><a href="../operator/">operator</a></td>
-<td>numeric only</td>
+<td><code>numeric</code> only</td>
 </tr>
 </tbody>
 </table>
@@ -546,30 +574,34 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResultOperator</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'How</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">`numeric`</span><span class="nv"> </span><span class="s">result</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">compared:</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">fixed</span><span class="nv"> </span><span class="s">threshold,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">fixed</span>
+<span class="w">  </span><span class="s">range,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">normal</span><span class="nv"> </span><span class="s">range</span><span class="nv"> </span><span class="s">recorded</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">result.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">permissible_values</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gt</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gt</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &gt; value</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">value`'</span>
 <span class="w">  </span><span class="nt">gte</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gte</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &gt;= value</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&gt;=</span><span class="nv"> </span><span class="s">value`'</span>
 <span class="w">  </span><span class="nt">lt</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lt</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &lt; value</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&lt;</span><span class="nv"> </span><span class="s">value`'</span>
 <span class="w">  </span><span class="nt">lte</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lte</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &lt;= value</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&lt;=</span><span class="nv"> </span><span class="s">value`'</span>
 <span class="w">  </span><span class="nt">between</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">between</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value &lt;= x &lt;= value_high</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`value</span><span class="nv"> </span><span class="s">&lt;=</span><span class="nv"> </span><span class="s">x</span><span class="nv"> </span><span class="s">&lt;=</span><span class="nv"> </span><span class="s">value_high`'</span>
 <span class="w">  </span><span class="nt">above_ref_high</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">above_ref_high</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &gt; range_high recorded on the row (MEASUREMENT only).</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">range_high`,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">upper</span><span class="nv"> </span><span class="s">limit</span><span class="nv"> </span><span class="s">recorded</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">row</span><span class="nv"> </span><span class="s">(`measurement`</span>
+<span class="w">      </span><span class="s">only).'</span>
 <span class="w">  </span><span class="nt">below_ref_low</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">below_ref_low</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x &lt; range_low recorded on the row (MEASUREMENT only).</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`x</span><span class="nv"> </span><span class="s">&lt;</span><span class="nv"> </span><span class="s">range_low`,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">lower</span><span class="nv"> </span><span class="s">limit</span><span class="nv"> </span><span class="s">recorded</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">row</span><span class="nv"> </span><span class="s">(`measurement`</span>
+<span class="w">      </span><span class="s">only).'</span>
 </code></pre></div>
 </details>
 </div>

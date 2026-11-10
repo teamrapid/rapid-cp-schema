@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-expr">Class: Expr</h1>
-<p><em>Exactly one of: feature | all_of | any_of | none_of | at_least+of | within. none_of = NOT(any of). A rule must contain at least one positive feature. min_distinct_dates / min_span_days apply to a feature leaf.</em></p>
+<p><em>One condition in a Level 2A rule. Each node uses exactly one form: <code>feature</code>, <code>all_of</code>, <code>any_of</code>, <code>none_of</code> (none of the listed conditions holds), <code>at_least</code> with <code>of</code>, or <code>within</code>. A rule must contain at least one feature that isn't under <code>none_of</code>. <code>min_distinct_dates</code> and <code>min_span_days</code> apply only to a <code>feature</code> node.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/Expr">rapidcp:Expr</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -386,7 +398,7 @@
 <tr>
 <td><a href="../min_span_days/">min_span_days</a></td>
 <td>0..1 <br/> <a href="../Integer/">Integer</a></td>
-<td>Records must stretch across at least this many days, first to last</td>
+<td>Records must stretch across at least this many days, first to last.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -499,9 +511,10 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expr</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Exactly</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of:</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">all_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">any_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">none_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">at_least+of</span><span class="nv"> </span><span class="s">|</span>
-<span class="w">  </span><span class="s">within.</span><span class="nv"> </span><span class="s">none_of</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">NOT(any</span><span class="nv"> </span><span class="s">of).</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">rule</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">contain</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">least</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">positive</span><span class="nv"> </span><span class="s">feature.</span>
-<span class="w">  </span><span class="s">min_distinct_dates</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">min_span_days</span><span class="nv"> </span><span class="s">apply</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">leaf.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'One</span><span class="nv"> </span><span class="s">condition</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Level</span><span class="nv"> </span><span class="s">2A</span><span class="nv"> </span><span class="s">rule.</span><span class="nv"> </span><span class="s">Each</span><span class="nv"> </span><span class="s">node</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">exactly</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">form:</span><span class="nv"> </span><span class="s">`feature`,</span>
+<span class="w">  </span><span class="s">`all_of`,</span><span class="nv"> </span><span class="s">`any_of`,</span><span class="nv"> </span><span class="s">`none_of`</span><span class="nv"> </span><span class="s">(none</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">listed</span><span class="nv"> </span><span class="s">conditions</span><span class="nv"> </span><span class="s">holds),</span><span class="nv"> </span><span class="s">`at_least`</span>
+<span class="w">  </span><span class="s">with</span><span class="nv"> </span><span class="s">`of`,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">`within`.</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">rule</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">contain</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">least</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">isn</span><span class="se">''</span><span class="s">t</span><span class="nv"> </span><span class="s">under</span>
+<span class="w">  </span><span class="s">`none_of`.</span><span class="nv"> </span><span class="s">`min_distinct_dates`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">`min_span_days`</span><span class="nv"> </span><span class="s">apply</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">`feature`</span><span class="nv"> </span><span class="s">node.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">feature</span><span class="p">:</span>
@@ -588,9 +601,10 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expr</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Exactly</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of:</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">all_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">any_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">none_of</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">at_least+of</span><span class="nv"> </span><span class="s">|</span>
-<span class="w">  </span><span class="s">within.</span><span class="nv"> </span><span class="s">none_of</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">NOT(any</span><span class="nv"> </span><span class="s">of).</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">rule</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">contain</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">least</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">positive</span><span class="nv"> </span><span class="s">feature.</span>
-<span class="w">  </span><span class="s">min_distinct_dates</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">min_span_days</span><span class="nv"> </span><span class="s">apply</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">leaf.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'One</span><span class="nv"> </span><span class="s">condition</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Level</span><span class="nv"> </span><span class="s">2A</span><span class="nv"> </span><span class="s">rule.</span><span class="nv"> </span><span class="s">Each</span><span class="nv"> </span><span class="s">node</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">exactly</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">form:</span><span class="nv"> </span><span class="s">`feature`,</span>
+<span class="w">  </span><span class="s">`all_of`,</span><span class="nv"> </span><span class="s">`any_of`,</span><span class="nv"> </span><span class="s">`none_of`</span><span class="nv"> </span><span class="s">(none</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">listed</span><span class="nv"> </span><span class="s">conditions</span><span class="nv"> </span><span class="s">holds),</span><span class="nv"> </span><span class="s">`at_least`</span>
+<span class="w">  </span><span class="s">with</span><span class="nv"> </span><span class="s">`of`,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">`within`.</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">rule</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">contain</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">least</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">isn</span><span class="se">''</span><span class="s">t</span><span class="nv"> </span><span class="s">under</span>
+<span class="w">  </span><span class="s">`none_of`.</span><span class="nv"> </span><span class="s">`min_distinct_dates`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">`min_span_days`</span><span class="nv"> </span><span class="s">apply</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">`feature`</span><span class="nv"> </span><span class="s">node.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">feature</span><span class="p">:</span>

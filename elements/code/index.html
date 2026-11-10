@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -425,6 +452,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#slot-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slot Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -438,6 +476,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Identifier and Mapping Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -499,13 +554,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../HistoryConcept/">HistoryConcept</a></td>
-<td>Either a SNOMED CT code (vocabulary + code), looked up at the site with its d...</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../CodeRef/">CodeRef</a></td>
-<td></td>
+<td>A code written as it appears in its source vocabulary, never as an OMOP <code>concept_id</code>.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -526,11 +576,48 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../HistoryConcept/">HistoryConcept</a>, <a href="../CodeRef/">CodeRef</a></td>
+<td><a href="../CodeRef/">CodeRef</a></td>
+</tr>
+<tr>
+<td>### Cardinality and Requirements</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Required</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="slot-characteristics">Slot Characteristics</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner</td>
+<td><a href="../CodeRef/">CodeRef</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
+<h3 id="schema-source">Schema Source</h3>
+<ul>
+<li>from schema: <a href="https://mendelian.co/schemas/rapid-cp-logic">https://mendelian.co/schemas/rapid-cp-logic</a></li>
+</ul>
 <h2 id="mappings">Mappings</h2>
 <table>
 <thead>
@@ -553,10 +640,13 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
+<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CodeRef</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoryConcept</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CodeRef</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>
 </div>

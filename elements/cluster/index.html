@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -502,7 +529,7 @@
 
 
 <h1 id="slot-cluster">Slot: cluster</h1>
-<p><em>Required iff search_mode = cluster.</em></p>
+<p><em>Required if and only if <code>search_mode</code> is <code>cluster</code>.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/cluster">rapidcp:cluster</a></p>
 <!-- no inheritance hierarchy -->
@@ -518,7 +545,7 @@
 <tbody>
 <tr>
 <td><a href="../ComputablePhenotype/">ComputablePhenotype</a></td>
-<td>One versioned CP</td>
+<td>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -588,7 +615,7 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required iff search_mode = cluster.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required if and only if `search_mode` is `cluster`.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>

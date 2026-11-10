@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -474,6 +501,7 @@
 
 
 <h1 id="enum-resultkind">Enum: ResultKind</h1>
+<p><em>Whether a result is compared with a threshold or matched against a set of accepted answers.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ResultKind">rapidcp:ResultKind</a></p>
 <h2 id="permissible-values">Permissible Values</h2>
@@ -489,12 +517,12 @@
 <tr>
 <td>numeric</td>
 <td>None</td>
-<td>value_as_number compared to a threshold</td>
+<td><code>value_as_number</code> compared to a threshold.</td>
 </tr>
 <tr>
 <td>qualitative</td>
 <td>None</td>
-<td>value_as_concept_id in a set of answer concepts</td>
+<td><code>value_as_concept_id</code> in a set of answer concepts.</td>
 </tr>
 </tbody>
 </table>
@@ -521,15 +549,17 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResultKind</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Whether a result is compared with a threshold or matched against a set</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">of accepted answers.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">permissible_values</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">numeric</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numeric</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_as_number compared to a threshold.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`value_as_number`</span><span class="nv"> </span><span class="s">compared</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">threshold.'</span>
 <span class="w">  </span><span class="nt">qualitative</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualitative</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_as_concept_id in a set of answer concepts.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`value_as_concept_id`</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">answer</span><span class="nv"> </span><span class="s">concepts.'</span>
 </code></pre></div>
 </details>
 </div>

@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -502,7 +529,7 @@
 
 
 <h1 id="slot-require_gene_text_match">Slot: require_gene_text_match</h1>
-<p><em>Default true when codes are generic LOINC panels.</em></p>
+<p><em>Default <code>true</code> when codes are generic LOINC panels.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/require_gene_text_match">rapidcp:require_gene_text_match</a></p>
 <!-- no inheritance hierarchy -->
@@ -518,7 +545,7 @@
 <tbody>
 <tr>
 <td><a href="../GeneticCriterion/">GeneticCriterion</a></td>
-<td>A row qualifies if its concept is in the feature's codes AND (when given) its...</td>
+<td>The variant result a <code>genetic_finding</code> feature looks for: a causal gene and the interpretations that count, such as pathogenic or likely pathogenic. A record matches when it carries one of the feature's codes, its interpretation is one of those listed (if any are), and, when <code>require_gene_text_match</code> is <code>true</code>, the gene symbol appears in the record's text.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -588,7 +615,7 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">require_gene_text_match</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default true when codes are generic LOINC panels.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default `true` when codes are generic LOINC panels.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GeneticCriterion</span>

@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -425,6 +452,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#slot-characteristics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slot Characteristics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#value-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Value Constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -438,6 +487,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Identifier and Mapping Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -485,6 +551,7 @@
 
 
 <h1 id="slot-cp_id">Slot: cp_id</h1>
+<p><em>Name of the CP version, built from the disease, level and version. Format: <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease-id&gt;</code> is the lowercase Mondo id + '-' + disease.slug, e.g. <code>mondo0010619-xlh_L1_v1.0</code></em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/cp_id">rapidcp:cp_id</a></p>
 <!-- no inheritance hierarchy -->
@@ -500,12 +567,7 @@
 <tbody>
 <tr>
 <td><a href="../ComputablePhenotype/">ComputablePhenotype</a></td>
-<td>One versioned CP</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../CPBuild/">CPBuild</a></td>
-<td>Header of a build SQL file (<build_id></td>
+<td>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -526,11 +588,67 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../ComputablePhenotype/">ComputablePhenotype</a>, <a href="../CPBuild/">CPBuild</a></td>
+<td><a href="../ComputablePhenotype/">ComputablePhenotype</a></td>
+</tr>
+<tr>
+<td>### Cardinality and Requirements</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Required</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="slot-characteristics">Slot Characteristics</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identifier</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td><a href="../ComputablePhenotype/">ComputablePhenotype</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="value-constraints">Value Constraints</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Regex Pattern</td>
+<td><code>^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</code></td>
 </tr>
 </tbody>
 </table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
+<h3 id="schema-source">Schema Source</h3>
+<ul>
+<li>from schema: <a href="https://mendelian.co/schemas/rapid-cp-logic">https://mendelian.co/schemas/rapid-cp-logic</a></li>
+</ul>
 <h2 id="mappings">Mappings</h2>
 <table>
 <thead>
@@ -553,10 +671,18 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_id</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">version.</span><span class="nv"> </span><span class="s">Format:</span>
+<span class="w">  </span><span class="s">`&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">lowercase</span><span class="nv"> </span><span class="s">Mondo</span>
+<span class="w">  </span><span class="s">id</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="se">''</span><span class="s">-</span><span class="se">''</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">disease.slug,</span><span class="nv"> </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`mondo0010619-xlh_L1_v1.0`'</span>
+<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPBuild</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
 </code></pre></div>
 </details>
 </div>

@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -474,7 +501,7 @@
 
 
 <h1 id="enum-module">Enum: Module</h1>
-<p><em>The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed (see docs/CP_YAML_SPEC.md §3.2).</em></p>
+<p><em>The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/Module">rapidcp:Module</a></p>
 <h2 id="permissible-values">Permissible Values</h2>
@@ -490,32 +517,32 @@
 <tr>
 <td>diagnostic_code</td>
 <td>None</td>
-<td>ICD10CM or SNOMED diagnosis; presence ever</td>
+<td>ICD10CM or SNOMED diagnosis; presence ever.</td>
 </tr>
 <tr>
 <td>genetic_finding</td>
 <td>None</td>
-<td>Reported pathogenic / likely pathogenic variant in a causal gene</td>
+<td>Reported pathogenic / likely pathogenic variant in a causal gene.</td>
 </tr>
 <tr>
 <td>diagnostic_test</td>
 <td>None</td>
-<td>Confirmatory test or biomarker RESULT (not the order)</td>
+<td>Confirmatory test or biomarker RESULT (not the order).</td>
 </tr>
 <tr>
 <td>medication</td>
 <td>None</td>
-<td>Disease-specific drug, used as evidence of the diagnosis</td>
+<td>Disease-specific drug, used as evidence of the diagnosis.</td>
 </tr>
 <tr>
 <td>procedure</td>
 <td>None</td>
-<td>Diagnostic procedure, or disease-specific therapeutic procedure</td>
+<td>Diagnostic procedure, or disease-specific therapeutic procedure.</td>
 </tr>
 <tr>
 <td>phenotype</td>
 <td>None</td>
-<td>Clinical/phenotypic feature: SNOMED, ICD10CM, or LOINC with a result</td>
+<td>Clinical/phenotypic feature: SNOMED, ICD10CM, or LOINC with a result.</td>
 </tr>
 </tbody>
 </table>
@@ -543,7 +570,7 @@
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Module</span>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The evidence domain a feature belongs to. Drives which OMOP tables are</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">searched and which vocabularies are allowed (see docs/CP_YAML_SPEC.md §3.2).</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">searched and which vocabularies are allowed.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">permissible_values</span><span class="p">:</span>

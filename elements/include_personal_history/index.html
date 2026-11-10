@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -502,7 +529,7 @@
 
 
 <h1 id="slot-include_personal_history">Slot: include_personal_history</h1>
-<p><em>diagnostic_code and coded phenotype features only. Default true: also count OBSERVATION rows recording the patient's own history of the condition. Set false to count only direct records.</em></p>
+<p><em><code>diagnostic_code</code> and coded <code>phenotype</code> features only. Default <code>true</code>: also count <code>observation</code> rows recording the patient's own history of the condition. Set <code>false</code> to count only direct records.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/include_personal_history">rapidcp:include_personal_history</a></p>
 <!-- no inheritance hierarchy -->
@@ -518,7 +545,7 @@
 <tbody>
 <tr>
 <td><a href="../Feature/">Feature</a></td>
-<td></td>
+<td>One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where the module needs one. Logic blocks refer to features by id.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -588,9 +615,9 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">include_personal_history</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'diagnostic_code</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">phenotype</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">true:</span><span class="nv"> </span><span class="s">also</span>
-<span class="w">  </span><span class="s">count</span><span class="nv"> </span><span class="s">OBSERVATION</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span><span class="nv"> </span><span class="s">Set</span>
-<span class="w">  </span><span class="s">false</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`diagnostic_code`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">`phenotype`</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">`true`:</span>
+<span class="w">  </span><span class="s">also</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">`observation`</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span>
+<span class="w">  </span><span class="s">Set</span><span class="nv"> </span><span class="s">`false`</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>

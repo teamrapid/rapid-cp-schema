@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -474,6 +501,7 @@
 
 
 <h1 id="enum-searchmode">Enum: SearchMode</h1>
+<p><em>Which patients a CP searches: the whole dataset, or only those with an umbrella code.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/SearchMode">rapidcp:SearchMode</a></p>
 <h2 id="permissible-values">Permissible Values</h2>
@@ -489,12 +517,12 @@
 <tr>
 <td>population</td>
 <td>None</td>
-<td>Search the whole dataset for the target disease</td>
+<td>Search the whole dataset for the target disease.</td>
 </tr>
 <tr>
 <td>cluster</td>
 <td>None</td>
-<td>Search only persons carrying an umbrella code (see cluster)</td>
+<td>Search only persons carrying an umbrella code (see <code>cluster</code>).</td>
 </tr>
 </tbody>
 </table>
@@ -521,6 +549,8 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchMode</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Which</span><span class="nv"> </span><span class="s">patients</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">searches:</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">whole</span><span class="nv"> </span><span class="s">dataset,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">those</span><span class="nv"> </span><span class="s">with</span>
+<span class="w">  </span><span class="s">an</span><span class="nv"> </span><span class="s">umbrella</span><span class="nv"> </span><span class="s">code.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">permissible_values</span><span class="p">:</span>
@@ -529,7 +559,7 @@
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Search the whole dataset for the target disease.</span>
 <span class="w">  </span><span class="nt">cluster</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Search only persons carrying an umbrella code (see cluster).</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Search only persons carrying an umbrella code (see `cluster`).</span>
 </code></pre></div>
 </details>
 </div>

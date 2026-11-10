@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -513,7 +540,7 @@
 
 
 <h1 id="slot-value_concepts">Slot: value_concepts</h1>
-<p><em>qualitative only: accepted answers (e.g. LOINC LA6576-8 Positive).</em></p>
+<p><em><code>qualitative</code> only: accepted answers (e.g. LOINC <code>LA6576-8</code> Positive).</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/value_concepts">rapidcp:value_concepts</a></p>
 <!-- no inheritance hierarchy -->
@@ -529,7 +556,7 @@
 <tbody>
 <tr>
 <td><a href="../ResultCriterion/">ResultCriterion</a></td>
-<td></td>
+<td>The result a test or measurement record must have to count: a numeric comparison or a set of accepted answers.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -614,7 +641,7 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_concepts</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'qualitative</span><span class="nv"> </span><span class="s">only:</span><span class="nv"> </span><span class="s">accepted</span><span class="nv"> </span><span class="s">answers</span><span class="nv"> </span><span class="s">(e.g.</span><span class="nv"> </span><span class="s">LOINC</span><span class="nv"> </span><span class="s">LA6576-8</span><span class="nv"> </span><span class="s">Positive).'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`qualitative`</span><span class="nv"> </span><span class="s">only:</span><span class="nv"> </span><span class="s">accepted</span><span class="nv"> </span><span class="s">answers</span><span class="nv"> </span><span class="s">(e.g.</span><span class="nv"> </span><span class="s">LOINC</span><span class="nv"> </span><span class="s">`LA6576-8`</span><span class="nv"> </span><span class="s">Positive).'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResultCriterion</span>

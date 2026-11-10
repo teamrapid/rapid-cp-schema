@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-computablephenotype">Class: ComputablePhenotype</h1>
-<p><em>One versioned CP. File name must equal cp_id + ".yaml".</em></p>
+<p><em>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ComputablePhenotype">rapidcp:ComputablePhenotype</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -424,28 +436,6 @@
 
 
 
-      ComputablePhenotype : sites_tested
-
-
-
-
-
-        ComputablePhenotype --&gt; "*" SiteTest : sites_tested
-        click SiteTest href "../SiteTest/"
-
-
-
-      ComputablePhenotype : status
-
-
-
-
-
-        ComputablePhenotype --&gt; "1" CPStatus : status
-        click CPStatus href "../CPStatus/"
-
-
-
       ComputablePhenotype : title
 
 </code></pre>
@@ -479,13 +469,13 @@
 <tr>
 <td><a href="../cp_id/">cp_id</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td><disease-id>_<level>_v<major></major></level></disease-id></td>
+<td>Name of the CP version, built from the disease, level and version. Format: <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease-id&gt;</code> is the lowercase Mondo id + '-' + disease.slug, e.g. <code>mondo0010619-xlh_L1_v1.0</code></td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../schema_version/">schema_version</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td>Version of THIS schema the file conforms to, e</td>
+<td>Version of THIS schema the file conforms to, e.g. <code>0.2.0</code></td>
 <td>direct</td>
 </tr>
 <tr>
@@ -515,13 +505,7 @@
 <tr>
 <td><a href="../cluster/">cluster</a></td>
 <td>0..1 <br/> <a href="../ClusterScope/">ClusterScope</a></td>
-<td>Required iff search_mode = cluster</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../status/">status</a></td>
-<td>1 <br/> <a href="../CPStatus/">CPStatus</a></td>
-<td></td>
+<td>Required if and only if <code>search_mode</code> is <code>cluster</code>.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -533,13 +517,7 @@
 <tr>
 <td><a href="../review/">review</a></td>
 <td>0..1 <br/> <a href="../ClinicalReview/">ClinicalReview</a></td>
-<td>Clinical sign-off</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../sites_tested/">sites_tested</a></td>
-<td>* <br/> <a href="../SiteTest/">SiteTest</a></td>
-<td>Where this CP version has been run, and with which build</td>
+<td>Clinical sign-off. Recorded only; not enforced.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -551,31 +529,31 @@
 <tr>
 <td><a href="../features/">features</a></td>
 <td>1..* <br/> <a href="../Feature/">Feature</a></td>
-<td>Atomic evidence items</td>
+<td>Atomic evidence items. Logic blocks reference them by id.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../disjuncts/">disjuncts</a></td>
 <td>* <br/> <a href="../Disjunct/">Disjunct</a></td>
-<td>Level 1 only</td>
+<td>Level 1 only.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../rules/">rules</a></td>
 <td>* <br/> <a href="../Rule/">Rule</a></td>
-<td>Level 2a only</td>
+<td>Level 2a only. CP fires if ANY rule fires.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../score/">score</a></td>
 <td>0..1 <br/> <a href="../ScoreModel/">ScoreModel</a></td>
-<td>Level 2b only</td>
+<td>Level 2b only.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../absorbed_into/">absorbed_into</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
-<td>The cluster CP that currently handles this disease, e</td>
+<td>The cluster CP that currently handles this disease, e.g. <code>cluster-icd10n18x_L2A_v1.0</code>. Empty once the disease stands alone. Cluster CPs themselves are not supported yet; the field and the <code>cluster-</code> naming are reserved so nothing needs renaming later.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -615,24 +593,24 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal cp_id + ".yaml".</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_id` + `.yaml`.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cp_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;, disease-id = lowercase Mondo</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">id + '-' + disease.slug, e.g. mondo0010619-xlh_L1_v1.0</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">version.</span>
+<span class="w">      </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span>
+<span class="w">      </span><span class="s">lowercase</span><span class="nv"> </span><span class="s">Mondo</span><span class="nv"> </span><span class="s">id</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="se">''</span><span class="s">-</span><span class="se">''</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">disease.slug,</span><span class="nv"> </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`mondo0010619-xlh_L1_v1.0`'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPBuild</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
 <span class="w">  </span><span class="nt">schema_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. 0.1.0</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. `0.2.0`</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -672,21 +650,13 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">cluster</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required iff search_mode = cluster.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required if and only if `search_mode` is `cluster`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterScope</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">status</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPStatus</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">provenance</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provenance</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
@@ -705,17 +675,6 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClinicalReview</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">sites_tested</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sites_tested</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Where this CP version has been run, and with which build. Recorded</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">only.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SiteTest</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">expected_flag_rate</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">expected_flag_rate</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
@@ -766,9 +725,9 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">absorbed_into</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absorbed_into</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. `cluster-icd10n18x_L2A_v1.0`.</span>
 <span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Empty once the disease stands alone. Cluster CPs themselves are not supported</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">yet; the field and the cluster- naming are reserved so nothing needs renaming</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">yet; the field and the `cluster-` naming are reserved so nothing needs renaming</span>
 <span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">later.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
@@ -787,26 +746,26 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal cp_id + ".yaml".</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_id` + `.yaml`.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cp_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;, disease-id = lowercase Mondo</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">id + '-' + disease.slug, e.g. mondo0010619-xlh_L1_v1.0</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">version.</span>
+<span class="w">      </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span>
+<span class="w">      </span><span class="s">lowercase</span><span class="nv"> </span><span class="s">Mondo</span><span class="nv"> </span><span class="s">id</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="se">''</span><span class="s">-</span><span class="se">''</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">disease.slug,</span><span class="nv"> </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`mondo0010619-xlh_L1_v1.0`'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPBuild</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
 <span class="w">  </span><span class="nt">schema_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. 0.1.0</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. `0.2.0`</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
@@ -853,7 +812,7 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">cluster</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required iff search_mode = cluster.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required if and only if `search_mode` is `cluster`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
@@ -861,15 +820,6 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterScope</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">status</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPStatus</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">provenance</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provenance</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
@@ -890,19 +840,6 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClinicalReview</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">sites_tested</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sites_tested</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Where this CP version has been run, and with which build. Recorded</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">only.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SiteTest</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">expected_flag_rate</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">expected_flag_rate</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
@@ -961,9 +898,9 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">absorbed_into</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absorbed_into</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. `cluster-icd10n18x_L2A_v1.0`.</span>
 <span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Empty once the disease stands alone. Cluster CPs themselves are not supported</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">yet; the field and the cluster- naming are reserved so nothing needs renaming</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">yet; the field and the `cluster-` naming are reserved so nothing needs renaming</span>
 <span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">later.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>

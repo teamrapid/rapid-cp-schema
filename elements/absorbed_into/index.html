@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -513,7 +540,7 @@
 
 
 <h1 id="slot-absorbed_into">Slot: absorbed_into</h1>
-<p><em>The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0. Empty once the disease stands alone. Cluster CPs themselves are not supported yet; the field and the cluster- naming are reserved so nothing needs renaming later.</em></p>
+<p><em>The cluster CP that currently handles this disease, e.g. <code>cluster-icd10n18x_L2A_v1.0</code>. Empty once the disease stands alone. Cluster CPs themselves are not supported yet; the field and the <code>cluster-</code> naming are reserved so nothing needs renaming later.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/absorbed_into">rapidcp:absorbed_into</a></p>
 <!-- no inheritance hierarchy -->
@@ -529,7 +556,7 @@
 <tbody>
 <tr>
 <td><a href="../ComputablePhenotype/">ComputablePhenotype</a></td>
-<td>One versioned CP</td>
+<td>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -614,9 +641,9 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absorbed_into</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. cluster-icd10n18x_L2A_v1.0.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The cluster CP that currently handles this disease, e.g. `cluster-icd10n18x_L2A_v1.0`.</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Empty once the disease stands alone. Cluster CPs themselves are not supported yet;</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">the field and the cluster- naming are reserved so nothing needs renaming later.</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">the field and the `cluster-` naming are reserved so nothing needs renaming later.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>

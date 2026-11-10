@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -499,23 +526,18 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../HistoryConcept/">HistoryConcept</a></td>
-<td>Either a SNOMED CT code (vocabulary + code), looked up at the site with its d...</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../CodeRef/">CodeRef</a></td>
-<td></td>
+<td>A code written as it appears in its source vocabulary, never as an OMOP <code>concept_id</code>.</td>
 <td>no</td>
 </tr>
 <tr>
 <td><a href="../Disjunct/">Disjunct</a></td>
-<td></td>
+<td>A Level 1 criterion: one S1 feature that is enough on its own to flag a patient. Its id is reported with the counts.</td>
 <td>no</td>
 </tr>
 <tr>
 <td><a href="../Rule/">Rule</a></td>
-<td></td>
+<td>A Level 2A criterion: a Boolean condition over features. A patient is flagged if any rule holds; each rule's id is reported with the counts.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -536,7 +558,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../HistoryConcept/">HistoryConcept</a>, <a href="../CodeRef/">CodeRef</a>, <a href="../Disjunct/">Disjunct</a>, <a href="../Rule/">Rule</a></td>
+<td><a href="../CodeRef/">CodeRef</a>, <a href="../Disjunct/">Disjunct</a>, <a href="../Rule/">Rule</a></td>
 </tr>
 </tbody>
 </table>
@@ -564,7 +586,6 @@
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">label</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoryConcept</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CodeRef</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Disjunct</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rule</span>

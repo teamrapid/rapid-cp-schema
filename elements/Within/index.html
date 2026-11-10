@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-within">Class: Within</h1>
-<p><em>A record of each listed feature, all falling within <code>days</code> of each other. With in_order, the records must also occur in the listed order (the same day counts as in order).</em></p>
+<p><em>A record of each listed feature, all falling within <code>days</code> of each other. With <code>in_order</code>, the records must also occur in the listed order (the same day counts as in order).</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/Within">rapidcp:Within</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -329,7 +341,7 @@
 <tr>
 <td><a href="../of/">of</a></td>
 <td>1..* <br/> <a href="../String/">String</a></td>
-<td>Feature ids, at least two</td>
+<td>Feature ids, at least two.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -383,7 +395,7 @@
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Within</span>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A record of each listed feature, all falling within `days` of each other.</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">With in_order, the records must also occur in the listed order (the same day counts</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">With `in_order`, the records must also occur in the listed order (the same day counts</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">as in order).</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
@@ -418,7 +430,7 @@
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Within</span>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A record of each listed feature, all falling within `days` of each other.</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">With in_order, the records must also occur in the listed order (the same day counts</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">With `in_order`, the records must also occur in the listed order (the same day counts</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">as in order).</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>

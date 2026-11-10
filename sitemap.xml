@@ -9,7 +9,11 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/cp-yaml-spec/</loc>
+         <loc>https://teamrapid.github.io/rapid-cp-schema/applying-cps-omop54/</loc>
+         <lastmod>2026-11-10</lastmod>
+    </url>
+    <url>
+         <loc>https://teamrapid.github.io/rapid-cp-schema/results-file-spec/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -21,19 +25,11 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/CPBuild/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/CPLevel/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/CPProvenance/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/CPStatus/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -58,10 +54,6 @@
     </url>
     <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/Curie/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/DataModel/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -114,10 +106,6 @@
     </url>
     <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/GeneticCriterion/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/HistoryConcept/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -181,19 +169,7 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/SiteProfile/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/SiteTest/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/Sparqlpath/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/SqlDialect/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -245,23 +221,7 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/build/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/build_id/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/candidate_mondo_ids/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/cdm_schema/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/cdm_version/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -285,23 +245,11 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/concept_id/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/cp_id/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/cp_logic_sha256/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/curation_record_version/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/datamodel/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -314,10 +262,6 @@
     </url>
     <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/decision/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/dialect/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -346,10 +290,6 @@
     </url>
     <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/gene_symbol/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/generator/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -453,10 +393,6 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/personal_history_concepts/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/points/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
@@ -501,18 +437,6 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/site/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/site_version/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/sites_tested/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/slug/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
@@ -521,15 +445,7 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/source_value_fallback/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/specificity_tier/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/status/</loc>
+         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/specificity_grade/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
@@ -557,10 +473,6 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/updated/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/value/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
@@ -573,19 +485,7 @@
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/version/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/vocab_schema/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
          <loc>https://teamrapid.github.io/rapid-cp-schema/elements/vocabulary/</loc>
-         <lastmod>2026-11-10</lastmod>
-    </url>
-    <url>
-         <loc>https://teamrapid.github.io/rapid-cp-schema/elements/vocabulary_version/</loc>
          <lastmod>2026-11-10</lastmod>
     </url>
     <url>

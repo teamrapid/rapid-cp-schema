@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,6 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-scoreitem">Class: ScoreItem</h1>
+<p><em>A Level 2B score item: points added when its feature is present. Its id is reported with the counts.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ScoreItem">rapidcp:ScoreItem</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -332,7 +345,7 @@
 <tr>
 <td><a href="../points/">points</a></td>
 <td>1 <br/> <a href="../Float/">Float</a></td>
-<td>May be negative</td>
+<td>May be negative.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -344,7 +357,7 @@
 <tr>
 <td><a href="../min_span_days/">min_span_days</a></td>
 <td>0..1 <br/> <a href="../Integer/">Integer</a></td>
-<td>Records must stretch across at least this many days, first to last</td>
+<td>Records must stretch across at least this many days, first to last.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -397,6 +410,8 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ScoreItem</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'A</span><span class="nv"> </span><span class="s">Level</span><span class="nv"> </span><span class="s">2B</span><span class="nv"> </span><span class="s">score</span><span class="nv"> </span><span class="s">item:</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">added</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">present.</span><span class="nv"> </span><span class="s">Its</span>
+<span class="w">  </span><span class="s">id</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reported</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">counts.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">id</span><span class="p">:</span>
@@ -451,6 +466,8 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ScoreItem</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'A</span><span class="nv"> </span><span class="s">Level</span><span class="nv"> </span><span class="s">2B</span><span class="nv"> </span><span class="s">score</span><span class="nv"> </span><span class="s">item:</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">added</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">present.</span><span class="nv"> </span><span class="s">Its</span>
+<span class="w">  </span><span class="s">id</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reported</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">counts.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">id</span><span class="p">:</span>

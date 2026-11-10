@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,6 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-diseaseref">Class: DiseaseRef</h1>
+<p><em>The disease a CP is for, identified by an anchor Mondo id.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/DiseaseRef">rapidcp:DiseaseRef</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -326,25 +339,25 @@
 <tr>
 <td><a href="../slug/">slug</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td>Short lowercase hyphenated disease name used in file names, e</td>
+<td>Short lowercase hyphenated disease name used in file names, e.g. <code>xlh</code>, <code>fabry</code>.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../name/">name</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td>Human-readable disease name, for reviewers</td>
+<td>Human-readable disease name, for reviewers. Not queried.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../included_mondo_ids/">included_mondo_ids</a></td>
 <td>* <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Every Mondo id that constitutes this disease entity, mondo_id included</td>
+<td>Every Mondo id that constitutes this disease entity, <code>mondo_id</code> included. Defaults to <code>[mondo_id]</code>. Recorded, not queried.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../curation_record_version/">curation_record_version</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
-<td>Version of the curation record (keyed by mondo_id) this CP was built from</td>
+<td>Version of the curation record (keyed by <code>mondo_id</code>) this CP was built from. Recorded, not queried.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -397,6 +410,7 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease a CP is for, identified by an anchor Mondo id.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mondo_id</span><span class="p">:</span>
@@ -411,7 +425,7 @@
 <span class="w">  </span><span class="nt">slug</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slug</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Short lowercase hyphenated disease name used in file names, e.g.</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">xlh, fabry.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">`xlh`, `fabry`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -429,9 +443,8 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">included_mondo_ids</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">included_mondo_ids</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, mondo_id included.</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">One flat list on every CP, so the dashboard can find a disease's CPs with a</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">single filter. Defaults to [mondo_id]. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, `mondo_id` included.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Defaults to `[mondo_id]`. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -441,8 +454,8 @@
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
 <span class="w">  </span><span class="nt">curation_record_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curation_record_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by mondo_id) this CP was built</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">from. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `mondo_id`) this CP was</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">built from. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -452,6 +465,7 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease a CP is for, identified by an anchor Mondo id.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mondo_id</span><span class="p">:</span>
@@ -467,7 +481,7 @@
 <span class="w">  </span><span class="nt">slug</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slug</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Short lowercase hyphenated disease name used in file names, e.g.</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">xlh, fabry.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">`xlh`, `fabry`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
@@ -489,9 +503,8 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">included_mondo_ids</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">included_mondo_ids</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, mondo_id included.</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">One flat list on every CP, so the dashboard can find a disease's CPs with a</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">single filter. Defaults to [mondo_id]. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, `mondo_id` included.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Defaults to `[mondo_id]`. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
@@ -502,8 +515,8 @@
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
 <span class="w">  </span><span class="nt">curation_record_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curation_record_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by mondo_id) this CP was built</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">from. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `mondo_id`) this CP was</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">built from. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>

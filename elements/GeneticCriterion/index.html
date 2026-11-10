@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-geneticcriterion">Class: GeneticCriterion</h1>
-<p><em>A row qualifies if its concept is in the feature's codes AND (when given) its value_as_concept_id is an accepted interpretation AND (when require_gene_text_match) the gene symbol appears in the row's source text.</em></p>
+<p><em>The variant result a <code>genetic_finding</code> feature looks for: a causal gene and the interpretations that count, such as pathogenic or likely pathogenic. A record matches when it carries one of the feature's codes, its interpretation is one of those listed (if any are), and, when <code>require_gene_text_match</code> is <code>true</code>, the gene symbol appears in the record's text.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/GeneticCriterion">rapidcp:GeneticCriterion</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -346,7 +358,7 @@
 <tr>
 <td><a href="../require_gene_text_match/">require_gene_text_match</a></td>
 <td>0..1 <br/> <a href="../Boolean/">Boolean</a></td>
-<td>Default true when codes are generic LOINC panels</td>
+<td>Default <code>true</code> when codes are generic LOINC panels.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -399,9 +411,11 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GeneticCriterion</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A row qualifies if its concept is in the feature's codes AND (when given)</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">its value_as_concept_id is an accepted interpretation AND (when require_gene_text_match)</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">the gene symbol appears in the row's source text.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'The</span><span class="nv"> </span><span class="s">variant</span><span class="nv"> </span><span class="s">result</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">`genetic_finding`</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">looks</span><span class="nv"> </span><span class="s">for:</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">causal</span><span class="nv"> </span><span class="s">gene</span>
+<span class="w">  </span><span class="s">and</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">interpretations</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">count,</span><span class="nv"> </span><span class="s">such</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">pathogenic</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">likely</span><span class="nv"> </span><span class="s">pathogenic.</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">record</span>
+<span class="w">  </span><span class="s">matches</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">carries</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">feature</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">codes,</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">interpretation</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of</span>
+<span class="w">  </span><span class="s">those</span><span class="nv"> </span><span class="s">listed</span><span class="nv"> </span><span class="s">(if</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">are),</span><span class="nv"> </span><span class="s">and,</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">`require_gene_text_match`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`true`,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">gene</span>
+<span class="w">  </span><span class="s">symbol</span><span class="nv"> </span><span class="s">appears</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">record</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">text.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gene_symbol</span><span class="p">:</span>
@@ -429,7 +443,7 @@
 <span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">require_gene_text_match</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">require_gene_text_match</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default true when codes are generic LOINC panels.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default `true` when codes are generic LOINC panels.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -440,9 +454,11 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GeneticCriterion</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A row qualifies if its concept is in the feature's codes AND (when given)</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">its value_as_concept_id is an accepted interpretation AND (when require_gene_text_match)</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">the gene symbol appears in the row's source text.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'The</span><span class="nv"> </span><span class="s">variant</span><span class="nv"> </span><span class="s">result</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">`genetic_finding`</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">looks</span><span class="nv"> </span><span class="s">for:</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">causal</span><span class="nv"> </span><span class="s">gene</span>
+<span class="w">  </span><span class="s">and</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">interpretations</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">count,</span><span class="nv"> </span><span class="s">such</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">pathogenic</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">likely</span><span class="nv"> </span><span class="s">pathogenic.</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">record</span>
+<span class="w">  </span><span class="s">matches</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">carries</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">feature</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">codes,</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">interpretation</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">of</span>
+<span class="w">  </span><span class="s">those</span><span class="nv"> </span><span class="s">listed</span><span class="nv"> </span><span class="s">(if</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">are),</span><span class="nv"> </span><span class="s">and,</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">`require_gene_text_match`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`true`,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">gene</span>
+<span class="w">  </span><span class="s">symbol</span><span class="nv"> </span><span class="s">appears</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">record</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">text.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gene_symbol</span><span class="p">:</span>
@@ -476,7 +492,7 @@
 <span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">require_gene_text_match</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">require_gene_text_match</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default true when codes are generic LOINC panels.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default `true` when codes are generic LOINC panels.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GeneticCriterion</span>

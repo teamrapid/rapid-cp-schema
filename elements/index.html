@@ -14,7 +14,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../cp-yaml-spec/">
+        <link rel="next" href="../applying-cps-omop54/">
       
       
         
@@ -424,14 +424,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../cp-yaml-spec/" class="md-nav__link">
+      <a href="../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -574,28 +601,7 @@
 
 
 <h1 id="rapid_cp_schema">rapid_cp_schema</h1>
-<p>Schema for the two files that make up a deployable RAPID computable phenotype (CP):</p>
-<ol>
-<li>
-<p>The CP logic file  <disease-id>_<level>_v<major>.<minor>.yaml
-     Data-model-independent. Says WHAT counts as evidence (features, coded in
-     source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the
-     evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).
-     Every disjunct / rule / score item carries a stable id (d1, r2, s3) that
-     is reported back as the flag reason.</p>
-</li>
-<li>
-<p>The build file  <cp-id>_<datamodel>.b<build>.sql
-     The generated SQL for one data model (e.g. OMOP 5.4), shared by every
-     site on it, with a YAML comment header that conforms to CPBuild.</p>
-</li>
-<li>
-<p>Site files  sites/<site>_v<version>.yaml
-     Everything about one site (schemas, vocabulary release, history
-     concepts), applied at run time.</p>
-</li>
-</ol>
-<p>This schema is deliberately separate from the curation-record schema. The curation record holds the full evidence base and review trail; the CP logic file is the executable subset selected from it. Diseases are identified by Mondo ids only.</p>
+<p>Schema for RAPID computable phenotype (CP) logic files, named <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;.yaml</code>. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (<code>d1</code>, <code>r2</code>, <code>s3</code>) that is reported back as the flag reason.</p>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic">https://mendelian.co/schemas/rapid-cp-logic</a></p>
 <p>Name: rapid_cp_schema</p>
 <h2 id="classes">Classes</h2>
@@ -609,83 +615,67 @@
 <tbody>
 <tr>
 <td><a href="ClinicalReview/">ClinicalReview</a></td>
-<td>Expert sign-off on the disease and its criteria, before the CP is tested at a...</td>
+<td>Expert sign-off on the disease and its criteria, before the CP is tested at a site.</td>
 </tr>
 <tr>
 <td><a href="ClusterScope/">ClusterScope</a></td>
-<td>Cluster-filtered search</td>
+<td>Limits the search to patients who have at least one of the umbrella codes. Every criterion is then evaluated only for those patients.</td>
 </tr>
 <tr>
 <td><a href="CodeRef/">CodeRef</a></td>
-<td></td>
+<td>A code written as it appears in its source vocabulary, never as an OMOP <code>concept_id</code>.</td>
 </tr>
 <tr>
 <td><a href="ComputablePhenotype/">ComputablePhenotype</a></td>
-<td>One versioned CP</td>
-</tr>
-<tr>
-<td><a href="CPBuild/">CPBuild</a></td>
-<td>Header of a build SQL file (<build_id></td>
+<td>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</td>
 </tr>
 <tr>
 <td><a href="CPProvenance/">CPProvenance</a></td>
-<td></td>
+<td>Who wrote this CP version and when.</td>
 </tr>
 <tr>
 <td><a href="DiseaseRef/">DiseaseRef</a></td>
-<td></td>
+<td>The disease a CP is for, identified by an anchor Mondo id.</td>
 </tr>
 <tr>
 <td><a href="Disjunct/">Disjunct</a></td>
-<td></td>
+<td>A Level 1 criterion: one S1 feature that is enough on its own to flag a patient. Its id is reported with the counts.</td>
 </tr>
 <tr>
 <td><a href="ExpectedFlagRate/">ExpectedFlagRate</a></td>
-<td>Range of patients per 100,000 a correct CP should flag at a site (prevalence ...</td>
+<td>Range of patients per 100,000 a correct CP should flag at a site.</td>
 </tr>
 <tr>
 <td><a href="Expr/">Expr</a></td>
-<td>Exactly one of: feature</td>
+<td>One condition in a Level 2A rule. Each node uses exactly one form: <code>feature</code>, <code>all_of</code>, <code>any_of</code>, <code>none_of</code> (none of the listed conditions holds), <code>at_least</code> with <code>of</code>, or <code>within</code>. A rule must contain at least one feature that isn't under <code>none_of</code>. <code>min_distinct_dates</code> and <code>min_span_days</code> apply only to a <code>feature</code> node.</td>
 </tr>
 <tr>
 <td><a href="Feature/">Feature</a></td>
-<td></td>
+<td>One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where the module needs one. Logic blocks refer to features by id.</td>
 </tr>
 <tr>
 <td><a href="GeneticCriterion/">GeneticCriterion</a></td>
-<td>A row qualifies if its concept is in the feature's codes AND (when given) its...</td>
-</tr>
-<tr>
-<td><a href="HistoryConcept/">HistoryConcept</a></td>
-<td>Either a SNOMED CT code (vocabulary + code), looked up at the site with its d...</td>
+<td>The variant result a <code>genetic_finding</code> feature looks for: a causal gene and the interpretations that count, such as pathogenic or likely pathogenic. A record matches when it carries one of the feature's codes, its interpretation is one of those listed (if any are), and, when <code>require_gene_text_match</code> is <code>true</code>, the gene symbol appears in the record's text.</td>
 </tr>
 <tr>
 <td><a href="ResultCriterion/">ResultCriterion</a></td>
-<td></td>
+<td>The result a test or measurement record must have to count: a numeric comparison or a set of accepted answers.</td>
 </tr>
 <tr>
 <td><a href="Rule/">Rule</a></td>
-<td></td>
+<td>A Level 2A criterion: a Boolean condition over features. A patient is flagged if any rule holds; each rule's id is reported with the counts.</td>
 </tr>
 <tr>
 <td><a href="ScoreItem/">ScoreItem</a></td>
-<td></td>
+<td>A Level 2B score item: points added when its feature is present. Its id is reported with the counts.</td>
 </tr>
 <tr>
 <td><a href="ScoreModel/">ScoreModel</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="SiteProfile/">SiteProfile</a></td>
-<td>Site file, sites/<site>_v<version></td>
-</tr>
-<tr>
-<td><a href="SiteTest/">SiteTest</a></td>
-<td></td>
+<td>The Level 2B logic: a patient is flagged when the points of the items that apply add up to the threshold.</td>
 </tr>
 <tr>
 <td><a href="Within/">Within</a></td>
-<td>A record of each listed feature, all falling within <code>days</code> of each other</td>
+<td>A record of each listed feature, all falling within <code>days</code> of each other. With <code>in_order</code>, the records must also occur in the listed order (the same day counts as in order).</td>
 </tr>
 </tbody>
 </table>
@@ -700,7 +690,7 @@
 <tbody>
 <tr>
 <td><a href="absorbed_into/">absorbed_into</a></td>
-<td>The cluster CP that currently handles this disease, e</td>
+<td>The cluster CP that currently handles this disease, e.g. <code>cluster-icd10n18x_L2A_v1.0</code>. Empty once the disease stands alone. Cluster CPs themselves are not supported yet; the field and the <code>cluster-</code> naming are reserved so nothing needs renaming later.</td>
 </tr>
 <tr>
 <td><a href="all_of/">all_of</a></td>
@@ -727,32 +717,16 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="build/">build</a></td>
-<td>build_id of the build that ran there; must be a build of this CP</td>
-</tr>
-<tr>
-<td><a href="build_id/">build_id</a></td>
-<td><cp_id>_<datamodel></td>
-</tr>
-<tr>
 <td><a href="candidate_mondo_ids/">candidate_mondo_ids</a></td>
-<td>Documentation only: the diseases under the umbrella</td>
-</tr>
-<tr>
-<td><a href="cdm_schema/">cdm_schema</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="cdm_version/">cdm_version</a></td>
-<td></td>
+<td>Documentation only: the diseases under the umbrella. Not queried; each candidate gets its own CP.</td>
 </tr>
 <tr>
 <td><a href="change_note/">change_note</a></td>
-<td>Why this version exists (PR description summary)</td>
+<td>Why this version exists (PR description summary).</td>
 </tr>
 <tr>
 <td><a href="cluster/">cluster</a></td>
-<td>Required iff search_mode = cluster</td>
+<td>Required if and only if <code>search_mode</code> is <code>cluster</code>.</td>
 </tr>
 <tr>
 <td><a href="code/">code</a></td>
@@ -767,24 +741,12 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="concept_id/">concept_id</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a href="cp_id/">cp_id</a></td>
-<td><disease-id>_<level>_v<major></td>
-</tr>
-<tr>
-<td><a href="cp_logic_sha256/">cp_logic_sha256</a></td>
-<td>sha256 of the CP's logic (disease ids, level, search_mode, cluster, features,...</td>
+<td>Name of the CP version, built from the disease, level and version. Format: <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease-id&gt;</code> is the lowercase Mondo id + '-' + disease.slug, e.g. <code>mondo0010619-xlh_L1_v1.0</code></td>
 </tr>
 <tr>
 <td><a href="curation_record_version/">curation_record_version</a></td>
-<td>Version of the curation record (keyed by mondo_id) this CP was built from</td>
-</tr>
-<tr>
-<td><a href="datamodel/">datamodel</a></td>
-<td></td>
+<td>Version of the curation record (keyed by <code>mondo_id</code>) this CP was built from. Recorded, not queried.</td>
 </tr>
 <tr>
 <td><a href="date/">date</a></td>
@@ -799,16 +761,12 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="dialect/">dialect</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a href="disease/">disease</a></td>
 <td></td>
 </tr>
 <tr>
 <td><a href="disjuncts/">disjuncts</a></td>
-<td>Level 1 only</td>
+<td>Level 1 only.</td>
 </tr>
 <tr>
 <td><a href="expected_flag_rate/">expected_flag_rate</a></td>
@@ -824,19 +782,15 @@
 </tr>
 <tr>
 <td><a href="features/">features</a></td>
-<td>Atomic evidence items</td>
+<td>Atomic evidence items. Logic blocks reference them by id.</td>
 </tr>
 <tr>
 <td><a href="gene_symbol/">gene_symbol</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="generator/">generator</a></td>
-<td>cpsql version that wrote the SQL, e</td>
-</tr>
-<tr>
 <td><a href="genetic/">genetic</a></td>
-<td>Required for genetic_finding</td>
+<td>Required for <code>genetic_finding</code> features.</td>
 </tr>
 <tr>
 <td><a href="hgnc_id/">hgnc_id</a></td>
@@ -844,11 +798,11 @@
 </tr>
 <tr>
 <td><a href="high_per_100k/">high_per_100k</a></td>
-<td>Required unless basis is none</td>
+<td>Required unless <code>basis</code> is <code>none</code>.</td>
 </tr>
 <tr>
 <td><a href="hpo_id/">hpo_id</a></td>
-<td>Phenotype features: the HPO term this realises (annotation only, not queried)</td>
+<td>Phenotype features: the HPO term this realises (annotation only, not queried).</td>
 </tr>
 <tr>
 <td><a href="id/">id</a></td>
@@ -860,15 +814,15 @@
 </tr>
 <tr>
 <td><a href="include_descendants/">include_descendants</a></td>
-<td>Codes only</td>
+<td>Default <code>true</code> for a feature's main codes, <code>false</code> for result value and unit codes. SNOMED/LOINC/RxNorm expand via <code>CONCEPT_ANCESTOR</code>; ICD10CM expands by code prefix.</td>
 </tr>
 <tr>
 <td><a href="include_personal_history/">include_personal_history</a></td>
-<td>diagnostic_code and coded phenotype features only</td>
+<td><code>diagnostic_code</code> and coded <code>phenotype</code> features only. Default <code>true</code>: also count <code>observation</code> rows recording the patient's own history of the condition. Set <code>false</code> to count only direct records.</td>
 </tr>
 <tr>
 <td><a href="included_mondo_ids/">included_mondo_ids</a></td>
-<td>Every Mondo id that constitutes this disease entity, mondo_id included</td>
+<td>Every Mondo id that constitutes this disease entity, <code>mondo_id</code> included. Defaults to <code>[mondo_id]</code>. Recorded, not queried.</td>
 </tr>
 <tr>
 <td><a href="interpretations/">interpretations</a></td>
@@ -880,7 +834,7 @@
 </tr>
 <tr>
 <td><a href="kg_extracted_at/">kg_extracted_at</a></td>
-<td>When the MendelGraph subgraph the features were drawn from was extracted (ISO...</td>
+<td>When Mendelian extracted the source data behind the features (ISO 8601, e.g. <code>2026-09-24T14:05:00Z</code>).</td>
 </tr>
 <tr>
 <td><a href="kind/">kind</a></td>
@@ -896,7 +850,7 @@
 </tr>
 <tr>
 <td><a href="low_per_100k/">low_per_100k</a></td>
-<td>May be omitted for an open-ended range</td>
+<td>May be omitted for an open-ended range.</td>
 </tr>
 <tr>
 <td><a href="min_distinct_dates/">min_distinct_dates</a></td>
@@ -904,7 +858,7 @@
 </tr>
 <tr>
 <td><a href="min_span_days/">min_span_days</a></td>
-<td>Records must stretch across at least this many days, first to last</td>
+<td>Records must stretch across at least this many days, first to last.</td>
 </tr>
 <tr>
 <td><a href="module/">module</a></td>
@@ -916,7 +870,7 @@
 </tr>
 <tr>
 <td><a href="name/">name</a></td>
-<td>Human-readable disease name, for reviewers</td>
+<td>Human-readable disease name, for reviewers. Not queried.</td>
 </tr>
 <tr>
 <td><a href="none_of/">none_of</a></td>
@@ -932,15 +886,11 @@
 </tr>
 <tr>
 <td><a href="operator/">operator</a></td>
-<td>numeric only</td>
-</tr>
-<tr>
-<td><a href="personal_history_concepts/">personal_history_concepts</a></td>
-<td>Concepts that mark an OBSERVATION row as the patient's own history, with the ...</td>
+<td><code>numeric</code> only</td>
 </tr>
 <tr>
 <td><a href="points/">points</a></td>
-<td>May be negative</td>
+<td>May be negative.</td>
 </tr>
 <tr>
 <td><a href="provenance/">provenance</a></td>
@@ -948,15 +898,15 @@
 </tr>
 <tr>
 <td><a href="require_gene_text_match/">require_gene_text_match</a></td>
-<td>Default true when codes are generic LOINC panels</td>
+<td>Default <code>true</code> when codes are generic LOINC panels.</td>
 </tr>
 <tr>
 <td><a href="result/">result</a></td>
-<td>Required for diagnostic_test and for LOINC-coded phenotype</td>
+<td>Required for <code>diagnostic_test</code> features and for LOINC-coded <code>phenotype</code> features.</td>
 </tr>
 <tr>
 <td><a href="review/">review</a></td>
-<td>Clinical sign-off</td>
+<td>Clinical sign-off. Recorded only; not enforced.</td>
 </tr>
 <tr>
 <td><a href="reviewer/">reviewer</a></td>
@@ -964,59 +914,39 @@
 </tr>
 <tr>
 <td><a href="rules/">rules</a></td>
-<td>Level 2a only</td>
+<td>Level 2a only. CP fires if ANY rule fires.</td>
 </tr>
 <tr>
 <td><a href="schema_version/">schema_version</a></td>
-<td>Version of THIS schema the file conforms to, e</td>
+<td>Version of THIS schema the file conforms to, e.g. <code>0.2.0</code></td>
 </tr>
 <tr>
 <td><a href="score/">score</a></td>
-<td>Level 2b only</td>
+<td>Level 2b only.</td>
 </tr>
 <tr>
 <td><a href="search_mode/">search_mode</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="site/">site</a></td>
-<td>Lowercase site name, e</td>
-</tr>
-<tr>
-<td><a href="site_version/">site_version</a></td>
-<td>Version of the site file the run used</td>
-</tr>
-<tr>
-<td><a href="sites_tested/">sites_tested</a></td>
-<td>Where this CP version has been run, and with which build</td>
-</tr>
-<tr>
 <td><a href="slug/">slug</a></td>
-<td>Short lowercase hyphenated disease name used in file names, e</td>
+<td>Short lowercase hyphenated disease name used in file names, e.g. <code>xlh</code>, <code>fabry</code>.</td>
 </tr>
 <tr>
 <td><a href="source/">source</a></td>
-<td>Which pipeline run or reference produced the range</td>
+<td>Which pipeline run or reference produced the range.</td>
 </tr>
 <tr>
-<td><a href="source_value_fallback/">source_value_fallback</a></td>
-<td>Also match raw ICD-10-CM strings in *_source_value</td>
-</tr>
-<tr>
-<td><a href="specificity_tier/">specificity_tier</a></td>
-<td>Specificity tier (1 = confirmatory/pathognomonic</td>
-</tr>
-<tr>
-<td><a href="status/">status</a></td>
-<td></td>
+<td><a href="specificity_grade/">specificity_grade</a></td>
+<td>Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.</td>
 </tr>
 <tr>
 <td><a href="supersedes/">supersedes</a></td>
-<td>Previous cp_id, if any</td>
+<td>Previous <code>cp_id</code>, if any.</td>
 </tr>
 <tr>
 <td><a href="text_terms/">text_terms</a></td>
-<td>Names and synonyms for what the feature describes (a disease, a finding, a te...</td>
+<td>Names and synonyms for what the feature describes (a disease, a finding, a test or a drug), for a future text-search (NLP) step.</td>
 </tr>
 <tr>
 <td><a href="threshold/">threshold</a></td>
@@ -1032,11 +962,7 @@
 </tr>
 <tr>
 <td><a href="units/">units</a></td>
-<td>UCUM units the threshold applies to</td>
-</tr>
-<tr>
-<td><a href="updated/">updated</a></td>
-<td></td>
+<td>UCUM units the threshold applies to. Strongly recommended for <code>numeric</code>.</td>
 </tr>
 <tr>
 <td><a href="value/">value</a></td>
@@ -1044,27 +970,15 @@
 </tr>
 <tr>
 <td><a href="value_concepts/">value_concepts</a></td>
-<td>qualitative only: accepted answers (e</td>
+<td><code>qualitative</code> only: accepted answers (e.g. LOINC <code>LA6576-8</code> Positive).</td>
 </tr>
 <tr>
 <td><a href="value_high/">value_high</a></td>
-<td>between only</td>
-</tr>
-<tr>
-<td><a href="version/">version</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="vocab_schema/">vocab_schema</a></td>
-<td></td>
+<td><code>between</code> only</td>
 </tr>
 <tr>
 <td><a href="vocabulary/">vocabulary</a></td>
-<td>SNOMED (the only vocabulary allowed here)</td>
-</tr>
-<tr>
-<td><a href="vocabulary_version/">vocabulary_version</a></td>
-<td>The site's Athena release, from its VOCABULARY table</td>
+<td></td>
 </tr>
 <tr>
 <td><a href="within/">within</a></td>
@@ -1083,47 +997,35 @@
 <tbody>
 <tr>
 <td><a href="CodeSystem/">CodeSystem</a></td>
-<td>CP-side vocabulary names; cpsql maps each to its Athena vocabulary_id</td>
+<td>CP-side vocabulary names.</td>
 </tr>
 <tr>
 <td><a href="CPLevel/">CPLevel</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="CPStatus/">CPStatus</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="DataModel/">DataModel</a></td>
-<td></td>
+<td>How a CP's features combine into a flag. The level decides which logic block the CP carries: <code>disjuncts</code> (L1), <code>rules</code> (L2A) or <code>score</code> (L2B); L3 has none yet.</td>
 </tr>
 <tr>
 <td><a href="FlagRateBasis/">FlagRateBasis</a></td>
-<td></td>
+<td>Where the numbers in an expected flag rate come from.</td>
 </tr>
 <tr>
 <td><a href="Module/">Module</a></td>
-<td>The evidence domain a feature belongs to</td>
+<td>The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed.</td>
 </tr>
 <tr>
 <td><a href="ResultKind/">ResultKind</a></td>
-<td></td>
+<td>Whether a result is compared with a threshold or matched against a set of accepted answers.</td>
 </tr>
 <tr>
 <td><a href="ResultOperator/">ResultOperator</a></td>
-<td></td>
+<td>How a <code>numeric</code> result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the result.</td>
 </tr>
 <tr>
 <td><a href="ReviewDecision/">ReviewDecision</a></td>
-<td></td>
+<td>The outcome of a clinical review of a CP.</td>
 </tr>
 <tr>
 <td><a href="SearchMode/">SearchMode</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="SqlDialect/">SqlDialect</a></td>
-<td></td>
+<td>Which patients a CP searches: the whole dataset, or only those with an umbrella code.</td>
 </tr>
 </tbody>
 </table>
@@ -1158,7 +1060,7 @@
 </tr>
 <tr>
 <td><a href="Decimal/">Decimal</a></td>
-<td>A real number with arbitrary precision that conforms to the xsd:decimal speci...</td>
+<td>A real number with arbitrary precision that conforms to the xsd:decimal specification</td>
 </tr>
 <tr>
 <td><a href="Double/">Double</a></td>
@@ -1174,11 +1076,11 @@
 </tr>
 <tr>
 <td><a href="Jsonpath/">Jsonpath</a></td>
-<td>A string encoding a JSON Path</td>
+<td>A string encoding a JSON Path. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded in tree form.</td>
 </tr>
 <tr>
 <td><a href="Jsonpointer/">Jsonpointer</a></td>
-<td>A string encoding a JSON Pointer</td>
+<td>A string encoding a JSON Pointer. The value of the string MUST conform to JSON Point syntax and SHOULD dereference to a valid object within the current instance document when encoded in tree form.</td>
 </tr>
 <tr>
 <td><a href="Ncname/">Ncname</a></td>
@@ -1186,15 +1088,15 @@
 </tr>
 <tr>
 <td><a href="Nodeidentifier/">Nodeidentifier</a></td>
-<td>A URI, CURIE or BNODE that represents a node in a model</td>
+<td>A URI, CURIE or BNODE that represents a node in a model.</td>
 </tr>
 <tr>
 <td><a href="Objectidentifier/">Objectidentifier</a></td>
-<td>A URI or CURIE that represents an object in the model</td>
+<td>A URI or CURIE that represents an object in the model.</td>
 </tr>
 <tr>
 <td><a href="Sparqlpath/">Sparqlpath</a></td>
-<td>A string encoding a SPARQL Property Path</td>
+<td>A string encoding a SPARQL Property Path. The value of the string MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects within the current instance document when encoded as RDF.</td>
 </tr>
 <tr>
 <td><a href="String/">String</a></td>
@@ -1202,7 +1104,7 @@
 </tr>
 <tr>
 <td><a href="Time/">Time</a></td>
-<td>A time object represents a (local) time of day, independent of any particular...</td>
+<td>A time object represents a (local) time of day, independent of any particular day</td>
 </tr>
 <tr>
 <td><a href="Uri/">Uri</a></td>
@@ -1284,7 +1186,7 @@
       
       
         <a
-          href="../cp-yaml-spec/"
+          href="../applying-cps-omop54/"
           class="md-footer__link md-footer__link--next"
           rel="next"
         >
@@ -1293,7 +1195,7 @@
               <span class="md-footer__direction">
                 Next
               </span>
-              CP YAML specification
+              Applying CPs in OMOP 5.4
             </div>
           </div>
           <div class="md-footer__button md-icon">

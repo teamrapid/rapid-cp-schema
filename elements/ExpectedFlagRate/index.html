@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-expectedflagrate">Class: ExpectedFlagRate</h1>
-<p><em>Range of patients per 100,000 a correct CP should flag at a site (prevalence x ascertainment), from the Expected Flag Rate Pipeline. A wide range, not a target; feeds the flag-rate gauge.</em></p>
+<p><em>Range of patients per 100,000 a correct CP should flag at a site.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ExpectedFlagRate">rapidcp:ExpectedFlagRate</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -328,13 +340,13 @@
 <tr>
 <td><a href="../low_per_100k/">low_per_100k</a></td>
 <td>0..1 <br/> <a href="../Float/">Float</a></td>
-<td>May be omitted for an open-ended range</td>
+<td>May be omitted for an open-ended range.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../high_per_100k/">high_per_100k</a></td>
 <td>0..1 <br/> <a href="../Float/">Float</a></td>
-<td>Required unless basis is none</td>
+<td>Required unless <code>basis</code> is <code>none</code>.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -346,7 +358,7 @@
 <tr>
 <td><a href="../source/">source</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td>Which pipeline run or reference produced the range</td>
+<td>Which pipeline run or reference produced the range.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -399,9 +411,7 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExpectedFlagRate</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range of patients per 100,000 a correct CP should flag at a site (prevalence</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">x ascertainment), from the Expected Flag Rate Pipeline. A wide range, not a target;</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">feeds the flag-rate gauge.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range of patients per 100,000 a correct CP should flag at a site.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">low_per_100k</span><span class="p">:</span>
@@ -415,7 +425,7 @@
 <span class="w">    </span><span class="nt">minimum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 <span class="w">  </span><span class="nt">high_per_100k</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high_per_100k</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required unless basis is none.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required unless `basis` is `none`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -443,9 +453,7 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExpectedFlagRate</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range of patients per 100,000 a correct CP should flag at a site (prevalence</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">x ascertainment), from the Expected Flag Rate Pipeline. A wide range, not a target;</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">feeds the flag-rate gauge.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range of patients per 100,000 a correct CP should flag at a site.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">low_per_100k</span><span class="p">:</span>
@@ -460,7 +468,7 @@
 <span class="w">    </span><span class="nt">minimum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 <span class="w">  </span><span class="nt">high_per_100k</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high_per_100k</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required unless basis is none.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required unless `basis` is `none`.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExpectedFlagRate</span>

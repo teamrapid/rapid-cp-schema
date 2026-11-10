@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -528,8 +555,8 @@
 <tbody>
 <tr>
 <td><a href="../Expr/">Expr</a></td>
-<td>Exactly one of: feature</td>
-<td>all_of</td>
+<td>One condition in a Level 2A rule. Each node uses exactly one form: <code>feature</code>, <code>all_of</code>, <code>any_of</code>, <code>none_of</code> (none of the listed conditions holds), <code>at_least</code> with <code>of</code>, or <code>within</code>. A rule must contain at least one feature that isn't under <code>none_of</code>. <code>min_distinct_dates</code> and <code>min_span_days</code> apply only to a <code>feature</code> node.</td>
+<td>no</td>
 </tr>
 </tbody>
 </table>

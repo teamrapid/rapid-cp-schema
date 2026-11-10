@@ -318,14 +318,41 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cp-yaml-spec/" class="md-nav__link">
+      <a href="../../applying-cps-omop54/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../results-file-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -524,7 +551,7 @@
 
 
 <h1 id="slot-included_mondo_ids">Slot: included_mondo_ids</h1>
-<p><em>Every Mondo id that constitutes this disease entity, mondo_id included. One flat list on every CP, so the dashboard can find a disease's CPs with a single filter. Defaults to [mondo_id]. Recorded, not queried.</em></p>
+<p><em>Every Mondo id that constitutes this disease entity, <code>mondo_id</code> included. Defaults to <code>[mondo_id]</code>. Recorded, not queried.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/included_mondo_ids">rapidcp:included_mondo_ids</a></p>
 <!-- no inheritance hierarchy -->
@@ -540,7 +567,7 @@
 <tbody>
 <tr>
 <td><a href="../DiseaseRef/">DiseaseRef</a></td>
-<td></td>
+<td>The disease a CP is for, identified by an anchor Mondo id.</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -640,9 +667,8 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">included_mondo_ids</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, mondo_id included.</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">One flat list on every CP, so the dashboard can find a disease's CPs with a single</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">filter. Defaults to [mondo_id]. Recorded, not queried.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Every Mondo id that constitutes this disease entity, `mondo_id` included.</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Defaults to `[mondo_id]`. Recorded, not queried.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>

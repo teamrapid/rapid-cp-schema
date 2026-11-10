@@ -164,11 +164,23 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cp-yaml-spec/">
+<a class="md-nav__link" href="../../applying-cps-omop54/">
 <span class="md-ellipsis">
     
   
-    CP YAML specification
+    Applying CPs in OMOP 5.4
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../results-file-spec/">
+<span class="md-ellipsis">
+    
+  
+    Results-file specification
   
 
     
@@ -289,6 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-feature">Class: Feature</h1>
+<p><em>One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where the module needs one. Logic blocks refer to features by id.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/Feature">rapidcp:Feature</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -346,7 +359,7 @@
 
 
 
-      Feature : specificity_tier
+      Feature : specificity_grade
 
       Feature : text_terms
 
@@ -382,15 +395,15 @@
 <td>direct</td>
 </tr>
 <tr>
-<td><a href="../specificity_tier/">specificity_tier</a></td>
+<td><a href="../specificity_grade/">specificity_grade</a></td>
 <td>1 <br/> <a href="../Integer/">Integer</a></td>
-<td>Specificity tier (1 = confirmatory/pathognomonic</td>
+<td>Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../hpo_id/">hpo_id</a></td>
 <td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Phenotype features: the HPO term this realises (annotation only, not queried)</td>
+<td>Phenotype features: the HPO term this realises (annotation only, not queried).</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -402,25 +415,25 @@
 <tr>
 <td><a href="../result/">result</a></td>
 <td>0..1 <br/> <a href="../ResultCriterion/">ResultCriterion</a></td>
-<td>Required for diagnostic_test and for LOINC-coded phenotype</td>
+<td>Required for <code>diagnostic_test</code> features and for LOINC-coded <code>phenotype</code> features.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../genetic/">genetic</a></td>
 <td>0..1 <br/> <a href="../GeneticCriterion/">GeneticCriterion</a></td>
-<td>Required for genetic_finding</td>
+<td>Required for <code>genetic_finding</code> features.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../include_personal_history/">include_personal_history</a></td>
 <td>0..1 <br/> <a href="../Boolean/">Boolean</a></td>
-<td>diagnostic_code and coded phenotype features only</td>
+<td><code>diagnostic_code</code> and coded <code>phenotype</code> features only. Default <code>true</code>: also count <code>observation</code> rows recording the patient's own history of the condition. Set <code>false</code> to count only direct records.</td>
 <td>direct</td>
 </tr>
 <tr>
 <td><a href="../text_terms/">text_terms</a></td>
 <td>* <br/> <a href="../String/">String</a></td>
-<td>Names and synonyms for what the feature describes (a disease, a finding, a te...</td>
+<td>Names and synonyms for what the feature describes (a disease, a finding, a test or a drug), for a future text-search (NLP) step.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -473,6 +486,9 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'One</span><span class="nv"> </span><span class="s">piece</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">evidence:</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">codes</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">module,</span><span class="nv"> </span><span class="s">plus</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">result</span>
+<span class="w">  </span><span class="s">or</span><span class="nv"> </span><span class="s">genetic</span><span class="nv"> </span><span class="s">finding</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">found</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">module</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">one.</span><span class="nv"> </span><span class="s">Logic</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">refer</span>
+<span class="w">  </span><span class="s">to</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">id.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">id</span><span class="p">:</span>
@@ -502,10 +518,10 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">specificity_tier</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_tier</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental).</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">L1 disjuncts may only use tier 1.</span>
+<span class="w">  </span><span class="nt">specificity_grade</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_grade</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">... 5 = incidental). L1 disjuncts may only use S1 features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -535,7 +551,8 @@
 <span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">result</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for diagnostic_test and for LOINC-coded phenotype.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for `diagnostic_test` features and for LOINC-coded `phenotype`</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -544,7 +561,7 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">genetic</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">genetic</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for genetic_finding.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for `genetic_finding` features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -553,9 +570,9 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">include_personal_history</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">include_personal_history</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'diagnostic_code</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">phenotype</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">true:</span>
-<span class="w">      </span><span class="s">also</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">OBSERVATION</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span>
-<span class="w">      </span><span class="s">Set</span><span class="nv"> </span><span class="s">false</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`diagnostic_code`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">`phenotype`</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">`true`:</span>
+<span class="w">      </span><span class="s">also</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">`observation`</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span>
+<span class="w">      </span><span class="s">Set</span><span class="nv"> </span><span class="s">`false`</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -564,8 +581,7 @@
 <span class="w">  </span><span class="nt">text_terms</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_terms</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Names and synonyms for what the feature describes (a disease, a finding,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a test or a drug), for a future text-search (NLP) step. Carried, never used</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">by the OMOP generator.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a test or a drug), for a future text-search (NLP) step.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -576,6 +592,9 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'One</span><span class="nv"> </span><span class="s">piece</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">evidence:</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">codes</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">module,</span><span class="nv"> </span><span class="s">plus</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">result</span>
+<span class="w">  </span><span class="s">or</span><span class="nv"> </span><span class="s">genetic</span><span class="nv"> </span><span class="s">finding</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">found</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">module</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">one.</span><span class="nv"> </span><span class="s">Logic</span><span class="nv"> </span><span class="s">blocks</span><span class="nv"> </span><span class="s">refer</span>
+<span class="w">  </span><span class="s">to</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">id.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">id</span><span class="p">:</span>
@@ -610,10 +629,10 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">specificity_tier</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_tier</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity tier (1 = confirmatory/pathognomonic ... 5 = incidental).</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">L1 disjuncts may only use tier 1.</span>
+<span class="w">  </span><span class="nt">specificity_grade</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_grade</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">... 5 = incidental). L1 disjuncts may only use S1 features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
@@ -647,7 +666,8 @@
 <span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">result</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for diagnostic_test and for LOINC-coded phenotype.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for `diagnostic_test` features and for LOINC-coded `phenotype`</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
@@ -657,7 +677,7 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">genetic</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">genetic</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for genetic_finding.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Required for `genetic_finding` features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
@@ -667,9 +687,9 @@
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">include_personal_history</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">include_personal_history</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'diagnostic_code</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">phenotype</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">true:</span>
-<span class="w">      </span><span class="s">also</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">OBSERVATION</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span>
-<span class="w">      </span><span class="s">Set</span><span class="nv"> </span><span class="s">false</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'`diagnostic_code`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded</span><span class="nv"> </span><span class="s">`phenotype`</span><span class="nv"> </span><span class="s">features</span><span class="nv"> </span><span class="s">only.</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">`true`:</span>
+<span class="w">      </span><span class="s">also</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">`observation`</span><span class="nv"> </span><span class="s">rows</span><span class="nv"> </span><span class="s">recording</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">patient</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">own</span><span class="nv"> </span><span class="s">history</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">condition.</span>
+<span class="w">      </span><span class="s">Set</span><span class="nv"> </span><span class="s">`false`</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">only</span><span class="nv"> </span><span class="s">direct</span><span class="nv"> </span><span class="s">records.'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
@@ -679,8 +699,7 @@
 <span class="w">  </span><span class="nt">text_terms</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_terms</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Names and synonyms for what the feature describes (a disease, a finding,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a test or a drug), for a future text-search (NLP) step. Carried, never used</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">by the OMOP generator.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a test or a drug), for a future text-search (NLP) step.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
