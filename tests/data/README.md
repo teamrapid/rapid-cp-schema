@@ -27,3 +27,21 @@ rather than a whole CP.
 Each file starts with a comment saying what it tests. The rules come from
 [`docs/applying-cps-omop54.md`](../../docs/applying-cps-omop54.md), mostly its section 5.6. Each `invalid` and `problem` file differs from a
 valid CP in one respect only, so it fails (or should fail) for one reason.
+
+## Running the tests
+
+`just test` runs three steps:
+
+1. `gen-project` into `tmp/` (git-ignored): every LinkML generator must accept the schema.
+2. `gen-python`, then pytest: regenerates `src/rapid_cp_schema/datamodel/` and runs
+   `tests/test_data.py` as described above.
+3. `linkml-run-examples` over `valid/` and the counter-examples in `invalid/`, writing
+   converted copies to `examples/output/` (git-ignored).
+
+CI (`.github/workflows/main.yaml`) runs `just test` on Python 3.10–3.14 for every push to
+`main` and every pull request. To check a single file:
+
+```sh
+uv run pytest tests/test_data.py -k Feature-medication
+uv run linkml-validate -s src/rapid_cp_schema/schema/rapid_cp_schema.yaml -C Feature tests/data/valid/Feature-procedure-snomed.yaml
+```

@@ -47,7 +47,10 @@ pytest imports the generated datamodel, so run `just gen-python` first after any
 
 ## Test data conventions
 
-- `tests/data/{valid,invalid}/<ClassName>-<id>.yaml` — the prefix before `-` is the target class
+`tests/data/README.md` is the human-facing description of the tests; keep it, `CONTRIBUTING.md`
+and this section consistent when the conventions change.
+
+- `tests/data/{valid,invalid,problem/valid,problem/invalid}/<ClassName>-<id>.yaml` — the prefix before `-` is the target class
   (pytest and `linkml-run-examples` both rely on it). Any class works, so class-local rules are
   tested on fragments (`Feature-…`).
 - `tests/test_data.py` runs the LinkML validator on every file. `invalid/` files need one or more
@@ -66,7 +69,8 @@ pytest imports the generated datamodel, so run `just gen-python` first after any
 
 - Bump the schema `version` for every released change. Breaking changes are allowed (0.2.0
   broke v0.1.0 CP files on purpose), but bump the minor version while the schema is 0.x, record
-  the reason in `SPEC.md` §5, and update the test data in the same change (`SPEC.md` §8).
+  the change and its reason in `SPEC.md` §3, and update the test data in the same change
+  (`SPEC.md` §8).
 - Do not invent a RAPID prefix, PURL or schema `id`; the current `rapidcp` expansion is a
   placeholder pending agreement with the TA1 group (`SPEC.md` §5.3).
 - Codes stay in source vocabularies (ICD10CM, SNOMED, LOINC, RxNorm), never OMOP `concept_id`s.
