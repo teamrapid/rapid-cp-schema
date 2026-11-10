@@ -1034,14 +1034,15 @@
 
 <h1 id="applying-rapid-cp-files-in-omop-54">Applying RAPID CP files in OMOP 5.4</h1>
 <p>What a computable phenotype (CP) file contains, and how a site applies it to OMOP CDM 5.4 data.
-Written by Mendelian for the sites that run RAPID CPs; follows schema 0.2.0.</p>
+Written by Mendelian for the sites that run RAPID CPs.</p>
 <h2 id="1-about-this-document">1. About this document</h2>
 <p>Mendelian shares each computable phenotype (CP) as a YAML file. Each site turns it into queries
 on its own OMOP CDM 5.4 data, runs them, and returns counts in the format set by the
 <a href="../results-file-spec/">Results-File Specification</a>.</p>
 <ul>
 <li><strong>What a site receives.</strong> One CP file per CP version. The files follow this repository's LinkML
-  schema, <code>rapid_cp_schema.yaml</code>, currently version 0.2.0.</li>
+  schema, <code>rapid_cp_schema.yaml</code>. Its versions and what changed in each are listed in the
+  <a href="https://github.com/teamrapid/rapid-cp-schema/blob/main/CHANGELOG.md">changelog</a>.</li>
 <li><strong>What is fixed.</strong> What a CP file means: which evidence each feature describes and how features
   combine into a flag (sections 3 to 5).</li>
 <li><strong>What each site decides.</strong> How it searches its data for that evidence. Section 7 gives
@@ -1135,7 +1136,7 @@ its history; they can be read but aren't needed to build queries.</p>
 <td><code>schema_version</code></td>
 <td>yes</td>
 <td>no</td>
-<td>Version of the LinkML schema the file follows, currently <code>0.2.0</code>.</td>
+<td>Version of the LinkML schema the file follows, e.g. <code>0.2.0</code>.</td>
 </tr>
 <tr>
 <td><code>title</code></td>
