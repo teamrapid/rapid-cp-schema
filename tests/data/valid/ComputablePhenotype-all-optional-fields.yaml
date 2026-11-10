@@ -1,6 +1,6 @@
 # L1 CP using every optional top-level, disease, provenance and feature field.
 cp_id: mondo0010619-xlh_L1_v1.0
-schema_version: 0.1.0
+schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
 disease:
   mondo_id: MONDO:0010619
@@ -10,14 +10,13 @@ disease:
   curation_record_version: '3'
 level: L1
 search_mode: population
-status: testing
 provenance: {authored_by: example, authored_date: '2026-10-27', kg_extracted_at: '2026-09-24T14:05:00Z', change_note: First
     version., supersedes: mondo0010619-xlh_L1_v0.9}
 features:
 - id: f1
   module: diagnostic_code
   name: XLH diagnosis code
-  specificity_tier: 1
+  specificity_grade: 1
   codes:
   - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia, include_descendants: false}
   include_personal_history: false
@@ -25,13 +24,13 @@ features:
 - id: f2
   module: medication
   name: burosumab
-  specificity_tier: 1
+  specificity_grade: 1
   codes:
   - {vocabulary: RXNORM, code: '2043855', label: burosumab}
 - id: f3
   module: genetic_finding
   name: PHEX pathogenic variant
-  specificity_tier: 1
+  specificity_grade: 1
   codes:
   - {vocabulary: LOINC, code: 53037-8, label: Genetic variation clinical significance}
   genetic:
@@ -46,8 +45,6 @@ disjuncts:
 - {id: d2, feature: f2}
 - {id: d3, feature: f3}
 review: {reviewer: example, date: '2026-10-27', decision: proceed, comments: Looks sound.}
-sites_tested:
-- {site: unc, site_version: 1, build: mondo0010619-xlh_L1_v1.0_omop54.b1}
 expected_flag_rate: {low_per_100k: 0.5, high_per_100k: 5, basis: measured, source: EFR run 12}
 absorbed_into: cluster-icd10e833_L2A_v1.0
 notes: Free text.

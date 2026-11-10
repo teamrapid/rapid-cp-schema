@@ -1,8 +1,8 @@
-# Spec §3.3: qualitative result with accepted answer codes.
+# Qualitative result with accepted answer codes.
 id: f7
 module: diagnostic_test
 name: PHEX sequencing positive
-specificity_tier: 1
+specificity_grade: 1
 codes:
 - {vocabulary: SNOMED, code: '117040002'}
 result:

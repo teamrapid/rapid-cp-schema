@@ -1,8 +1,7 @@
-# specificity_tier runs from 1 to 5.
-# expect: 0 is less than the minimum of 1
+# Required feature field specificity_grade is missing.
+# expect: 'specificity_grade' is a required property
 id: f1
 module: diagnostic_code
 name: XLH diagnosis code
-specificity_tier: 0
 codes:
 - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

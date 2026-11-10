@@ -3,6 +3,6 @@
 id: f2
 module: drug
 name: burosumab
-specificity_tier: 1
+specificity_grade: 1
 codes:
 - {vocabulary: RXNORM, code: '2043855', label: burosumab}

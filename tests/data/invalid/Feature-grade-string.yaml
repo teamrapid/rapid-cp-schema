@@ -1,8 +1,8 @@
-# specificity_tier runs from 1 to 5.
-# expect: 6 is greater than the maximum of 5
+# specificity_grade is an integer.
+# expect: '1' is not of type 'integer'
 id: f1
 module: diagnostic_code
 name: XLH diagnosis code
-specificity_tier: 6
+specificity_grade: '1'
 codes:
 - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

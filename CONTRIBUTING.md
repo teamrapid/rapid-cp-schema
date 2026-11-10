@@ -101,9 +101,11 @@ Core developers should read the material on the [LinkML site](https://linkml.io/
     - Textual annotations on classes, slots and enumerations should be written with minimal jargon, clear grammar and no misspellings
 - Include examples and counter-examples (intentionally invalid examples)
     - Rationale: these serve as documentation and unit tests
-    - These will be used by the automated test suite
-    - All elements of the schema must be illustrated with valid and invalid data examples in src/data. New schema elements will not be merged into the main branch until examples are provided
-    - Invalid example data files should be invalid for one single reason, which should be reflected in the filename. It should be possible to render the invalid example files valid by addressing that single fault.
+    - These will be used by the automated test suite (`just test`, also run in CI on every pull request)
+    - Examples go in `tests/data/`, named `<ClassName>-<id>.yaml`; see [tests/data/README.md](tests/data/README.md) for the folders and how each is tested
+    - Every new schema rule comes with an invalid example that it rejects. New schema elements will not be merged into the main branch until examples are provided
+    - Invalid example data files should be invalid for one single reason, stated in a leading comment and in one or more `# expect: <regex>` lines that must match the validation error. It should be possible to render the invalid example files valid by addressing that single fault.
+    - A rule the schema does not enforce yet gets its example in `tests/data/problem/invalid/`; when the schema starts rejecting it, move it to `tests/data/invalid/`
 - Use enums for categorical values
     - Rationale: Open-ended string ranges encourage multiple values to represent the same entity, like “water”, “H2O” and “HOH”
     - Any slot whose values could be constrained to a finite set should use an Enum

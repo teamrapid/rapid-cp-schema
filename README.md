@@ -11,17 +11,17 @@ LinkML schema for RAPID TA1 computable phenotypes (CPs): versioned, data-model-i
 ## Repository Structure
 
 * [docs/](docs/) - mkdocs-managed documentation
-  * [elements/](docs/elements/) - generated schema documentation
+  * `elements/` - generated schema documentation (created by `just gen-doc`, git-ignored)
 * [examples/](examples/) - Examples of using the schema
-* [project/](project/) - project files (these files are auto-generated, do not edit)
+* `project/` - project files generated from the schema (created by `just gen-project`, git-ignored)
 * [src/](src/) - source files (edit these)
   * [rapid_cp_schema](src/rapid_cp_schema)
     * [schema/](src/rapid_cp_schema/schema) -- LinkML schema
       (edit this)
     * [datamodel/](src/rapid_cp_schema/datamodel) -- generated
       Python datamodel
-* [tests/](tests/) - Python tests
-  * [data/](tests/data) - Example data
+* [tests/](tests/) - Python tests, run with `just test`
+  * [data/](tests/data) - Example data, validated against the schema; see its [README](tests/data/README.md)
 
 ## Developer Tools
 

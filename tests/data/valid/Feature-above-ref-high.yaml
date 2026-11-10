@@ -1,8 +1,8 @@
-# Spec §3.3: reference-range operator needs no value.
+# Reference-range operator needs no value.
 id: f4
 module: phenotype
 name: High alkaline phosphatase
-specificity_tier: 3
+specificity_grade: 3
 hpo_id: HP:0002148
 codes:
 - {vocabulary: LOINC, code: 6768-6}

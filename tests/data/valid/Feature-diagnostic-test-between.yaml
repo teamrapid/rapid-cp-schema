@@ -1,8 +1,8 @@
-# Spec §3.3: numeric between with value, value_high and units.
+# Numeric between with value, value_high and units.
 id: f8
 module: diagnostic_test
 name: TmP/GFR low
-specificity_tier: 2
+specificity_grade: 2
 codes:
 - {vocabulary: LOINC, code: 2777-1}
 result:

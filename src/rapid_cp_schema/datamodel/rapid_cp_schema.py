@@ -2,24 +2,7 @@
 # Schema: rapid_cp_schema
 #
 # id: https://mendelian.co/schemas/rapid-cp-logic
-# description: Schema for the two files that make up a deployable RAPID computable phenotype (CP):
-#
-#     1. The CP logic file  <disease-id>_<level>_v<major>.<minor>.yaml
-#        Data-model-independent. Says WHAT counts as evidence (features, coded in
-#        source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the
-#        evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).
-#        Every disjunct / rule / score item carries a stable id (d1, r2, s3) that
-#        is reported back as the flag reason.
-#
-#     2. The build file  <cp-id>_<datamodel>.b<build>.sql
-#        The generated SQL for one data model (e.g. OMOP 5.4), shared by every
-#        site on it, with a YAML comment header that conforms to CPBuild.
-#
-#     3. Site files  sites/<site>_v<version>.yaml
-#        Everything about one site (schemas, vocabulary release, history
-#        concepts), applied at run time.
-#
-#   This schema is deliberately separate from the curation-record schema. The curation record holds the full evidence base and review trail; the CP logic file is the executable subset selected from it. Diseases are identified by Mondo ids only.
+# description: Schema for RAPID computable phenotype (CP) logic files, named `<disease-id>_<level>_v<major>.<minor>.yaml`. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`) that is reported back as the flag reason.
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
@@ -76,7 +59,7 @@ from linkml_runtime.linkml_model.types import Boolean, Date, Datetime, Float, In
 from linkml_runtime.utils.metamodelcore import Bool, URIorCURIE, XSDDate, XSDDateTime
 
 metamodel_version = "1.12.0"
-version = "0.1.0"
+version = "0.2.0"
 
 # Namespaces
 HP = CurieNamespace('HP', 'http://purl.obolibrary.org/obo/HP_')
@@ -109,14 +92,10 @@ class ScoreItemId(extended_str):
     pass
 
 
-class CPBuildBuildId(extended_str):
-    pass
-
-
 @dataclass(repr=False)
 class ComputablePhenotype(YAMLRoot):
     """
-    One versioned CP. File name must equal cp_id + ".yaml".
+    One versioned CP. File name must equal `cp_id` + `.yaml`.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -131,12 +110,10 @@ class ComputablePhenotype(YAMLRoot):
     disease: Union[dict, "DiseaseRef"] = None
     level: Union[str, "CPLevel"] = None
     search_mode: Union[str, "SearchMode"] = None
-    status: Union[str, "CPStatus"] = None
     provenance: Union[dict, "CPProvenance"] = None
     features: Union[dict[Union[str, FeatureId], Union[dict, "Feature"]], list[Union[dict, "Feature"]]] = empty_dict()
     cluster: Optional[Union[dict, "ClusterScope"]] = None
     review: Optional[Union[dict, "ClinicalReview"]] = None
-    sites_tested: Optional[Union[Union[dict, "SiteTest"], list[Union[dict, "SiteTest"]]]] = empty_list()
     expected_flag_rate: Optional[Union[dict, "ExpectedFlagRate"]] = None
     disjuncts: Optional[Union[dict[Union[str, DisjunctId], Union[dict, "Disjunct"]], list[Union[dict, "Disjunct"]]]] = empty_dict()
     rules: Optional[Union[dict[Union[str, RuleId], Union[dict, "Rule"]], list[Union[dict, "Rule"]]]] = empty_dict()
@@ -175,11 +152,6 @@ class ComputablePhenotype(YAMLRoot):
         if not isinstance(self.search_mode, SearchMode):
             self.search_mode = SearchMode(self.search_mode)
 
-        if self._is_empty(self.status):
-            self.MissingRequiredField("status")
-        if not isinstance(self.status, CPStatus):
-            self.status = CPStatus(self.status)
-
         if self._is_empty(self.provenance):
             self.MissingRequiredField("provenance")
         if not isinstance(self.provenance, CPProvenance):
@@ -194,8 +166,6 @@ class ComputablePhenotype(YAMLRoot):
 
         if self.review is not None and not isinstance(self.review, ClinicalReview):
             self.review = ClinicalReview(**as_dict(self.review))
-
-        self._normalize_inlined_as_list(slot_name="sites_tested", slot_type=SiteTest, key_name="site", keyed=False)
 
         if self.expected_flag_rate is not None and not isinstance(self.expected_flag_rate, ExpectedFlagRate):
             self.expected_flag_rate = ExpectedFlagRate(**as_dict(self.expected_flag_rate))
@@ -218,6 +188,9 @@ class ComputablePhenotype(YAMLRoot):
 
 @dataclass(repr=False)
 class DiseaseRef(YAMLRoot):
+    """
+    The disease a CP is for, identified by an anchor Mondo id.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["DiseaseRef"]
@@ -260,8 +233,8 @@ class DiseaseRef(YAMLRoot):
 @dataclass(repr=False)
 class ClusterScope(YAMLRoot):
     """
-    Cluster-filtered search. The universe is persons with any of these umbrella codes (searched like a diagnostic_code
-    feature); every criterion is then restricted to that universe.
+    Limits the search to patients who have at least one of the umbrella codes. Every criterion is then evaluated only
+    for those patients.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -287,6 +260,9 @@ class ClusterScope(YAMLRoot):
 
 @dataclass(repr=False)
 class CPProvenance(YAMLRoot):
+    """
+    Who wrote this CP version and when.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["CPProvenance"]
@@ -319,76 +295,6 @@ class CPProvenance(YAMLRoot):
 
         if self.supersedes is not None and not isinstance(self.supersedes, str):
             self.supersedes = str(self.supersedes)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass(repr=False)
-class HistoryConcept(YAMLRoot):
-    """
-    Either a SNOMED CT code (vocabulary + code), looked up at the site with its descendants unless include_descendants
-    is false, or a raw OMOP concept_id used as is, e.g. a site-local concept.
-    """
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = RAPIDCP["HistoryConcept"]
-    class_class_curie: ClassVar[str] = "rapidcp:HistoryConcept"
-    class_name: ClassVar[str] = "HistoryConcept"
-    class_model_uri: ClassVar[URIRef] = RAPIDCP.HistoryConcept
-
-    vocabulary: Optional[str] = None
-    code: Optional[str] = None
-    concept_id: Optional[int] = None
-    label: Optional[str] = None
-    include_descendants: Optional[Union[bool, Bool]] = None
-
-    def __post_init__(self, *_: str, **kwargs: Any):
-        if self.vocabulary is not None and not isinstance(self.vocabulary, str):
-            self.vocabulary = str(self.vocabulary)
-
-        if self.code is not None and not isinstance(self.code, str):
-            self.code = str(self.code)
-
-        if self.concept_id is not None and not isinstance(self.concept_id, int):
-            self.concept_id = int(self.concept_id)
-
-        if self.label is not None and not isinstance(self.label, str):
-            self.label = str(self.label)
-
-        if self.include_descendants is not None and not isinstance(self.include_descendants, Bool):
-            self.include_descendants = Bool(self.include_descendants)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass(repr=False)
-class SiteTest(YAMLRoot):
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = RAPIDCP["SiteTest"]
-    class_class_curie: ClassVar[str] = "rapidcp:SiteTest"
-    class_name: ClassVar[str] = "SiteTest"
-    class_model_uri: ClassVar[URIRef] = RAPIDCP.SiteTest
-
-    site: str = None
-    site_version: int = None
-    build: str = None
-
-    def __post_init__(self, *_: str, **kwargs: Any):
-        if self._is_empty(self.site):
-            self.MissingRequiredField("site")
-        if not isinstance(self.site, str):
-            self.site = str(self.site)
-
-        if self._is_empty(self.site_version):
-            self.MissingRequiredField("site_version")
-        if not isinstance(self.site_version, int):
-            self.site_version = int(self.site_version)
-
-        if self._is_empty(self.build):
-            self.MissingRequiredField("build")
-        if not isinstance(self.build, str):
-            self.build = str(self.build)
 
         super().__post_init__(**kwargs)
 
@@ -435,8 +341,7 @@ class ClinicalReview(YAMLRoot):
 @dataclass(repr=False)
 class ExpectedFlagRate(YAMLRoot):
     """
-    Range of patients per 100,000 a correct CP should flag at a site (prevalence x ascertainment), from the Expected
-    Flag Rate Pipeline. A wide range, not a target; feeds the flag-rate gauge.
+    Range of patients per 100,000 a correct CP should flag at a site.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -472,6 +377,10 @@ class ExpectedFlagRate(YAMLRoot):
 
 @dataclass(repr=False)
 class Feature(YAMLRoot):
+    """
+    One piece of evidence: a set of codes for one module, plus the result or genetic finding that must be found where
+    the module needs one. Logic blocks refer to features by id.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Feature"]
@@ -482,7 +391,7 @@ class Feature(YAMLRoot):
     id: Union[str, FeatureId] = None
     module: Union[str, "Module"] = None
     name: str = None
-    specificity_tier: int = None
+    specificity_grade: int = None
     codes: Union[Union[dict, "CodeRef"], list[Union[dict, "CodeRef"]]] = None
     hpo_id: Optional[Union[str, URIorCURIE]] = None
     result: Optional[Union[dict, "ResultCriterion"]] = None
@@ -506,10 +415,10 @@ class Feature(YAMLRoot):
         if not isinstance(self.name, str):
             self.name = str(self.name)
 
-        if self._is_empty(self.specificity_tier):
-            self.MissingRequiredField("specificity_tier")
-        if not isinstance(self.specificity_tier, int):
-            self.specificity_tier = int(self.specificity_tier)
+        if self._is_empty(self.specificity_grade):
+            self.MissingRequiredField("specificity_grade")
+        if not isinstance(self.specificity_grade, int):
+            self.specificity_grade = int(self.specificity_grade)
 
         if self._is_empty(self.codes):
             self.MissingRequiredField("codes")
@@ -536,6 +445,9 @@ class Feature(YAMLRoot):
 
 @dataclass(repr=False)
 class CodeRef(YAMLRoot):
+    """
+    A code written as it appears in its source vocabulary, never as an OMOP `concept_id`.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["CodeRef"]
@@ -570,6 +482,9 @@ class CodeRef(YAMLRoot):
 
 @dataclass(repr=False)
 class ResultCriterion(YAMLRoot):
+    """
+    The result a test or measurement record must have to count: a numeric comparison or a set of accepted answers.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ResultCriterion"]
@@ -609,8 +524,10 @@ class ResultCriterion(YAMLRoot):
 @dataclass(repr=False)
 class GeneticCriterion(YAMLRoot):
     """
-    A row qualifies if its concept is in the feature's codes AND (when given) its value_as_concept_id is an accepted
-    interpretation AND (when require_gene_text_match) the gene symbol appears in the row's source text.
+    The variant result a `genetic_finding` feature looks for: a causal gene and the interpretations that count, such
+    as pathogenic or likely pathogenic. A record matches when it carries one of the feature's codes, its
+    interpretation is one of those listed (if any are), and, when `require_gene_text_match` is `true`, the gene symbol
+    appears in the record's text.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -643,6 +560,10 @@ class GeneticCriterion(YAMLRoot):
 
 @dataclass(repr=False)
 class Disjunct(YAMLRoot):
+    """
+    A Level 1 criterion: one S1 feature that is enough on its own to flag a patient. Its id is reported with the
+    counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Disjunct"]
@@ -681,6 +602,10 @@ class Disjunct(YAMLRoot):
 
 @dataclass(repr=False)
 class Rule(YAMLRoot):
+    """
+    A Level 2A criterion: a Boolean condition over features. A patient is flagged if any rule holds; each rule's id is
+    reported with the counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["Rule"]
@@ -712,8 +637,9 @@ class Rule(YAMLRoot):
 @dataclass(repr=False)
 class Expr(YAMLRoot):
     """
-    Exactly one of: feature | all_of | any_of | none_of | at_least+of | within. none_of = NOT(any of). A rule must
-    contain at least one positive feature. min_distinct_dates / min_span_days apply to a feature leaf.
+    One condition in a Level 2A rule. Each node uses exactly one form: `feature`, `all_of`, `any_of`, `none_of` (none
+    of the listed conditions holds), `at_least` with `of`, or `within`. A rule must contain at least one feature that
+    isn't under `none_of`. `min_distinct_dates` and `min_span_days` apply only to a `feature` node.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -770,7 +696,7 @@ class Expr(YAMLRoot):
 @dataclass(repr=False)
 class Within(YAMLRoot):
     """
-    A record of each listed feature, all falling within `days` of each other. With in_order, the records must also
+    A record of each listed feature, all falling within `days` of each other. With `in_order`, the records must also
     occur in the listed order (the same day counts as in order).
     """
     _inherited_slots: ClassVar[list[str]] = []
@@ -804,6 +730,9 @@ class Within(YAMLRoot):
 
 @dataclass(repr=False)
 class ScoreModel(YAMLRoot):
+    """
+    The Level 2B logic: a patient is flagged when the points of the items that apply add up to the threshold.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ScoreModel"]
@@ -829,6 +758,9 @@ class ScoreModel(YAMLRoot):
 
 @dataclass(repr=False)
 class ScoreItem(YAMLRoot):
+    """
+    A Level 2B score item: points added when its feature is present. Its id is reported with the counts.
+    """
     _inherited_slots: ClassVar[list[str]] = []
 
     class_class_uri: ClassVar[URIRef] = RAPIDCP["ScoreItem"]
@@ -867,148 +799,15 @@ class ScoreItem(YAMLRoot):
         super().__post_init__(**kwargs)
 
 
-@dataclass(repr=False)
-class CPBuild(YAMLRoot):
-    """
-    Header of a build SQL file (<build_id>.sql): the YAML between "-- cpsql-build" and "-- end-cpsql-build", with the
-    "-- " prefixes removed. Only CP-dependent fields; site settings are in site files.
-    """
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = RAPIDCP["CPBuild"]
-    class_class_curie: ClassVar[str] = "rapidcp:CPBuild"
-    class_name: ClassVar[str] = "CPBuild"
-    class_model_uri: ClassVar[URIRef] = RAPIDCP.CPBuild
-
-    build_id: Union[str, CPBuildBuildId] = None
-    cp_id: str = None
-    datamodel: Union[str, "DataModel"] = None
-    build: int = None
-    generator: Optional[str] = None
-    cp_logic_sha256: Optional[str] = None
-    change_note: Optional[str] = None
-
-    def __post_init__(self, *_: str, **kwargs: Any):
-        if self._is_empty(self.build_id):
-            self.MissingRequiredField("build_id")
-        if not isinstance(self.build_id, CPBuildBuildId):
-            self.build_id = CPBuildBuildId(self.build_id)
-
-        if self._is_empty(self.cp_id):
-            self.MissingRequiredField("cp_id")
-        if not isinstance(self.cp_id, str):
-            self.cp_id = str(self.cp_id)
-
-        if self._is_empty(self.datamodel):
-            self.MissingRequiredField("datamodel")
-        if not isinstance(self.datamodel, DataModel):
-            self.datamodel = DataModel(self.datamodel)
-
-        if self._is_empty(self.build):
-            self.MissingRequiredField("build")
-        if not isinstance(self.build, int):
-            self.build = int(self.build)
-
-        if self.generator is not None and not isinstance(self.generator, str):
-            self.generator = str(self.generator)
-
-        if self.cp_logic_sha256 is not None and not isinstance(self.cp_logic_sha256, str):
-            self.cp_logic_sha256 = str(self.cp_logic_sha256)
-
-        if self.change_note is not None and not isinstance(self.change_note, str):
-            self.change_note = str(self.change_note)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass(repr=False)
-class SiteProfile(YAMLRoot):
-    """
-    Site file, sites/<site>_v<version>.yaml: everything about running builds at one site. Applied at run time by
-    `cpsql render --site`, so one build serves every site on a data model. Any change is a new version (new file); old
-    versions are kept so past runs can be reproduced.
-    """
-    _inherited_slots: ClassVar[list[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = RAPIDCP["SiteProfile"]
-    class_class_curie: ClassVar[str] = "rapidcp:SiteProfile"
-    class_name: ClassVar[str] = "SiteProfile"
-    class_model_uri: ClassVar[URIRef] = RAPIDCP.SiteProfile
-
-    site: str = None
-    version: int = None
-    datamodel: Union[str, "DataModel"] = None
-    vocabulary_version: str = None
-    cdm_schema: str = None
-    vocab_schema: str = None
-    updated: Union[str, XSDDate] = None
-    cdm_version: Optional[str] = None
-    dialect: Optional[Union[str, "SqlDialect"]] = None
-    source_value_fallback: Optional[Union[bool, Bool]] = None
-    personal_history_concepts: Optional[Union[Union[dict, HistoryConcept], list[Union[dict, HistoryConcept]]]] = empty_list()
-    change_note: Optional[str] = None
-
-    def __post_init__(self, *_: str, **kwargs: Any):
-        if self._is_empty(self.site):
-            self.MissingRequiredField("site")
-        if not isinstance(self.site, str):
-            self.site = str(self.site)
-
-        if self._is_empty(self.version):
-            self.MissingRequiredField("version")
-        if not isinstance(self.version, int):
-            self.version = int(self.version)
-
-        if self._is_empty(self.datamodel):
-            self.MissingRequiredField("datamodel")
-        if not isinstance(self.datamodel, DataModel):
-            self.datamodel = DataModel(self.datamodel)
-
-        if self._is_empty(self.vocabulary_version):
-            self.MissingRequiredField("vocabulary_version")
-        if not isinstance(self.vocabulary_version, str):
-            self.vocabulary_version = str(self.vocabulary_version)
-
-        if self._is_empty(self.cdm_schema):
-            self.MissingRequiredField("cdm_schema")
-        if not isinstance(self.cdm_schema, str):
-            self.cdm_schema = str(self.cdm_schema)
-
-        if self._is_empty(self.vocab_schema):
-            self.MissingRequiredField("vocab_schema")
-        if not isinstance(self.vocab_schema, str):
-            self.vocab_schema = str(self.vocab_schema)
-
-        if self._is_empty(self.updated):
-            self.MissingRequiredField("updated")
-        if not isinstance(self.updated, XSDDate):
-            self.updated = XSDDate(self.updated)
-
-        if self.cdm_version is not None and not isinstance(self.cdm_version, str):
-            self.cdm_version = str(self.cdm_version)
-
-        if self.dialect is not None and not isinstance(self.dialect, SqlDialect):
-            self.dialect = SqlDialect(self.dialect)
-
-        if self.source_value_fallback is not None and not isinstance(self.source_value_fallback, Bool):
-            self.source_value_fallback = Bool(self.source_value_fallback)
-
-        if not isinstance(self.personal_history_concepts, list):
-            self.personal_history_concepts = [self.personal_history_concepts] if self.personal_history_concepts is not None else []
-        self.personal_history_concepts = [v if isinstance(v, HistoryConcept) else HistoryConcept(**as_dict(v)) for v in self.personal_history_concepts]
-
-        if self.change_note is not None and not isinstance(self.change_note, str):
-            self.change_note = str(self.change_note)
-
-        super().__post_init__(**kwargs)
-
-
 # Enumerations
 class CPLevel(EnumDefinitionImpl):
-
+    """
+    How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1),
+    `rules` (L2A) or `score` (L2B); L3 has none yet.
+    """
     L1 = PermissibleValue(
         text="L1",
-        description="Safe Alone - union of Tier-1 (highly-specific) disjuncts.")
+        description="Safe Alone - union of S1 (highly specific) disjuncts.")
     L2A = PermissibleValue(
         text="L2A",
         description="Deterministic rules - Boolean gates.")
@@ -1017,27 +816,33 @@ class CPLevel(EnumDefinitionImpl):
         description="Deterministic score - weighted points vs threshold.")
     L3 = PermissibleValue(
         text="L3",
-        description="Profile match - declared here, not generated by cpsql.")
+        description="Profile match - declared here, not in scope.")
 
     _defn = EnumDefinition(
         name="CPLevel",
+        description="""How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1), `rules` (L2A) or `score` (L2B); L3 has none yet.""",
     )
 
 class SearchMode(EnumDefinitionImpl):
-
+    """
+    Which patients a CP searches: the whole dataset, or only those with an umbrella code.
+    """
     population = PermissibleValue(
         text="population",
         description="Search the whole dataset for the target disease.")
     cluster = PermissibleValue(
         text="cluster",
-        description="Search only persons carrying an umbrella code (see cluster).")
+        description="Search only persons carrying an umbrella code (see `cluster`).")
 
     _defn = EnumDefinition(
         name="SearchMode",
+        description="Which patients a CP searches: the whole dataset, or only those with an umbrella code.",
     )
 
 class FlagRateBasis(EnumDefinitionImpl):
-
+    """
+    Where the numbers in an expected flag rate come from.
+    """
     measured = PermissibleValue(
         text="measured",
         description="From measured prevalence data.")
@@ -1050,10 +855,13 @@ class FlagRateBasis(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="FlagRateBasis",
+        description="Where the numbers in an expected flag rate come from.",
     )
 
 class ReviewDecision(EnumDefinitionImpl):
-
+    """
+    The outcome of a clinical review of a CP.
+    """
     proceed = PermissibleValue(
         text="proceed",
         description="Criteria are sound; the CP can go to sites.")
@@ -1063,41 +871,12 @@ class ReviewDecision(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="ReviewDecision",
+        description="The outcome of a clinical review of a CP.",
     )
-
-class CPStatus(EnumDefinitionImpl):
-
-    draft = PermissibleValue(
-        text="draft",
-        description="Being written; not yet tested at any site.")
-    testing = PermissibleValue(
-        text="testing",
-        description="Being tested at one or more sites.")
-    accepted = PermissibleValue(
-        text="accepted",
-        description="Accepted at all seed sites.")
-    refining = PermissibleValue(
-        text="refining",
-        description="Accepted, but showed an underperformance signature and is being revised.")
-    deprecated = PermissibleValue(
-        text="deprecated",
-        description="Superseded or withdrawn; kept for the record.")
-
-    _defn = EnumDefinition(
-        name="CPStatus",
-    )
-
-    @classmethod
-    def _addvals(cls):
-        setattr(cls, "exemplar-candidate",
-            PermissibleValue(
-                text="exemplar-candidate",
-                description="""Complex logic required; held for a future trained model. cpsql refuses to build SQL for it."""))
 
 class Module(EnumDefinitionImpl):
     """
-    The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed
-    (see docs/CP_YAML_SPEC.md §3.2).
+    The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed.
     """
     diagnostic_code = PermissibleValue(
         text="diagnostic_code",
@@ -1120,99 +899,80 @@ class Module(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="Module",
-        description="""The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed (see docs/CP_YAML_SPEC.md §3.2).""",
+        description="""The evidence domain a feature belongs to. Drives which OMOP tables are searched and which vocabularies are allowed.""",
     )
 
 class CodeSystem(EnumDefinitionImpl):
     """
-    CP-side vocabulary names; cpsql maps each to its Athena vocabulary_id.
+    CP-side vocabulary names.
     """
     ICD10CM = PermissibleValue(
         text="ICD10CM",
-        description="Athena vocabulary_id 'ICD10CM'. Dotted codes (E83.31).")
+        description="Athena `vocabulary_id` `ICD10CM`. Dotted codes (`E83.31`).")
     SNOMED = PermissibleValue(
         text="SNOMED",
-        description="Athena 'SNOMED'.")
+        description="Athena `SNOMED`.")
     LOINC = PermissibleValue(
         text="LOINC",
-        description="Athena 'LOINC' (includes LA answer codes).")
+        description="Athena `LOINC` (includes LA answer codes).")
     RXNORM = PermissibleValue(
         text="RXNORM",
-        description="Athena 'RxNorm'.")
+        description="Athena `RxNorm`.")
     UCUM = PermissibleValue(
         text="UCUM",
-        description="Athena 'UCUM'. Result units only.")
+        description="Athena `UCUM`. Result units only.")
 
     _defn = EnumDefinition(
         name="CodeSystem",
-        description="CP-side vocabulary names; cpsql maps each to its Athena vocabulary_id.",
+        description="CP-side vocabulary names.",
     )
 
 class ResultKind(EnumDefinitionImpl):
-
+    """
+    Whether a result is compared with a threshold or matched against a set of accepted answers.
+    """
     numeric = PermissibleValue(
         text="numeric",
-        description="value_as_number compared to a threshold.")
+        description="`value_as_number` compared to a threshold.")
     qualitative = PermissibleValue(
         text="qualitative",
-        description="value_as_concept_id in a set of answer concepts.")
+        description="`value_as_concept_id` in a set of answer concepts.")
 
     _defn = EnumDefinition(
         name="ResultKind",
+        description="Whether a result is compared with a threshold or matched against a set of accepted answers.",
     )
 
 class ResultOperator(EnumDefinitionImpl):
-
+    """
+    How a `numeric` result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the
+    result.
+    """
     gt = PermissibleValue(
         text="gt",
-        description="x > value")
+        description="`x > value`")
     gte = PermissibleValue(
         text="gte",
-        description="x >= value")
+        description="`x >= value`")
     lt = PermissibleValue(
         text="lt",
-        description="x < value")
+        description="`x < value`")
     lte = PermissibleValue(
         text="lte",
-        description="x <= value")
+        description="`x <= value`")
     between = PermissibleValue(
         text="between",
-        description="value <= x <= value_high")
+        description="`value <= x <= value_high`")
     above_ref_high = PermissibleValue(
         text="above_ref_high",
-        description="x > range_high recorded on the row (MEASUREMENT only).")
+        description="`x > range_high`, the upper limit recorded on the same row (`measurement` only).")
     below_ref_low = PermissibleValue(
         text="below_ref_low",
-        description="x < range_low recorded on the row (MEASUREMENT only).")
+        description="`x < range_low`, the lower limit recorded on the same row (`measurement` only).")
 
     _defn = EnumDefinition(
         name="ResultOperator",
-    )
-
-class DataModel(EnumDefinitionImpl):
-
-    omop54 = PermissibleValue(
-        text="omop54",
-        description="OMOP CDM v5.4")
-    truveta = PermissibleValue(
-        text="truveta",
-        description="Truveta native model (not generated by cpsql yet).")
-
-    _defn = EnumDefinition(
-        name="DataModel",
-    )
-
-class SqlDialect(EnumDefinitionImpl):
-
-    postgresql = PermissibleValue(
-        text="postgresql",
-        description="PostgreSQL (default). The tests check the generated SQL parses as PostgreSQL.")
-    duckdb = PermissibleValue(
-        text="duckdb",
-        description="DuckDB. The generated SQL runs on it; the synthetic test database uses it.")
-
-    _defn = EnumDefinition(
-        name="SqlDialect",
+        description="""How a `numeric` result is compared: with a fixed threshold, a fixed range, or the normal range recorded with the result.""",
     )
 
 # Slots
@@ -1241,17 +1001,11 @@ slots.computablePhenotype__search_mode = Slot(uri=RAPIDCP.search_mode, name="com
 slots.computablePhenotype__cluster = Slot(uri=RAPIDCP.cluster, name="computablePhenotype__cluster", curie=RAPIDCP.curie('cluster'),
                    model_uri=RAPIDCP.computablePhenotype__cluster, domain=None, range=Optional[Union[dict, ClusterScope]])
 
-slots.computablePhenotype__status = Slot(uri=RAPIDCP.status, name="computablePhenotype__status", curie=RAPIDCP.curie('status'),
-                   model_uri=RAPIDCP.computablePhenotype__status, domain=None, range=Union[str, "CPStatus"])
-
 slots.computablePhenotype__provenance = Slot(uri=RAPIDCP.provenance, name="computablePhenotype__provenance", curie=RAPIDCP.curie('provenance'),
                    model_uri=RAPIDCP.computablePhenotype__provenance, domain=None, range=Union[dict, CPProvenance])
 
 slots.computablePhenotype__review = Slot(uri=RAPIDCP.review, name="computablePhenotype__review", curie=RAPIDCP.curie('review'),
                    model_uri=RAPIDCP.computablePhenotype__review, domain=None, range=Optional[Union[dict, ClinicalReview]])
-
-slots.computablePhenotype__sites_tested = Slot(uri=RAPIDCP.sites_tested, name="computablePhenotype__sites_tested", curie=RAPIDCP.curie('sites_tested'),
-                   model_uri=RAPIDCP.computablePhenotype__sites_tested, domain=None, range=Optional[Union[Union[dict, SiteTest], list[Union[dict, SiteTest]]]])
 
 slots.computablePhenotype__expected_flag_rate = Slot(uri=RAPIDCP.expected_flag_rate, name="computablePhenotype__expected_flag_rate", curie=RAPIDCP.curie('expected_flag_rate'),
                    model_uri=RAPIDCP.computablePhenotype__expected_flag_rate, domain=None, range=Optional[Union[dict, ExpectedFlagRate]])
@@ -1314,31 +1068,6 @@ slots.cPProvenance__change_note = Slot(uri=RAPIDCP.change_note, name="cPProvenan
 slots.cPProvenance__supersedes = Slot(uri=RAPIDCP.supersedes, name="cPProvenance__supersedes", curie=RAPIDCP.curie('supersedes'),
                    model_uri=RAPIDCP.cPProvenance__supersedes, domain=None, range=Optional[str])
 
-slots.historyConcept__vocabulary = Slot(uri=RAPIDCP.vocabulary, name="historyConcept__vocabulary", curie=RAPIDCP.curie('vocabulary'),
-                   model_uri=RAPIDCP.historyConcept__vocabulary, domain=None, range=Optional[str])
-
-slots.historyConcept__code = Slot(uri=RAPIDCP.code, name="historyConcept__code", curie=RAPIDCP.curie('code'),
-                   model_uri=RAPIDCP.historyConcept__code, domain=None, range=Optional[str])
-
-slots.historyConcept__concept_id = Slot(uri=RAPIDCP.concept_id, name="historyConcept__concept_id", curie=RAPIDCP.curie('concept_id'),
-                   model_uri=RAPIDCP.historyConcept__concept_id, domain=None, range=Optional[int])
-
-slots.historyConcept__label = Slot(uri=RAPIDCP.label, name="historyConcept__label", curie=RAPIDCP.curie('label'),
-                   model_uri=RAPIDCP.historyConcept__label, domain=None, range=Optional[str])
-
-slots.historyConcept__include_descendants = Slot(uri=RAPIDCP.include_descendants, name="historyConcept__include_descendants", curie=RAPIDCP.curie('include_descendants'),
-                   model_uri=RAPIDCP.historyConcept__include_descendants, domain=None, range=Optional[Union[bool, Bool]])
-
-slots.siteTest__site = Slot(uri=RAPIDCP.site, name="siteTest__site", curie=RAPIDCP.curie('site'),
-                   model_uri=RAPIDCP.siteTest__site, domain=None, range=str,
-                   pattern=re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$'))
-
-slots.siteTest__site_version = Slot(uri=RAPIDCP.site_version, name="siteTest__site_version", curie=RAPIDCP.curie('site_version'),
-                   model_uri=RAPIDCP.siteTest__site_version, domain=None, range=int)
-
-slots.siteTest__build = Slot(uri=RAPIDCP.build, name="siteTest__build", curie=RAPIDCP.curie('build'),
-                   model_uri=RAPIDCP.siteTest__build, domain=None, range=str)
-
 slots.clinicalReview__reviewer = Slot(uri=RAPIDCP.reviewer, name="clinicalReview__reviewer", curie=RAPIDCP.curie('reviewer'),
                    model_uri=RAPIDCP.clinicalReview__reviewer, domain=None, range=str)
 
@@ -1373,8 +1102,8 @@ slots.feature__module = Slot(uri=RAPIDCP.module, name="feature__module", curie=R
 slots.feature__name = Slot(uri=RAPIDCP.name, name="feature__name", curie=RAPIDCP.curie('name'),
                    model_uri=RAPIDCP.feature__name, domain=None, range=str)
 
-slots.feature__specificity_tier = Slot(uri=RAPIDCP.specificity_tier, name="feature__specificity_tier", curie=RAPIDCP.curie('specificity_tier'),
-                   model_uri=RAPIDCP.feature__specificity_tier, domain=None, range=int)
+slots.feature__specificity_grade = Slot(uri=RAPIDCP.specificity_grade, name="feature__specificity_grade", curie=RAPIDCP.curie('specificity_grade'),
+                   model_uri=RAPIDCP.feature__specificity_grade, domain=None, range=int)
 
 slots.feature__hpo_id = Slot(uri=RAPIDCP.hpo_id, name="feature__hpo_id", curie=RAPIDCP.curie('hpo_id'),
                    model_uri=RAPIDCP.feature__hpo_id, domain=None, range=Optional[Union[str, URIorCURIE]])
@@ -1520,62 +1249,3 @@ slots.scoreItem__min_distinct_dates = Slot(uri=RAPIDCP.min_distinct_dates, name=
 
 slots.scoreItem__min_span_days = Slot(uri=RAPIDCP.min_span_days, name="scoreItem__min_span_days", curie=RAPIDCP.curie('min_span_days'),
                    model_uri=RAPIDCP.scoreItem__min_span_days, domain=None, range=Optional[int])
-
-slots.cPBuild__generator = Slot(uri=RAPIDCP.generator, name="cPBuild__generator", curie=RAPIDCP.curie('generator'),
-                   model_uri=RAPIDCP.cPBuild__generator, domain=None, range=Optional[str])
-
-slots.cPBuild__cp_logic_sha256 = Slot(uri=RAPIDCP.cp_logic_sha256, name="cPBuild__cp_logic_sha256", curie=RAPIDCP.curie('cp_logic_sha256'),
-                   model_uri=RAPIDCP.cPBuild__cp_logic_sha256, domain=None, range=Optional[str])
-
-slots.cPBuild__build_id = Slot(uri=RAPIDCP.build_id, name="cPBuild__build_id", curie=RAPIDCP.curie('build_id'),
-                   model_uri=RAPIDCP.cPBuild__build_id, domain=None, range=URIRef,
-                   pattern=re.compile(r'^.+_v[0-9]+\.[0-9]+_[a-z0-9]+\.b[0-9]+$'))
-
-slots.cPBuild__cp_id = Slot(uri=RAPIDCP.cp_id, name="cPBuild__cp_id", curie=RAPIDCP.curie('cp_id'),
-                   model_uri=RAPIDCP.cPBuild__cp_id, domain=None, range=str)
-
-slots.cPBuild__datamodel = Slot(uri=RAPIDCP.datamodel, name="cPBuild__datamodel", curie=RAPIDCP.curie('datamodel'),
-                   model_uri=RAPIDCP.cPBuild__datamodel, domain=None, range=Union[str, "DataModel"])
-
-slots.cPBuild__build = Slot(uri=RAPIDCP.build, name="cPBuild__build", curie=RAPIDCP.curie('build'),
-                   model_uri=RAPIDCP.cPBuild__build, domain=None, range=int)
-
-slots.cPBuild__change_note = Slot(uri=RAPIDCP.change_note, name="cPBuild__change_note", curie=RAPIDCP.curie('change_note'),
-                   model_uri=RAPIDCP.cPBuild__change_note, domain=None, range=Optional[str])
-
-slots.siteProfile__site = Slot(uri=RAPIDCP.site, name="siteProfile__site", curie=RAPIDCP.curie('site'),
-                   model_uri=RAPIDCP.siteProfile__site, domain=None, range=str,
-                   pattern=re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$'))
-
-slots.siteProfile__version = Slot(uri=RAPIDCP.version, name="siteProfile__version", curie=RAPIDCP.curie('version'),
-                   model_uri=RAPIDCP.siteProfile__version, domain=None, range=int)
-
-slots.siteProfile__datamodel = Slot(uri=RAPIDCP.datamodel, name="siteProfile__datamodel", curie=RAPIDCP.curie('datamodel'),
-                   model_uri=RAPIDCP.siteProfile__datamodel, domain=None, range=Union[str, "DataModel"])
-
-slots.siteProfile__cdm_version = Slot(uri=RAPIDCP.cdm_version, name="siteProfile__cdm_version", curie=RAPIDCP.curie('cdm_version'),
-                   model_uri=RAPIDCP.siteProfile__cdm_version, domain=None, range=Optional[str])
-
-slots.siteProfile__dialect = Slot(uri=RAPIDCP.dialect, name="siteProfile__dialect", curie=RAPIDCP.curie('dialect'),
-                   model_uri=RAPIDCP.siteProfile__dialect, domain=None, range=Optional[Union[str, "SqlDialect"]])
-
-slots.siteProfile__vocabulary_version = Slot(uri=RAPIDCP.vocabulary_version, name="siteProfile__vocabulary_version", curie=RAPIDCP.curie('vocabulary_version'),
-                   model_uri=RAPIDCP.siteProfile__vocabulary_version, domain=None, range=str)
-
-slots.siteProfile__cdm_schema = Slot(uri=RAPIDCP.cdm_schema, name="siteProfile__cdm_schema", curie=RAPIDCP.curie('cdm_schema'),
-                   model_uri=RAPIDCP.siteProfile__cdm_schema, domain=None, range=str)
-
-slots.siteProfile__vocab_schema = Slot(uri=RAPIDCP.vocab_schema, name="siteProfile__vocab_schema", curie=RAPIDCP.curie('vocab_schema'),
-                   model_uri=RAPIDCP.siteProfile__vocab_schema, domain=None, range=str)
-
-slots.siteProfile__source_value_fallback = Slot(uri=RAPIDCP.source_value_fallback, name="siteProfile__source_value_fallback", curie=RAPIDCP.curie('source_value_fallback'),
-                   model_uri=RAPIDCP.siteProfile__source_value_fallback, domain=None, range=Optional[Union[bool, Bool]])
-
-slots.siteProfile__personal_history_concepts = Slot(uri=RAPIDCP.personal_history_concepts, name="siteProfile__personal_history_concepts", curie=RAPIDCP.curie('personal_history_concepts'),
-                   model_uri=RAPIDCP.siteProfile__personal_history_concepts, domain=None, range=Optional[Union[Union[dict, HistoryConcept], list[Union[dict, HistoryConcept]]]])
-
-slots.siteProfile__updated = Slot(uri=RAPIDCP.updated, name="siteProfile__updated", curie=RAPIDCP.curie('updated'),
-                   model_uri=RAPIDCP.siteProfile__updated, domain=None, range=Union[str, XSDDate])
-
-slots.siteProfile__change_note = Slot(uri=RAPIDCP.change_note, name="siteProfile__change_note", curie=RAPIDCP.curie('change_note'),
-                   model_uri=RAPIDCP.siteProfile__change_note, domain=None, range=Optional[str])
