@@ -1,4 +1,4 @@
-# RAPID results-file specification v1.0
+# RAPID results-file specification v1.1
 
 The file each site returns to Mendelian after running RAPID computable phenotypes (CPs), and how
 Mendelian checks it. Written by Mendelian for the RAPID Tracking Database.
@@ -16,9 +16,14 @@ a file or a result can be rejected. How a CP's logic maps onto the file is descr
   across many disease entities.
 - **Each result is checked on its own.** A problem with one result never blocks the others in the
   same file.
-- **Versions.** This is version 1.0. Every file states the version it follows
-  (`result_spec_version` = `1.0`). Mendelian will announce any new version, and will keep
+- **Versions.** This is version 1.1. Every file states the version it follows
+  (`result_spec_version` = `1.1`). Mendelian will announce any new version, and will keep
   accepting the previous one for a transition period.
+- **Changes from version 1.0.** `cp_name` follows the new CP name format, which starts with the
+  disease entity's RAPID id instead of its Mondo id (`RAPID000123-xlh_L1_v1.0`, not
+  `mondo0010619-xlh_L1_v1.0`). The advice for "CP version not registered" (section 6) now
+  points to the CP file instead of its `cp_id`. Nothing else changed. Version 1.0 is no longer
+  accepted: only test results were sent under it, so there is no transition period.
 - **Questions** about this specification go to the Mendelian RAPID team.
 
 ## 2. Delivery
@@ -46,9 +51,9 @@ even one that flagged nobody (count 0). The rows of one result share the same `c
 | Column | Format | Filled on | Meaning |
 | --- | --- | --- | --- |
 | `site_code` | text | every row | The site code, as given by Mendelian. The same on every row. |
-| `result_spec_version` | text | every row | `1.0` for this specification. The same on every row. |
+| `result_spec_version` | text | every row | `1.1` for this specification. The same on every row. |
 | `generated_at` | date and time with timezone, ISO 8601 | every row | When this file was produced, for example `2026-10-15T09:30:00Z`. The same on every row. |
-| `cp_name` | text | every row | The CP version's `cp_id`, exactly as published, for example `mondo9999999-test-disease-a_L1_v1.0`. |
+| `cp_name` | text | every row | The CP version's `cp_name`, exactly as published, for example `RAPID999999-test-disease-a_L1_v1.0`. |
 | `run_date` | date, YYYY-MM-DD | every row | The date the site ran this CP version. |
 | `data_snapshot_date` | date, YYYY-MM-DD | every row | The date the site's data was last refreshed before the run. |
 | `row_type` | `summary` or `count` | every row | Which kind of row this is. |
@@ -108,13 +113,13 @@ produced the file at 09:30 UTC on 15 October. The disease entities and sites are
 
 ```csv
 site_code,result_spec_version,generated_at,cp_name,run_date,data_snapshot_date,row_type,criterion_id,population_n,population_basis,population_basis_note,count_value,count_status
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,213,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,40,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,173,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,25,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,22,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,,suppressed
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d3,,,,0,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,213,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,40,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,173,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,25,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,22,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,,suppressed
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d3,,,,0,exact
 ```
 
 - **Test Disease A:** 213 patients flagged out of 520,000. Criterion `d1` matched 40 and `d2`
@@ -133,10 +138,10 @@ worded as below.
 | Applies to | Reason given | What to do |
 | --- | --- | --- |
 | Whole file | File can't be read: not a CSV, or columns missing or extra | Use the layout in section 3, saved as a CSV. |
-| Whole file | Unknown specification version | Set `result_spec_version` to `1.0`. |
+| Whole file | Unknown specification version | Set `result_spec_version` to `1.1`. |
 | Whole file | `site_code`, `result_spec_version` or `generated_at` differs between rows | Use the same value on every row. |
 | Whole file | Site code does not match the site that sent the file | Put the site's own code in `site_code`. |
-| One result | CP version not registered | Check the `cp_name` spelling against the published `cp_id`. If it's right, tell Mendelian. |
+| One result | CP version not registered | Check the `cp_name` spelling against the published CP file. If it's right, tell Mendelian. |
 | One result | CP version is a draft | Run only published CP versions. |
 | One result | CP version appears more than once in the file for the same run date | Report each CP version and run date once. |
 | One result | Missing summary row, or more than one | Give exactly one `summary` row per result. |
@@ -170,14 +175,15 @@ regenerate the file before resending".
 ## 8. Checking a file before sending
 
 The layout in section 3 is also available as a machine-readable Frictionless Table Schema,
-[`results-file-schema-v1.0.json`](results-file/results-file-schema-v1.0.json), with the
+[`results-file-schema-v1.1.json`](results-file/results-file-schema-v1.1.json), with the
 worked example from section 5 as
-[`results-example-v1.0.csv`](results-file/results-example-v1.0.csv). A file can be checked
+[`results-example-v1.1.csv`](results-file/results-example-v1.1.csv). The version 1.0 schema and
+example stay in the same folder for reference only. A file can be checked
 against the schema with the free [Frictionless](https://framework.frictionlessdata.io/)
 command-line tool:
 
 ```bash
-frictionless validate rapid-results_test_site_1_2026-10-15.csv --schema results-file-schema-v1.0.json
+frictionless validate rapid-results_test_site_1_2026-10-15.csv --schema results-file-schema-v1.1.json
 ```
 
 This catches layout and format problems: column names, dates, number formats and allowed values.

@@ -14,10 +14,18 @@ Each pull request that changes the schema, the documentation or the examples add
 ### Added
 
 - This changelog, and a written release process in `CONTRIBUTING.md`.
+- **Breaking:** `disease.disease_entity_id`, required: the disease entity's opaque RAPID id,
+  `RAPID` + six digits (#4).
+- Results-file specification v1.1, with its Frictionless schema and example file (#4).
 
 ### Changed
 
 - The OMOP 5.4 guide no longer names the current schema version; it links to this changelog.
+- **Breaking:** `cp_id` renamed `cp_name`. The name starts with the disease entity id instead of
+  the lowercase Mondo id, e.g. `RAPID000123-xlh_L1_v1.0`, so it doesn't change when a Mondo id is
+  obsoleted or merged (#4).
+- Results file: `cp_name` follows the new CP name format in specification v1.1. Version 1.0 is
+  no longer accepted and it has been used only for testing purposes (#4).
 
 ## [0.2.0] - 2026-11-10
 

@@ -1,9 +1,10 @@
 # Level 1 CP for X-linked hypophosphatemia, assembled from the snippets in the v0.1.0 spec.
 # Illustrative only: not a clinically reviewed CP.
-cp_id: mondo0010619-xlh_L1_v1.0
+cp_name: RAPID000123-xlh_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
 disease:
+  disease_entity_id: RAPID000123
   mondo_id: MONDO:0010619
   slug: xlh
   name: X-linked hypophosphatemia

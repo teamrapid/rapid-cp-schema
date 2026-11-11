@@ -69,7 +69,7 @@ class LinkMLMeta(RootModel):
 linkml_meta = LinkMLMeta({'default_prefix': 'rapidcp',
      'default_range': 'string',
      'description': 'Schema for RAPID computable phenotype (CP) logic files, named '
-                    '`<disease-id>_<level>_v<major>.<minor>.yaml`. '
+                    '`<cp_name>.yaml`, e.g. `RAPID000123-xlh_L1_v1.0.yaml`. '
                     'Data-model-independent. Says WHAT counts as evidence '
                     '(features, coded in source vocabularies: ICD10CM, SNOMED, '
                     'LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 '
@@ -265,12 +265,12 @@ class ResultOperator(str, Enum):
 
 class ComputablePhenotype(ConfiguredBaseModel):
     """
-    One versioned CP. File name must equal `cp_id` + `.yaml`.
+    One versioned CP. File name must equal `cp_name` + `.yaml`.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://mendelian.co/schemas/rapid-cp-logic',
          'tree_root': True})
 
-    cp_id: str = Field(default=..., description="""Name of the CP version, built from the disease, level and version. Format: `<disease-id>_<level>_v<major>.<minor>`, where `<disease-id>` is the lowercase Mondo id + '-' + disease.slug, e.g. `mondo0010619-xlh_L1_v1.0`""", json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
+    cp_name: str = Field(default=..., description="""Name of the CP version, built from the disease entity, level and version. Format: `<disease_entity_id>-<slug>_<level>_v<major>.<minor>`, where `<disease_entity_id>` is `disease.disease_entity_id` and `<slug>` is `disease.slug`, e.g. `RAPID000123-xlh_L1_v1.0`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
     schema_version: str = Field(default=..., description="""Version of THIS schema the file conforms to, e.g. `0.2.0`""", json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
     title: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
     disease: DiseaseRef = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
@@ -287,16 +287,16 @@ class ComputablePhenotype(ConfiguredBaseModel):
     absorbed_into: Optional[str] = Field(default=None, description="""The cluster CP that currently handles this disease, e.g. `cluster-icd10n18x_L2A_v1.0`. Empty once the disease stands alone. Cluster CPs themselves are not supported yet; the field and the `cluster-` naming are reserved so nothing needs renaming later.""", json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
     notes: Optional[str] = Field(default=None, json_schema_extra = { "linkml_meta": {'domain_of': ['ComputablePhenotype']} })
 
-    @field_validator('cp_id')
-    def pattern_cp_id(cls, v):
-        pattern=re.compile(r"^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$")
+    @field_validator('cp_name')
+    def pattern_cp_name(cls, v):
+        pattern=re.compile(r"^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$")
         if isinstance(v, list):
             for element in v:
                 if isinstance(element, str) and not pattern.search(element):
-                    err_msg = f"Invalid cp_id format: {element}"
+                    err_msg = f"Invalid cp_name format: {element}"
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.search(v):
-            err_msg = f"Invalid cp_id format: {v}"
+            err_msg = f"Invalid cp_name format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -316,15 +316,29 @@ class ComputablePhenotype(ConfiguredBaseModel):
 
 class DiseaseRef(ConfiguredBaseModel):
     """
-    The disease a CP is for, identified by an anchor Mondo id.
+    The disease entity a CP is for, identified by a RAPID disease entity id and an anchor Mondo id.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://mendelian.co/schemas/rapid-cp-logic'})
 
+    disease_entity_id: str = Field(default=..., description="""Opaque id of the disease entity, `RAPID` + exactly six digits, e.g. `RAPID000123`. Minted by Mendelian. Every CP for the entity carries the same id, across levels and versions. It does not depend on Mondo, so it stays the same when the anchor Mondo id is obsoleted or merged.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     mondo_id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     slug: str = Field(default=..., description="""Short lowercase hyphenated disease name used in file names, e.g. `xlh`, `fabry`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     name: str = Field(default=..., description="""Human-readable disease name, for reviewers. Not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef', 'Feature']} })
     included_mondo_ids: Optional[list[str]] = Field(default=None, description="""Every Mondo id that constitutes this disease entity, `mondo_id` included. Defaults to `[mondo_id]`. Recorded, not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     curation_record_version: Optional[str] = Field(default=None, description="""Version of the curation record (keyed by `mondo_id`) this CP was built from. Recorded, not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
+
+    @field_validator('disease_entity_id')
+    def pattern_disease_entity_id(cls, v):
+        pattern=re.compile(r"^RAPID[0-9]{6}$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.search(element):
+                    err_msg = f"Invalid disease_entity_id format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.search(v):
+            err_msg = f"Invalid disease_entity_id format: {v}"
+            raise ValueError(err_msg)
+        return v
 
     @field_validator('mondo_id')
     def pattern_mondo_id(cls, v):
@@ -386,7 +400,7 @@ class CPProvenance(ConfiguredBaseModel):
     authored_date: date = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['CPProvenance']} })
     kg_extracted_at: Optional[datetime ] = Field(default=None, description="""When Mendelian extracted the source data behind the features (ISO 8601, e.g. `2026-09-24T14:05:00Z`).""", json_schema_extra = { "linkml_meta": {'domain_of': ['CPProvenance']} })
     change_note: Optional[str] = Field(default=None, description="""Why this version exists (PR description summary).""", json_schema_extra = { "linkml_meta": {'domain_of': ['CPProvenance']} })
-    supersedes: Optional[str] = Field(default=None, description="""Previous `cp_id`, if any.""", json_schema_extra = { "linkml_meta": {'domain_of': ['CPProvenance']} })
+    supersedes: Optional[str] = Field(default=None, description="""Previous `cp_name`, if any.""", json_schema_extra = { "linkml_meta": {'domain_of': ['CPProvenance']} })
 
 
 class ClinicalReview(ConfiguredBaseModel):

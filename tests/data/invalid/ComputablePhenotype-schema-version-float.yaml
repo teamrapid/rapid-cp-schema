@@ -1,9 +1,9 @@
 # schema_version written as an unquoted number is read as a float, not a string.
 # expect: 0.1 is not of type 'string' in /schema_version
-cp_id: mondo0010619-xlh_L1_v1.0
+cp_name: RAPID000123-xlh_L1_v1.0
 schema_version: 0.1
 title: X-linked hypophosphatemia, Level 1
-disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
+disease: {disease_entity_id: RAPID000123, mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
 level: L1
 search_mode: population
 provenance: {authored_by: example, authored_date: '2026-10-27'}
