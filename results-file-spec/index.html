@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rapid-results-file-specification-v10" class="md-skip">
+        <a href="#rapid-results-file-specification-v11" class="md-skip">
           Skip to content
         </a>
       
@@ -744,7 +744,7 @@
   
 
 
-<h1 id="rapid-results-file-specification-v10">RAPID results-file specification v1.0</h1>
+<h1 id="rapid-results-file-specification-v11">RAPID results-file specification v1.1</h1>
 <p>The file each site returns to Mendelian after running RAPID computable phenotypes (CPs), and how
 Mendelian checks it. Written by Mendelian for the RAPID Tracking Database.</p>
 <h2 id="1-about-this-specification">1. About this specification</h2>
@@ -759,9 +759,14 @@ a file or a result can be rejected. How a CP's logic maps onto the file is descr
   across many disease entities.</li>
 <li><strong>Each result is checked on its own.</strong> A problem with one result never blocks the others in the
   same file.</li>
-<li><strong>Versions.</strong> This is version 1.0. Every file states the version it follows
-  (<code>result_spec_version</code> = <code>1.0</code>). Mendelian will announce any new version, and will keep
+<li><strong>Versions.</strong> This is version 1.1. Every file states the version it follows
+  (<code>result_spec_version</code> = <code>1.1</code>). Mendelian will announce any new version, and will keep
   accepting the previous one for a transition period.</li>
+<li><strong>Changes from version 1.0.</strong> <code>cp_name</code> follows the new CP name format, which starts with the
+  disease entity's RAPID id instead of its Mondo id (<code>RAPID000123-xlh_L1_v1.0</code>, not
+  <code>mondo0010619-xlh_L1_v1.0</code>). The advice for "CP version not registered" (section 6) now
+  points to the CP file instead of its <code>cp_id</code>. Nothing else changed. Version 1.0 is no longer
+  accepted: only test results were sent under it, so there is no transition period.</li>
 <li><strong>Questions</strong> about this specification go to the Mendelian RAPID team.</li>
 </ul>
 <h2 id="2-delivery">2. Delivery</h2>
@@ -802,7 +807,7 @@ even one that flagged nobody (count 0). The rows of one result share the same <c
 <td><code>result_spec_version</code></td>
 <td>text</td>
 <td>every row</td>
-<td><code>1.0</code> for this specification. The same on every row.</td>
+<td><code>1.1</code> for this specification. The same on every row.</td>
 </tr>
 <tr>
 <td><code>generated_at</code></td>
@@ -814,7 +819,7 @@ even one that flagged nobody (count 0). The rows of one result share the same <c
 <td><code>cp_name</code></td>
 <td>text</td>
 <td>every row</td>
-<td>The CP version's <code>cp_id</code>, exactly as published, for example <code>mondo9999999-test-disease-a_L1_v1.0</code>.</td>
+<td>The CP version's <code>cp_name</code>, exactly as published, for example <code>RAPID999999-test-disease-a_L1_v1.0</code>.</td>
 </tr>
 <tr>
 <td><code>run_date</code></td>
@@ -914,13 +919,13 @@ patients flagged. RAPID may decide to unify this definition across sites.</p>
 <p>Test Site 1 ran two L1 CP versions on 14 October 2026, against data refreshed on 1 October, and
 produced the file at 09:30 UTC on 15 October. The disease entities and sites are fictitious.</p>
 <div class="highlight"><pre><span></span><code>site_code,result_spec_version,generated_at,cp_name,run_date,data_snapshot_date,row_type,criterion_id,population_n,population_basis,population_basis_note,count_value,count_status
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,213,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,40,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,173,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,25,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,22,exact
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,,suppressed
-test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d3,,,,0,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,213,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,40,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,173,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,25,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,22,exact
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,,suppressed
+test_site_1,1.1,2026-10-15T09:30:00Z,RAPID999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d3,,,,0,exact
 </code></pre></div>
 <ul>
 <li><strong>Test Disease A:</strong> 213 patients flagged out of 520,000. Criterion <code>d1</code> matched 40 and <code>d2</code>
@@ -951,7 +956,7 @@ worded as below.</p>
 <tr>
 <td>Whole file</td>
 <td>Unknown specification version</td>
-<td>Set <code>result_spec_version</code> to <code>1.0</code>.</td>
+<td>Set <code>result_spec_version</code> to <code>1.1</code>.</td>
 </tr>
 <tr>
 <td>Whole file</td>
@@ -966,7 +971,7 @@ worded as below.</p>
 <tr>
 <td>One result</td>
 <td>CP version not registered</td>
-<td>Check the <code>cp_name</code> spelling against the published <code>cp_id</code>. If it's right, tell Mendelian.</td>
+<td>Check the <code>cp_name</code> spelling against the published CP file. If it's right, tell Mendelian.</td>
 </tr>
 <tr>
 <td>One result</td>
@@ -1066,12 +1071,13 @@ recorded as a duplicate and loads nothing, with the reason "identical to a file 
 regenerate the file before resending".</p>
 <h2 id="8-checking-a-file-before-sending">8. Checking a file before sending</h2>
 <p>The layout in section 3 is also available as a machine-readable Frictionless Table Schema,
-<a href="../results-file/results-file-schema-v1.0.json"><code>results-file-schema-v1.0.json</code></a>, with the
+<a href="../results-file/results-file-schema-v1.1.json"><code>results-file-schema-v1.1.json</code></a>, with the
 worked example from section 5 as
-<a href="../results-file/results-example-v1.0.csv"><code>results-example-v1.0.csv</code></a>. A file can be checked
+<a href="../results-file/results-example-v1.1.csv"><code>results-example-v1.1.csv</code></a>. The version 1.0 schema and
+example stay in the same folder for reference only. A file can be checked
 against the schema with the free <a href="https://framework.frictionlessdata.io/">Frictionless</a>
 command-line tool:</p>
-<div class="highlight"><pre><span></span><code>frictionless<span class="w"> </span>validate<span class="w"> </span>rapid-results_test_site_1_2026-10-15.csv<span class="w"> </span>--schema<span class="w"> </span>results-file-schema-v1.0.json
+<div class="highlight"><pre><span></span><code>frictionless<span class="w"> </span>validate<span class="w"> </span>rapid-results_test_site_1_2026-10-15.csv<span class="w"> </span>--schema<span class="w"> </span>results-file-schema-v1.1.json
 </code></pre></div>
 <p>This catches layout and format problems: column names, dates, number formats and allowed values.
 It doesn't check the rules that compare rows or need Mendelian's records, such as the

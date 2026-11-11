@@ -601,7 +601,7 @@
 
 
 <h1 id="rapid_cp_schema">rapid_cp_schema</h1>
-<p>Schema for RAPID computable phenotype (CP) logic files, named <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;.yaml</code>. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (<code>d1</code>, <code>r2</code>, <code>s3</code>) that is reported back as the flag reason.</p>
+<p>Schema for RAPID computable phenotype (CP) logic files, named <code>&lt;cp_name&gt;.yaml</code>, e.g. <code>RAPID000123-xlh_L1_v1.0.yaml</code>. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (<code>d1</code>, <code>r2</code>, <code>s3</code>) that is reported back as the flag reason.</p>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic">https://mendelian.co/schemas/rapid-cp-logic</a></p>
 <p>Name: rapid_cp_schema</p>
 <h2 id="classes">Classes</h2>
@@ -627,7 +627,7 @@
 </tr>
 <tr>
 <td><a href="ComputablePhenotype/">ComputablePhenotype</a></td>
-<td>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</td>
+<td>One versioned CP. File name must equal <code>cp_name</code> + <code>.yaml</code>.</td>
 </tr>
 <tr>
 <td><a href="CPProvenance/">CPProvenance</a></td>
@@ -635,7 +635,7 @@
 </tr>
 <tr>
 <td><a href="DiseaseRef/">DiseaseRef</a></td>
-<td>The disease a CP is for, identified by an anchor Mondo id.</td>
+<td>The disease entity a CP is for, identified by a RAPID disease entity id and an anchor Mondo id.</td>
 </tr>
 <tr>
 <td><a href="Disjunct/">Disjunct</a></td>
@@ -741,8 +741,8 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="cp_id/">cp_id</a></td>
-<td>Name of the CP version, built from the disease, level and version. Format: <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease-id&gt;</code> is the lowercase Mondo id + '-' + disease.slug, e.g. <code>mondo0010619-xlh_L1_v1.0</code></td>
+<td><a href="cp_name/">cp_name</a></td>
+<td>Name of the CP version, built from the disease entity, level and version. Format: <code>&lt;disease_entity_id&gt;-&lt;slug&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease_entity_id&gt;</code> is <code>disease.disease_entity_id</code> and <code>&lt;slug&gt;</code> is <code>disease.slug</code>, e.g. <code>RAPID000123-xlh_L1_v1.0</code>.</td>
 </tr>
 <tr>
 <td><a href="curation_record_version/">curation_record_version</a></td>
@@ -763,6 +763,10 @@
 <tr>
 <td><a href="disease/">disease</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="disease_entity_id/">disease_entity_id</a></td>
+<td>Opaque id of the disease entity, <code>RAPID</code> + exactly six digits, e.g. <code>RAPID000123</code>. Minted by Mendelian. Every CP for the entity carries the same id, across levels and versions. It does not depend on Mondo, so it stays the same when the anchor Mondo id is obsoleted or merged.</td>
 </tr>
 <tr>
 <td><a href="disjuncts/">disjuncts</a></td>
@@ -942,7 +946,7 @@
 </tr>
 <tr>
 <td><a href="supersedes/">supersedes</a></td>
-<td>Previous <code>cp_id</code>, if any.</td>
+<td>Previous <code>cp_name</code>, if any.</td>
 </tr>
 <tr>
 <td><a href="text_terms/">text_terms</a></td>

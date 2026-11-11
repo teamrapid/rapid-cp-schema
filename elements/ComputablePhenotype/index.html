@@ -301,7 +301,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-computablephenotype">Class: ComputablePhenotype</h1>
-<p><em>One versioned CP. File name must equal <code>cp_id</code> + <code>.yaml</code>.</em></p>
+<p><em>One versioned CP. File name must equal <code>cp_name</code> + <code>.yaml</code>.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/ComputablePhenotype">rapidcp:ComputablePhenotype</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -320,7 +320,7 @@
 
 
 
-      ComputablePhenotype : cp_id
+      ComputablePhenotype : cp_name
 
       ComputablePhenotype : disease
 
@@ -467,9 +467,9 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../cp_id/">cp_id</a></td>
+<td><a href="../cp_name/">cp_name</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
-<td>Name of the CP version, built from the disease, level and version. Format: <code>&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease-id&gt;</code> is the lowercase Mondo id + '-' + disease.slug, e.g. <code>mondo0010619-xlh_L1_v1.0</code></td>
+<td>Name of the CP version, built from the disease entity, level and version. Format: <code>&lt;disease_entity_id&gt;-&lt;slug&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, where <code>&lt;disease_entity_id&gt;</code> is <code>disease.disease_entity_id</code> and <code>&lt;slug&gt;</code> is <code>disease.slug</code>, e.g. <code>RAPID000123-xlh_L1_v1.0</code>.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -593,21 +593,22 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_id` + `.yaml`.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_name` + `.yaml`.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">cp_id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">version.</span>
-<span class="w">      </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">      </span><span class="s">lowercase</span><span class="nv"> </span><span class="s">Mondo</span><span class="nv"> </span><span class="s">id</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="se">''</span><span class="s">-</span><span class="se">''</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">disease.slug,</span><span class="nv"> </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`mondo0010619-xlh_L1_v1.0`'</span>
+<span class="w">  </span><span class="nt">cp_name</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_name</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease</span><span class="nv"> </span><span class="s">entity,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span>
+<span class="w">      </span><span class="s">version.</span><span class="nv"> </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease_entity_id&gt;-&lt;slug&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span>
+<span class="w">      </span><span class="s">`&lt;disease_entity_id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`disease.disease_entity_id`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">`&lt;slug&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`disease.slug`,</span>
+<span class="w">      </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`RAPID000123-xlh_L1_v1.0`.'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
 <span class="w">  </span><span class="nt">schema_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema_version</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. `0.2.0`</span>
@@ -746,14 +747,15 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_id` + `.yaml`.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">One versioned CP. File name must equal `cp_name` + `.yaml`.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">cp_id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">version.</span>
-<span class="w">      </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">`&lt;disease-id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">      </span><span class="s">lowercase</span><span class="nv"> </span><span class="s">Mondo</span><span class="nv"> </span><span class="s">id</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="se">''</span><span class="s">-</span><span class="se">''</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">disease.slug,</span><span class="nv"> </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`mondo0010619-xlh_L1_v1.0`'</span>
+<span class="w">  </span><span class="nt">cp_name</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cp_name</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Name</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">CP</span><span class="nv"> </span><span class="s">version,</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">disease</span><span class="nv"> </span><span class="s">entity,</span><span class="nv"> </span><span class="s">level</span><span class="nv"> </span><span class="s">and</span>
+<span class="w">      </span><span class="s">version.</span><span class="nv"> </span><span class="s">Format:</span><span class="nv"> </span><span class="s">`&lt;disease_entity_id&gt;-&lt;slug&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;`,</span><span class="nv"> </span><span class="s">where</span>
+<span class="w">      </span><span class="s">`&lt;disease_entity_id&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`disease.disease_entity_id`</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">`&lt;slug&gt;`</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">`disease.slug`,</span>
+<span class="w">      </span><span class="s">e.g.</span><span class="nv"> </span><span class="s">`RAPID000123-xlh_L1_v1.0`.'</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -762,7 +764,7 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputablePhenotype</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$</span>
 <span class="w">  </span><span class="nt">schema_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema_version</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of THIS schema the file conforms to, e.g. `0.2.0`</span>

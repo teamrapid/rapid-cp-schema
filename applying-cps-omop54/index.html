@@ -1056,19 +1056,19 @@ on its own OMOP CDM 5.4 data, runs them, and returns counts in the format set by
 <p>A CP file never contains OMOP concept ids. Every code is written in its source vocabulary
 (ICD-10-CM, SNOMED CT, LOINC, RxNorm) and is looked up in the site's own vocabulary tables.</p>
 <h2 id="2-the-files">2. The files</h2>
-<p>Each CP version is one YAML file named after its <code>cp_id</code>, for example
-<code>mondo0010619-xlh_L2A_v2.0.yaml</code>.</p>
+<p>Each CP version is one YAML file named after its <code>cp_name</code>, for example
+<code>RAPID000123-xlh_L2A_v2.0.yaml</code>.</p>
 <table>
 <thead>
 <tr>
-<th><code>mondo0010619-xlh_L2A_v2.0</code></th>
+<th><code>RAPID000123-xlh_L2A_v2.0</code></th>
 <th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>mondo0010619</code></td>
-<td>The disease's Mondo id (<code>MONDO:0010619</code>) in lowercase, without the colon</td>
+<td><code>RAPID000123</code></td>
+<td>The disease entity's id (<code>disease.disease_entity_id</code>): <code>RAPID</code> followed by exactly six digits</td>
 </tr>
 <tr>
 <td><code>-xlh</code></td>
@@ -1088,8 +1088,15 @@ on its own OMOP CDM 5.4 data, runs them, and returns counts in the format set by
 </tr>
 </tbody>
 </table>
-<p>Everything in the name is lowercase except the level, so two names can't differ only in case and
-collide on a case-insensitive file system. Names starting <code>cluster-</code> are reserved for future
+<p>Everything in the name after the disease entity id is lowercase except the level, so two names
+can't differ only in case and collide on a case-insensitive file system.</p>
+<p>The disease entity id is opaque: it says nothing about the disease, and it does not depend on
+Mondo. Mendelian mints one id per disease entity. Every CP for that entity carries the same id,
+across levels and versions. A change to Mondo, such as the anchor Mondo id being obsoleted or
+merged, doesn't change the id. Only a change to the disease entity itself does: when an entity is
+split, each resulting entity gets a new id; when entities are merged, the merged entity gets a
+new id. In both cases the old ids are retired. An id is never reused or given to another entity.</p>
+<p>Names starting <code>cluster-</code> are reserved for future
 cluster CPs. They will be named <code>cluster-&lt;umbrella-code&gt;_&lt;level&gt;_v&lt;major&gt;.&lt;minor&gt;</code>, with the
 umbrella code lowercase, prefixed with its vocabulary and without dots, e.g.
 <code>cluster-icd10e833_L2A_v1.0</code>.</p>
@@ -1127,7 +1134,7 @@ its history; they can be read but aren't needed to build queries.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>cp_id</code></td>
+<td><code>cp_name</code></td>
 <td>yes</td>
 <td>no</td>
 <td>The CP version's name (section 2).</td>
@@ -1148,7 +1155,7 @@ its history; they can be read but aren't needed to build queries.</p>
 <td><code>disease</code></td>
 <td>yes</td>
 <td>no</td>
-<td>The disease entity: <code>mondo_id</code> (primary Mondo id), <code>slug</code>, <code>name</code>, <code>included_mondo_ids</code> (every Mondo id for the entity, primary included), <code>curation_record_version</code>.</td>
+<td>The disease entity: <code>disease_entity_id</code> (the RAPID id in <code>cp_name</code>), <code>mondo_id</code> (primary Mondo id), <code>slug</code>, <code>name</code>, <code>included_mondo_ids</code> (every Mondo id for the entity, primary included), <code>curation_record_version</code>.</td>
 </tr>
 <tr>
 <td><code>level</code></td>
@@ -1493,9 +1500,10 @@ the same umbrella codes.</p>
 <p>A CP file that breaks any of these rules is wrong, even where the schema doesn't reject it yet.</p>
 <p><strong>The file as a whole</strong></p>
 <ul>
-<li><code>cp_id</code> agrees with the file name, <code>level</code>, <code>disease.mondo_id</code> and <code>disease.slug</code> (section 2).</li>
+<li><code>cp_name</code> agrees with the file name, <code>level</code>, <code>disease.disease_entity_id</code> and <code>disease.slug</code>
+  (section 2).</li>
 <li><code>included_mondo_ids</code>, when given, includes <code>mondo_id</code>.</li>
-<li><code>supersedes</code>, when given, is a <code>cp_id</code>.</li>
+<li><code>supersedes</code>, when given, is a <code>cp_name</code>.</li>
 <li><code>schema_version</code> is a schema version number, e.g. <code>0.2.0</code>.</li>
 <li>A <code>cluster</code> block is given when <code>search_mode</code> is <code>cluster</code>, and only then. Umbrella codes are
   ICD-10-CM or SNOMED CT.</li>
@@ -1656,7 +1664,7 @@ columns, formats, small-number rules and checks; this section only says which CP
 <tbody>
 <tr>
 <td><code>cp_name</code></td>
-<td>The CP's <code>cp_id</code>, exactly as written</td>
+<td>The CP's <code>cp_name</code>, exactly as written</td>
 </tr>
 <tr>
 <td><code>summary</code> row, <code>count_value</code></td>

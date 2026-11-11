@@ -1,9 +1,10 @@
 name: rapid_cp_schema
-description: 'Schema for RAPID computable phenotype (CP) logic files, named `<disease-id>_<level>_v<major>.<minor>.yaml`.
-  Data-model-independent. Says WHAT counts as evidence (features, coded in source
-  vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines
-  (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score
-  item carries a stable id (`d1`, `r2`, `s3`) that is reported back as the flag reason.'
+description: 'Schema for RAPID computable phenotype (CP) logic files, named `<cp_name>.yaml`,
+  e.g. `RAPID000123-xlh_L1_v1.0.yaml`. Data-model-independent. Says WHAT counts as
+  evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm,
+  ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b
+  score). Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`)
+  that is reported back as the flag reason.'
 id: https://mendelian.co/schemas/rapid-cp-logic
 version: 0.2.0
 imports:
@@ -445,21 +446,22 @@ enums:
         description: '`x < range_low`, the lower limit recorded on the same row (`measurement`
           only).'
 slots:
-  computablePhenotype__cp_id:
-    name: computablePhenotype__cp_id
-    description: 'Name of the CP version, built from the disease, level and version.
-      Format: `<disease-id>_<level>_v<major>.<minor>`, where `<disease-id>` is the
-      lowercase Mondo id + ''-'' + disease.slug, e.g. `mondo0010619-xlh_L1_v1.0`'
+  computablePhenotype__cp_name:
+    name: computablePhenotype__cp_name
+    description: 'Name of the CP version, built from the disease entity, level and
+      version. Format: `<disease_entity_id>-<slug>_<level>_v<major>.<minor>`, where
+      `<disease_entity_id>` is `disease.disease_entity_id` and `<slug>` is `disease.slug`,
+      e.g. `RAPID000123-xlh_L1_v1.0`.'
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
-    slot_uri: rapidcp:cp_id
+    slot_uri: rapidcp:cp_name
     identifier: true
-    alias: cp_id
+    alias: cp_name
     owner: ComputablePhenotype
     domain_of:
     - ComputablePhenotype
     range: string
     required: true
-    pattern: ^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+    pattern: ^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
   computablePhenotype__schema_version:
     name: computablePhenotype__schema_version
     description: Version of THIS schema the file conforms to, e.g. `0.2.0`
@@ -635,6 +637,21 @@ slots:
     domain_of:
     - ComputablePhenotype
     range: string
+  diseaseRef__disease_entity_id:
+    name: diseaseRef__disease_entity_id
+    description: Opaque id of the disease entity, `RAPID` + exactly six digits, e.g.
+      `RAPID000123`. Minted by Mendelian. Every CP for the entity carries the same
+      id, across levels and versions. It does not depend on Mondo, so it stays the
+      same when the anchor Mondo id is obsoleted or merged.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    slot_uri: rapidcp:disease_entity_id
+    alias: disease_entity_id
+    owner: DiseaseRef
+    domain_of:
+    - DiseaseRef
+    range: string
+    required: true
+    pattern: ^RAPID[0-9]{6}$
   diseaseRef__mondo_id:
     name: diseaseRef__mondo_id
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
@@ -762,7 +779,7 @@ slots:
     range: string
   cPProvenance__supersedes:
     name: cPProvenance__supersedes
-    description: Previous `cp_id`, if any.
+    description: Previous `cp_name`, if any.
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
     slot_uri: rapidcp:supersedes
     alias: supersedes
@@ -1416,10 +1433,10 @@ classes:
   ComputablePhenotype:
     name: ComputablePhenotype
     definition_uri: https://mendelian.co/schemas/rapid-cp-logic/ComputablePhenotype
-    description: One versioned CP. File name must equal `cp_id` + `.yaml`.
+    description: One versioned CP. File name must equal `cp_name` + `.yaml`.
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
     slots:
-    - computablePhenotype__cp_id
+    - computablePhenotype__cp_name
     - computablePhenotype__schema_version
     - computablePhenotype__title
     - computablePhenotype__disease
@@ -1436,14 +1453,15 @@ classes:
     - computablePhenotype__absorbed_into
     - computablePhenotype__notes
     attributes:
-      cp_id:
-        name: cp_id
-        description: 'Name of the CP version, built from the disease, level and version.
-          Format: `<disease-id>_<level>_v<major>.<minor>`, where `<disease-id>` is
-          the lowercase Mondo id + ''-'' + disease.slug, e.g. `mondo0010619-xlh_L1_v1.0`'
+      cp_name:
+        name: cp_name
+        description: 'Name of the CP version, built from the disease entity, level
+          and version. Format: `<disease_entity_id>-<slug>_<level>_v<major>.<minor>`,
+          where `<disease_entity_id>` is `disease.disease_entity_id` and `<slug>`
+          is `disease.slug`, e.g. `RAPID000123-xlh_L1_v1.0`.'
         identifier: true
         required: true
-        pattern: ^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
+        pattern: ^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$
       schema_version:
         name: schema_version
         description: Version of THIS schema the file conforms to, e.g. `0.2.0`
@@ -1521,15 +1539,25 @@ classes:
   DiseaseRef:
     name: DiseaseRef
     definition_uri: https://mendelian.co/schemas/rapid-cp-logic/DiseaseRef
-    description: The disease a CP is for, identified by an anchor Mondo id.
+    description: The disease entity a CP is for, identified by a RAPID disease entity
+      id and an anchor Mondo id.
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
     slots:
+    - diseaseRef__disease_entity_id
     - diseaseRef__mondo_id
     - diseaseRef__slug
     - diseaseRef__name
     - diseaseRef__included_mondo_ids
     - diseaseRef__curation_record_version
     attributes:
+      disease_entity_id:
+        name: disease_entity_id
+        description: Opaque id of the disease entity, `RAPID` + exactly six digits,
+          e.g. `RAPID000123`. Minted by Mendelian. Every CP for the entity carries
+          the same id, across levels and versions. It does not depend on Mondo, so
+          it stays the same when the anchor Mondo id is obsoleted or merged.
+        required: true
+        pattern: ^RAPID[0-9]{6}$
       mondo_id:
         name: mondo_id
         range: uriorcurie
@@ -1609,7 +1637,7 @@ classes:
         description: Why this version exists (PR description summary).
       supersedes:
         name: supersedes
-        description: Previous `cp_id`, if any.
+        description: Previous `cp_name`, if any.
     class_uri: rapidcp:CPProvenance
   ClinicalReview:
     name: ClinicalReview
@@ -2048,6 +2076,6 @@ classes:
     class_uri: rapidcp:ScoreItem
 metamodel_version: 1.12.0
 source_file: rapid_cp_schema.yaml
-source_file_date: '2026-11-10T16:57:00'
-source_file_size: 16021
+source_file_date: '2026-11-11T14:14:20'
+source_file_size: 16580
 

@@ -301,13 +301,15 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-diseaseref">Class: DiseaseRef</h1>
-<p><em>The disease a CP is for, identified by an anchor Mondo id.</em></p>
+<p><em>The disease entity a CP is for, identified by a RAPID disease entity id and an anchor Mondo id.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/DiseaseRef">rapidcp:DiseaseRef</a></p>
 <pre class="mermaid"><code> classDiagram
     class DiseaseRef
     click DiseaseRef href "../DiseaseRef/"
       DiseaseRef : curation_record_version
+
+      DiseaseRef : disease_entity_id
 
       DiseaseRef : included_mondo_ids
 
@@ -330,6 +332,12 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><a href="../disease_entity_id/">disease_entity_id</a></td>
+<td>1 <br/> <a href="../String/">String</a></td>
+<td>Opaque id of the disease entity, <code>RAPID</code> + exactly six digits, e.g. <code>RAPID000123</code>. Minted by Mendelian. Every CP for the entity carries the same id, across levels and versions. It does not depend on Mondo, so it stays the same when the anchor Mondo id is obsoleted or merged.</td>
+<td>direct</td>
+</tr>
 <tr>
 <td><a href="../mondo_id/">mondo_id</a></td>
 <td>1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
@@ -410,9 +418,22 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease a CP is for, identified by an anchor Mondo id.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease entity a CP is for, identified by a RAPID disease entity</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">id and an anchor Mondo id.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">disease_entity_id</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disease_entity_id</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque id of the disease entity, `RAPID` + exactly six digits, e.g.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">`RAPID000123`. Minted by Mendelian. Every CP for the entity carries the same</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">id, across levels and versions. It does not depend on Mondo, so it stays the</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">same when the anchor Mondo id is obsoleted or merged.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^RAPID[0-9]{6}$</span>
 <span class="w">  </span><span class="nt">mondo_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mondo_id</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
@@ -465,9 +486,24 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease a CP is for, identified by an anchor Mondo id.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The disease entity a CP is for, identified by a RAPID disease entity</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">id and an anchor Mondo id.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">disease_entity_id</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disease_entity_id</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque id of the disease entity, `RAPID` + exactly six digits, e.g.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">`RAPID000123`. Minted by Mendelian. Every CP for the entity carries the same</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">id, across levels and versions. It does not depend on Mondo, so it stays the</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">same when the anchor Mondo id is obsoleted or merged.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^RAPID[0-9]{6}$</span>
 <span class="w">  </span><span class="nt">mondo_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mondo_id</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
