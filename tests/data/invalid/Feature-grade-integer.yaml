@@ -1,0 +1,8 @@
+# specificity_grade is written S1 to S5, not as a number (the form used before the enum).
+# expect: 1 is not one of
+id: f1
+module: diagnostic_code
+name: XLH diagnosis code
+specificity_grade: 1
+codes:
+- {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}

@@ -4,6 +4,6 @@
 id: f9
 module: procedure
 name: Osteotomy
-specificity_grade: 3
+specificity_grade: S3
 codes:
 - {vocabulary: ICD10CM, code: Z98.890}

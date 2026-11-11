@@ -17,8 +17,8 @@ level: L1
 search_mode: cluster
 provenance: {authored_by: test, authored_date: "2026-10-23"}
 features:
-  - {id: f1, module: medication, name: burosumab, specificity_grade: 1, codes: [{vocabulary: LOINC, code: "2777-1"}]}
-  - {id: f1, module: diagnostic_test, name: phosphate, specificity_grade: 3, codes: [{vocabulary: LOINC, code: "2777-1"}]}
+  - {id: f1, module: medication, name: burosumab, specificity_grade: S1, codes: [{vocabulary: LOINC, code: "2777-1"}]}
+  - {id: f1, module: diagnostic_test, name: phosphate, specificity_grade: S3, codes: [{vocabulary: LOINC, code: "2777-1"}]}
 disjuncts:
   - {id: d1, feature: f1}
   - {id: d2, feature: f99}

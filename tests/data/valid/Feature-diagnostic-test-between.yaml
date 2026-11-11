@@ -2,7 +2,7 @@
 id: f8
 module: diagnostic_test
 name: TmP/GFR low
-specificity_grade: 2
+specificity_grade: S2
 codes:
 - {vocabulary: LOINC, code: 2777-1}
 result:
