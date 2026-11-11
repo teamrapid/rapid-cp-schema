@@ -1,9 +1,9 @@
-# cp_id mondo:0010619-xlh_L1_v1.0: no colon in the Mondo part.
-# expect: does not match .* in /cp_id
-cp_id: mondo:0010619-xlh_L1_v1.0
+# disease.disease_entity_id must be RAPID + exactly six digits, not RAPID0000123.
+# expect: does not match .* in /disease/disease_entity_id
+cp_name: RAPID000123-xlh_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
-disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
+disease: {disease_entity_id: RAPID0000123, mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
 level: L1
 search_mode: population
 provenance: {authored_by: example, authored_date: '2026-10-27'}

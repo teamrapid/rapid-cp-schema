@@ -42,7 +42,7 @@ pytest imports the generated datamodel, so run `just gen-python` first after any
   Logic blocks reference features by id.
 - **The schema is the only public contract for a CP** (Mendelian's `cpsql` validator/compiler is
   in-house). Any data rule expressible in LinkML belongs in the schema, not in a tool. Repository
-  concerns (file name = `cp_id`, fingerprints, build immutability) stay out of it.
+  concerns (file name = `cp_name`, fingerprints, build immutability) stay out of it.
 - The schema enforces few of the spec's rules; `SPEC.md` §5.1 lists the constraint layer to add.
 
 ## Test data conventions

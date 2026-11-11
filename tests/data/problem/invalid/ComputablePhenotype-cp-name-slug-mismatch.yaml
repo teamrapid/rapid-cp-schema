@@ -1,9 +1,10 @@
-# cp_id cluster-icd10e833_L2A_v1.0: cluster CPs are reserved, not supported.
-# expect: does not match .* in /cp_id
-cp_id: cluster-icd10e833_L2A_v1.0
+# cp_name must match disease.slug.
+# Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
+# with an `# expect:` line once the schema rejects it.
+cp_name: RAPID000123-fabry_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
-disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
+disease: {disease_entity_id: RAPID000123, mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
 level: L1
 search_mode: population
 provenance: {authored_by: example, authored_date: '2026-10-27'}

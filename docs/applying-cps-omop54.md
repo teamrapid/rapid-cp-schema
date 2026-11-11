@@ -27,19 +27,28 @@ A CP file never contains OMOP concept ids. Every code is written in its source v
 
 ## 2. The files
 
-Each CP version is one YAML file named after its `cp_id`, for example
-`mondo0010619-xlh_L2A_v2.0.yaml`.
+Each CP version is one YAML file named after its `cp_name`, for example
+`RAPID000123-xlh_L2A_v2.0.yaml`.
 
-| `mondo0010619-xlh_L2A_v2.0` | Meaning |
+| `RAPID000123-xlh_L2A_v2.0` | Meaning |
 | --- | --- |
-| `mondo0010619` | The disease's Mondo id (`MONDO:0010619`) in lowercase, without the colon |
+| `RAPID000123` | The disease entity's id (`disease.disease_entity_id`): `RAPID` followed by exactly six digits |
 | `-xlh` | A short name for the disease (`disease.slug`) |
 | `_L2A` | The level: `L1`, `L2A`, `L2B` or `L3` (section 5) |
 | `_v2` | Major version: goes up when the CP's structure changes, such as a criterion added or removed or the level changed |
 | `.0` | Minor version: goes up when details inside the structure change, such as codes, thresholds or points |
 
-Everything in the name is lowercase except the level, so two names can't differ only in case and
-collide on a case-insensitive file system. Names starting `cluster-` are reserved for future
+Everything in the name after the disease entity id is lowercase except the level, so two names
+can't differ only in case and collide on a case-insensitive file system.
+
+The disease entity id is opaque: it says nothing about the disease, and it does not depend on
+Mondo. Mendelian mints one id per disease entity. Every CP for that entity carries the same id,
+across levels and versions. A change to Mondo, such as the anchor Mondo id being obsoleted or
+merged, doesn't change the id. Only a change to the disease entity itself does: when an entity is
+split, each resulting entity gets a new id; when entities are merged, the merged entity gets a
+new id. In both cases the old ids are retired. An id is never reused or given to another entity.
+
+Names starting `cluster-` are reserved for future
 cluster CPs. They will be named `cluster-<umbrella-code>_<level>_v<major>.<minor>`, with the
 umbrella code lowercase, prefixed with its vocabulary and without dots, e.g.
 `cluster-icd10e833_L2A_v1.0`.
@@ -70,10 +79,10 @@ its history; they can be read but aren't needed to build queries.
 
 | Field | Required | Used by queries | Meaning |
 | --- | --- | --- | --- |
-| `cp_id` | yes | no | The CP version's name (section 2). |
+| `cp_name` | yes | no | The CP version's name (section 2). |
 | `schema_version` | yes | no | Version of the LinkML schema the file follows, e.g. `0.2.0`. |
 | `title` | yes | no | A readable name for the CP. |
-| `disease` | yes | no | The disease entity: `mondo_id` (primary Mondo id), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
+| `disease` | yes | no | The disease entity: `disease_entity_id` (the RAPID id in `cp_name`), `mondo_id` (primary Mondo id), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
 | `level` | yes | query | `L1`, `L2A`, `L2B` or `L3`. Decides which logic block the file carries (section 5). |
 | `search_mode` | yes | query | `population`: search everyone. `cluster`: search only patients with an umbrella code (section 5.5). |
 | `cluster` | in cluster mode | query | `umbrella_codes`: the codes that define the group searched. `candidate_mondo_ids`: documentation only. |
@@ -227,9 +236,10 @@ A CP file that breaks any of these rules is wrong, even where the schema doesn't
 
 **The file as a whole**
 
-- `cp_id` agrees with the file name, `level`, `disease.mondo_id` and `disease.slug` (section 2).
+- `cp_name` agrees with the file name, `level`, `disease.disease_entity_id` and `disease.slug`
+  (section 2).
 - `included_mondo_ids`, when given, includes `mondo_id`.
-- `supersedes`, when given, is a `cp_id`.
+- `supersedes`, when given, is a `cp_name`.
 - `schema_version` is a schema version number, e.g. `0.2.0`.
 - A `cluster` block is given when `search_mode` is `cluster`, and only then. Umbrella codes are
   ICD-10-CM or SNOMED CT.
@@ -367,7 +377,7 @@ columns, formats, small-number rules and checks; this section only says which CP
 
 | Results-file value | From the CP |
 | --- | --- |
-| `cp_name` | The CP's `cp_id`, exactly as written |
+| `cp_name` | The CP's `cp_name`, exactly as written |
 | `summary` row, `count_value` | Distinct patients flagged by the CP |
 | `summary` row, `population_n` | The population as the specification defines it (its section 4.1). For a cluster CP this is still the site population, not the number of patients with an umbrella code. |
 | `count` rows, `criterion_id` | Every disjunct (`d1`…), rule (`r1`…) or score item (`s1`…) in the CP, including any that found nobody (`0`) |

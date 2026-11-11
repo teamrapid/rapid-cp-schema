@@ -90,6 +90,10 @@ the target over five years is about 2,700 diseases.
     they are ready for deployment, so a lifecycle status in the file carries no information;
   - the `sites_tested` slot and the `SiteTest` class are removed. Where a CP has run is recorded
     by the results files sites send back, so the CP file doesn't repeat it.
+- **Since 0.2.0** (breaking, for the next minor version): `cp_id` is renamed `cp_name`, and the
+  name starts with the disease entity's RAPID id, recorded in the new required slot
+  `disease.disease_entity_id`, instead of the lowercase Mondo id. A name built from the Mondo id
+  would change whenever that id is obsoleted or merged (§5.7).
 - **Licence:** CC0 1.0, as declared in the original schema.
 - **Ownership:** Mendelian agreed to move the schema to this programme-neutral home in the
   `teamrapid` GitHub org. **Mendelian remain the owners and maintainers**, and others contribute
@@ -157,7 +161,7 @@ How to fix them:
 **When it's done:** move the nine-violation file to `tests/data/invalid/`. Better still, split it
 into one file per violation, so each rule is tested on its own.
 
-These stay **out of the schema**: the file name matching `cp_id` and fingerprint checks. They are
+These stay **out of the schema**: the file name matching `cp_name` and fingerprint checks. They are
 about files and the repository, not the data.
 
 ### 5.2 CURIEs alongside `vocabulary` + `code`
@@ -206,22 +210,35 @@ phenotypic features. Keep `hpo_id` readable during the transition.
 "safe alone" in L1. Agreed: make it an **enum with a definition for each grade**. Examples belong
 in the documentation, not the schema.
 
-### 5.7 Opaque CP identifier
+### 5.7 Disease entity id in the CP name
 
-Every CP gets an **internal, opaque identifier** as its `cp_id`, completely separate from its
-Mondo id. Today `cp_id` is built from the Mondo id, the slug, the level and the version (e.g.
-`mondo0010619-xlh_L1_v1.0`), so obsoleting or merging the Mondo id, renaming the slug or changing
-the level would change the CP's identity. An opaque id stays the same through all of these; the
-disease stays recorded in `disease.mondo_id`.
+A CP's name used to start with the lowercase Mondo id of its disease
+(`mondo0010619-xlh_L1_v1.0`). When that Mondo id is obsoleted or merged, every CP for the disease
+would have to be renamed. UNC asked for an identifier that doesn't depend on Mondo, and this was
+agreed at the CP feedback meeting on 28 October 2026 (#4). Done:
 
-This is a breaking change. Still to decide:
+- **The slot `cp_id` is renamed `cp_name`,** the name the results file already uses.
+- **The Mondo part of the name is replaced by an opaque RAPID id for the disease entity:**
+  `<disease_entity_id>-<slug>_<level>_v<major>.<minor>`, e.g. `RAPID000123-xlh_L2A_v2.0`. The
+  slug, level and version stay in the name, so a new version, a level change or a renamed slug
+  still gives a new name. The file name is still `cp_name` + `.yaml`.
+- **The id is also recorded in `disease.disease_entity_id`** (required), next to `mondo_id` and
+  `included_mondo_ids`, so `cp_name` can be checked against it.
 
-- the format of the identifier, and who assigns it;
-- whether the version stays part of `cp_id` or moves to a separate field;
-- what the file name becomes, since it currently equals `cp_id`;
-- the knock-on changes: the `cp_id` pattern in the schema, the naming rules in
-  [docs/applying-cps-omop54.md](docs/applying-cps-omop54.md) §2 and §5.6, and the `cp_name`
-  column and its pattern in the [results-file specification](docs/results-file-spec.md).
+The disease entity id:
+
+- is `RAPID` followed by exactly six digits (`RAPID000123`);
+- is minted by Mendelian, one per disease entity, and shared by every CP for that entity across
+  levels and versions;
+- is never reused or given to another entity;
+- doesn't change when Mondo changes, for example when the anchor Mondo id is obsoleted or
+  merged;
+- is replaced only when the entity itself changes: when an entity is split, each resulting entity gets a new
+  id; when entities are merged, the merged entity gets a new id. The old ids are retired.
+
+Cluster CP names (`cluster-<umbrella-code>_<level>_v<major>.<minor>`) and `absorbed_into` are
+unchanged, since cluster CPs are still reserved. The results file follows the new name from
+[version 1.1](docs/results-file-spec.md) of its specification.
 
 ## 6. Open questions
 
@@ -277,7 +294,7 @@ This is a breaking change. Still to decide:
     already exist. A paragraph saying why this format differs (it is data-model independent and
     uses source-vocabulary codes), or an export to Circe JSON, would help adoption at OHDSI
     sites. This is not a reason to replace the format.
-11. **Results-file gaps.** The [results-file specification](docs/results-file-spec.md) v1.0
+11. **Results-file gaps.** The [results-file specification](docs/results-file-spec.md) v1.1
     covers L1 and L2A criteria only. It has no rows or checks yet for L2B score items, no place
     for the number of patients with an umbrella code in a cluster CP, and no column for the
     site's vocabulary release. Its Frictionless schema

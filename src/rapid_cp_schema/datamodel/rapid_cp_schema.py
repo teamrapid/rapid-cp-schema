@@ -2,7 +2,7 @@
 # Schema: rapid_cp_schema
 #
 # id: https://mendelian.co/schemas/rapid-cp-logic
-# description: Schema for RAPID computable phenotype (CP) logic files, named `<disease-id>_<level>_v<major>.<minor>.yaml`. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`) that is reported back as the flag reason.
+# description: Schema for RAPID computable phenotype (CP) logic files, named `<cp_name>.yaml`, e.g. `RAPID000123-xlh_L1_v1.0.yaml`. Data-model-independent. Says WHAT counts as evidence (features, coded in source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score). Every disjunct / rule / score item carries a stable id (`d1`, `r2`, `s3`) that is reported back as the flag reason.
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
@@ -72,7 +72,7 @@ DEFAULT_ = RAPIDCP
 # Types
 
 # Class references
-class ComputablePhenotypeCpId(extended_str):
+class ComputablePhenotypeCpName(extended_str):
     pass
 
 
@@ -95,7 +95,7 @@ class ScoreItemId(extended_str):
 @dataclass(repr=False)
 class ComputablePhenotype(YAMLRoot):
     """
-    One versioned CP. File name must equal `cp_id` + `.yaml`.
+    One versioned CP. File name must equal `cp_name` + `.yaml`.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -104,7 +104,7 @@ class ComputablePhenotype(YAMLRoot):
     class_name: ClassVar[str] = "ComputablePhenotype"
     class_model_uri: ClassVar[URIRef] = RAPIDCP.ComputablePhenotype
 
-    cp_id: Union[str, ComputablePhenotypeCpId] = None
+    cp_name: Union[str, ComputablePhenotypeCpName] = None
     schema_version: str = None
     title: str = None
     disease: Union[dict, "DiseaseRef"] = None
@@ -122,10 +122,10 @@ class ComputablePhenotype(YAMLRoot):
     notes: Optional[str] = None
 
     def __post_init__(self, *_: str, **kwargs: Any):
-        if self._is_empty(self.cp_id):
-            self.MissingRequiredField("cp_id")
-        if not isinstance(self.cp_id, ComputablePhenotypeCpId):
-            self.cp_id = ComputablePhenotypeCpId(self.cp_id)
+        if self._is_empty(self.cp_name):
+            self.MissingRequiredField("cp_name")
+        if not isinstance(self.cp_name, ComputablePhenotypeCpName):
+            self.cp_name = ComputablePhenotypeCpName(self.cp_name)
 
         if self._is_empty(self.schema_version):
             self.MissingRequiredField("schema_version")
@@ -189,7 +189,7 @@ class ComputablePhenotype(YAMLRoot):
 @dataclass(repr=False)
 class DiseaseRef(YAMLRoot):
     """
-    The disease a CP is for, identified by an anchor Mondo id.
+    The disease entity a CP is for, identified by a RAPID disease entity id and an anchor Mondo id.
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -198,6 +198,7 @@ class DiseaseRef(YAMLRoot):
     class_name: ClassVar[str] = "DiseaseRef"
     class_model_uri: ClassVar[URIRef] = RAPIDCP.DiseaseRef
 
+    disease_entity_id: str = None
     mondo_id: Union[str, URIorCURIE] = None
     slug: str = None
     name: str = None
@@ -205,6 +206,11 @@ class DiseaseRef(YAMLRoot):
     curation_record_version: Optional[str] = None
 
     def __post_init__(self, *_: str, **kwargs: Any):
+        if self._is_empty(self.disease_entity_id):
+            self.MissingRequiredField("disease_entity_id")
+        if not isinstance(self.disease_entity_id, str):
+            self.disease_entity_id = str(self.disease_entity_id)
+
         if self._is_empty(self.mondo_id):
             self.MissingRequiredField("mondo_id")
         if not isinstance(self.mondo_id, URIorCURIE):
@@ -979,9 +985,9 @@ class ResultOperator(EnumDefinitionImpl):
 class slots:
     pass
 
-slots.computablePhenotype__cp_id = Slot(uri=RAPIDCP.cp_id, name="computablePhenotype__cp_id", curie=RAPIDCP.curie('cp_id'),
-                   model_uri=RAPIDCP.computablePhenotype__cp_id, domain=None, range=URIRef,
-                   pattern=re.compile(r'^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$'))
+slots.computablePhenotype__cp_name = Slot(uri=RAPIDCP.cp_name, name="computablePhenotype__cp_name", curie=RAPIDCP.curie('cp_name'),
+                   model_uri=RAPIDCP.computablePhenotype__cp_name, domain=None, range=URIRef,
+                   pattern=re.compile(r'^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\.[0-9]+$'))
 
 slots.computablePhenotype__schema_version = Slot(uri=RAPIDCP.schema_version, name="computablePhenotype__schema_version", curie=RAPIDCP.curie('schema_version'),
                    model_uri=RAPIDCP.computablePhenotype__schema_version, domain=None, range=str)
@@ -1028,6 +1034,10 @@ slots.computablePhenotype__absorbed_into = Slot(uri=RAPIDCP.absorbed_into, name=
 
 slots.computablePhenotype__notes = Slot(uri=RAPIDCP.notes, name="computablePhenotype__notes", curie=RAPIDCP.curie('notes'),
                    model_uri=RAPIDCP.computablePhenotype__notes, domain=None, range=Optional[str])
+
+slots.diseaseRef__disease_entity_id = Slot(uri=RAPIDCP.disease_entity_id, name="diseaseRef__disease_entity_id", curie=RAPIDCP.curie('disease_entity_id'),
+                   model_uri=RAPIDCP.diseaseRef__disease_entity_id, domain=None, range=str,
+                   pattern=re.compile(r'^RAPID[0-9]{6}$'))
 
 slots.diseaseRef__mondo_id = Slot(uri=RAPIDCP.mondo_id, name="diseaseRef__mondo_id", curie=RAPIDCP.curie('mondo_id'),
                    model_uri=RAPIDCP.diseaseRef__mondo_id, domain=None, range=Union[str, URIorCURIE],

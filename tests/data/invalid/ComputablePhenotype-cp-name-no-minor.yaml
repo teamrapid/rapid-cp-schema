@@ -1,9 +1,9 @@
-# cp_id MONDO0010619-xlh_L1_v1.0: Mondo part must be lower case.
-# expect: does not match .* in /cp_id
-cp_id: MONDO0010619-xlh_L1_v1.0
+# cp_name RAPID000123-xlh_L1_v1: version needs major.minor.
+# expect: does not match .* in /cp_name
+cp_name: RAPID000123-xlh_L1_v1
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
-disease: {mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
+disease: {disease_entity_id: RAPID000123, mondo_id: 'MONDO:0010619', slug: xlh, name: X-linked hypophosphatemia}
 level: L1
 search_mode: population
 provenance: {authored_by: example, authored_date: '2026-10-27'}

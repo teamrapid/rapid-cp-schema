@@ -1,10 +1,11 @@
 # Included_mondo_ids lists every Mondo id of the entity, mondo_id included.
 # Should fail validation but passes against schema v0.2.0. Move to tests/data/invalid/
 # with an `# expect:` line once the schema rejects it.
-cp_id: mondo0010619-xlh_L1_v1.0
+cp_name: RAPID000123-xlh_L1_v1.0
 schema_version: 0.2.0
 title: X-linked hypophosphatemia, Level 1
 disease:
+  disease_entity_id: RAPID000123
   mondo_id: MONDO:0010619
   slug: xlh
   name: X-linked hypophosphatemia

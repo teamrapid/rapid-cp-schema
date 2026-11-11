@@ -3,7 +3,7 @@ name: rapid_cp_schema
 version: "0.2.0"
 description: >-
   Schema for RAPID computable phenotype (CP) logic files, named
-  `<disease-id>_<level>_v<major>.<minor>.yaml`.
+  `<cp_name>.yaml`, e.g. `RAPID000123-xlh_L1_v1.0.yaml`.
   Data-model-independent. Says WHAT counts as evidence (features, coded in
   source vocabularies: ICD10CM, SNOMED, LOINC, RxNorm, ...) and HOW the
   evidence combines (Level 1 disjuncts, Level 2a rules, Level 2b score).
@@ -92,13 +92,17 @@ classes:
 
   ComputablePhenotype:
     tree_root: true
-    description: "One versioned CP. File name must equal `cp_id` + `.yaml`."
+    description: "One versioned CP. File name must equal `cp_name` + `.yaml`."
     attributes:
-      cp_id:
+      cp_name:
         identifier: true
         required: true
-        pattern: "^mondo[0-9]{7}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\\.[0-9]+$"
-        description: "Name of the CP version, built from the disease, level and version. Format: `<disease-id>_<level>_v<major>.<minor>`, where `<disease-id>` is the lowercase Mondo id + '-' + disease.slug, e.g. `mondo0010619-xlh_L1_v1.0`"
+        pattern: "^RAPID[0-9]{6}-[a-z0-9]+(-[a-z0-9]+)*_(L1|L2A|L2B|L3)_v[0-9]+\\.[0-9]+$"
+        description: >-
+          Name of the CP version, built from the disease entity, level and version.
+          Format: `<disease_entity_id>-<slug>_<level>_v<major>.<minor>`, where
+          `<disease_entity_id>` is `disease.disease_entity_id` and `<slug>` is
+          `disease.slug`, e.g. `RAPID000123-xlh_L1_v1.0`.
       schema_version: {required: true, description: "Version of THIS schema the file conforms to, e.g. `0.2.0`"}
       title: {required: true}
       disease: {range: DiseaseRef, required: true, inlined: true}
@@ -127,8 +131,16 @@ classes:
       notes: {}
 
   DiseaseRef:
-    description: "The disease a CP is for, identified by an anchor Mondo id."
+    description: "The disease entity a CP is for, identified by a RAPID disease entity id and an anchor Mondo id."
     attributes:
+      disease_entity_id:
+        required: true
+        pattern: "^RAPID[0-9]{6}$"
+        description: >-
+          Opaque id of the disease entity, `RAPID` + exactly six digits, e.g.
+          `RAPID000123`. Minted by Mendelian. Every CP for the entity carries
+          the same id, across levels and versions. It does not depend on Mondo,
+          so it stays the same when the anchor Mondo id is obsoleted or merged.
       mondo_id: {range: uriorcurie, required: true, pattern: "^MONDO:[0-9]{7}$"}
       slug:
         required: true
@@ -164,7 +176,7 @@ classes:
       authored_date: {range: date, required: true}
       kg_extracted_at: {range: datetime, description: "When Mendelian extracted the source data behind the features (ISO 8601, e.g. `2026-09-24T14:05:00Z`)."}
       change_note: {description: "Why this version exists (PR description summary)."}
-      supersedes: {description: "Previous `cp_id`, if any."}
+      supersedes: {description: "Previous `cp_name`, if any."}
 
   ClinicalReview:
     description: Expert sign-off on the disease and its criteria, before the CP is tested at a site.
