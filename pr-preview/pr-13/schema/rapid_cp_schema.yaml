@@ -305,7 +305,7 @@ enums:
     permissible_values:
       L1:
         text: L1
-        description: Safe Alone - union of S1 (highly specific) disjuncts.
+        description: Safe Alone - union of S1 (confirmatory) disjuncts.
       L2A:
         text: L2A
         description: Deterministic rules - Boolean gates.
@@ -364,8 +364,9 @@ enums:
     permissible_values:
       S1:
         text: S1
-        description: 'Confirmatory: a patient with this feature almost certainly has
-          the disease. Only S1 features may be L1 disjuncts.'
+        description: 'Confirmatory: specific enough to flag a patient on its own.
+          A code shared with a few closely related conditions can still be S1 when
+          the CP accepts that loss of precision. Only S1 features may be L1 disjuncts.'
       S2:
         text: S2
         description: 'Highly specific: only a small number of other conditions produce
@@ -2099,6 +2100,6 @@ classes:
     class_uri: rapidcp:ScoreItem
 metamodel_version: 1.12.0
 source_file: rapid_cp_schema.yaml
-source_file_date: '2026-11-11T14:34:00'
-source_file_size: 17254
+source_file_date: '2026-11-12T12:31:14'
+source_file_size: 17347
 
