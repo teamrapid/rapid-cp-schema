@@ -21,7 +21,7 @@ features:
   - id: f2
     module: diagnostic_code
     name: XLH diagnosis code
-    specificity_grade: S2
+    specificity_grade: S1
     codes:
       - {vocabulary: ICD10CM, code: E83.31}
   - id: f5

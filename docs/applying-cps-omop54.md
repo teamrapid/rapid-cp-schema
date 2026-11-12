@@ -170,8 +170,8 @@ alone at Level 1. The examples are for XLH and are illustrative, not clinically 
 
 | Grade | Meaning | Example |
 | --- | --- | --- |
-| `S1` | Confirmatory: a patient with this feature almost certainly has the disease. Only S1 features may be Level 1 disjuncts. | Burosumab |
-| `S2` | Highly specific: only a small number of other conditions produce this feature. | ICD-10-CM `E83.31`, familial hypophosphatemia, which also covers other inherited forms |
+| `S1` | Confirmatory: specific enough to flag a patient on its own. A code shared with a few closely related conditions can still be S1 when the CP accepts that loss of precision. Only S1 features may be Level 1 disjuncts. | Burosumab; ICD-10-CM `E83.31` (familial hypophosphatemia), which also covers other inherited forms |
+| `S2` | Highly specific: only a small number of other conditions produce this feature. | Elevated FGF23, also found in other FGF23-mediated hypophosphatemias |
 | `S3` | Suggestive: the feature narrows the differential diagnosis but doesn't settle it. | Low serum phosphate |
 | `S4` | Weak: the feature says almost nothing about the disease on its own. | Short stature |
 | `S5` | Incidental: the feature is common in the disease but is not evidence for it. | Knee pain |

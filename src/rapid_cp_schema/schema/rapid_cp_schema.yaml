@@ -26,7 +26,7 @@ enums:
   CPLevel:
     description: "How a CP's features combine into a flag. The level decides which logic block the CP carries: `disjuncts` (L1), `rules` (L2A) or `score` (L2B); L3 has none yet."
     permissible_values:
-      L1:  {description: "Safe Alone - union of S1 (highly specific) disjuncts."}
+      L1:  {description: "Safe Alone - union of S1 (confirmatory) disjuncts."}
       L2A: {description: "Deterministic rules - Boolean gates."}
       L2B: {description: "Deterministic score - weighted points vs threshold."}
       L3:  {description: "Profile match - declared here, not in scope."}
@@ -53,7 +53,7 @@ enums:
   SpecificityGrade:
     description: "How specific a feature is to the target disease. The grade decides what counts as safe alone in L1."
     permissible_values:
-      S1: {description: "Confirmatory: a patient with this feature almost certainly has the disease. Only S1 features may be L1 disjuncts."}
+      S1: {description: "Confirmatory: specific enough to flag a patient on its own. A code shared with a few closely related conditions can still be S1 when the CP accepts that loss of precision. Only S1 features may be L1 disjuncts."}
       S2: {description: "Highly specific: only a small number of other conditions produce this feature."}
       S3: {description: "Suggestive: the feature narrows the differential diagnosis but doesn't settle it."}
       S4: {description: "Weak: the feature says almost nothing about the disease on its own."}

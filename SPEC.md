@@ -41,7 +41,7 @@ for a disease. Sites run CPs on **unconsented EHR data**, not on registry data. 
 
 | Level | Name | In the schema |
 |---|---|---|
-| L1 | Safe alone | `disjuncts`: any one highly specific feature flags the patient |
+| L1 | Safe alone | `disjuncts`: any one confirmatory (S1) feature flags the patient |
 | L2A | Deterministic rules | `rules`: Boolean gates (`all_of`, `any_of`, `none_of`, `at_least`, `within`) |
 | L2B | Deterministic score | `score`: weighted points against a threshold |
 | L3 | Profile match | It ranks candidate diseases against each other |
