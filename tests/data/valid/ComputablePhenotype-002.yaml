@@ -21,19 +21,19 @@ features:
   - id: f2
     module: diagnostic_code
     name: XLH diagnosis code
-    specificity_grade: 2
+    specificity_grade: S1
     codes:
       - {vocabulary: ICD10CM, code: E83.31}
   - id: f5
     module: medication
     name: burosumab
-    specificity_grade: 1
+    specificity_grade: S1
     codes:
       - {vocabulary: RXNORM, code: "2043855", label: burosumab}
   - id: f6
     module: phenotype
     name: Low serum phosphate
-    specificity_grade: 3
+    specificity_grade: S3
     codes:
       - {vocabulary: LOINC, code: 2777-1}
     result: {kind: numeric, operator: below_ref_low}

@@ -2,7 +2,7 @@
 id: f7
 module: diagnostic_test
 name: PHEX sequencing positive
-specificity_grade: 1
+specificity_grade: S1
 codes:
 - {vocabulary: SNOMED, code: '117040002'}
 result:

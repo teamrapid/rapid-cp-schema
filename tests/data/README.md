@@ -28,6 +28,8 @@ Each file starts with a comment saying what it tests. The rules come from
 [`docs/applying-cps-omop54.md`](../../docs/applying-cps-omop54.md), mostly its section 5.6. Each `invalid` and `problem` file differs from a
 valid CP in one respect only, so it fails (or should fail) for one reason.
 
+The example CPs and features are illustrative: they are not clinically reviewed.
+
 ## Running the tests
 
 `just test` runs three steps:

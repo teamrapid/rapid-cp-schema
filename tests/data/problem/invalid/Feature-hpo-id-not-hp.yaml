@@ -4,7 +4,7 @@
 id: f5
 module: phenotype
 name: Rickets
-specificity_grade: 3
+specificity_grade: S3
 hpo_id: MONDO:0010619
 codes:
 - {vocabulary: SNOMED, code: '41345002', label: Rickets}

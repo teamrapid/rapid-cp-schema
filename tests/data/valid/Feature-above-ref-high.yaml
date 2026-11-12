@@ -2,7 +2,7 @@
 id: f4
 module: phenotype
 name: High alkaline phosphatase
-specificity_grade: 3
+specificity_grade: S3
 hpo_id: HP:0002148
 codes:
 - {vocabulary: LOINC, code: 6768-6}

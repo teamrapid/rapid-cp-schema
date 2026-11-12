@@ -41,7 +41,7 @@ for a disease. Sites run CPs on **unconsented EHR data**, not on registry data. 
 
 | Level | Name | In the schema |
 |---|---|---|
-| L1 | Safe alone | `disjuncts`: any one highly specific feature flags the patient |
+| L1 | Safe alone | `disjuncts`: any one confirmatory (S1) feature flags the patient |
 | L2A | Deterministic rules | `rules`: Boolean gates (`all_of`, `any_of`, `none_of`, `at_least`, `within`) |
 | L2B | Deterministic score | `score`: weighted points against a threshold |
 | L3 | Profile match | It ranks candidate diseases against each other |
@@ -94,6 +94,10 @@ the target over five years is about 2,700 diseases.
   name starts with the disease entity's RAPID id, recorded in the new required slot
   `disease.disease_entity_id`, instead of the lowercase Mondo id. A name built from the Mondo id
   would change whenever that id is obsoleted or merged (§5.7).
+- **Since 0.2.0** (breaking, for the next minor version): `specificity_grade` is the enum
+  `SpecificityGrade` with values `S1` to `S5` instead of an integer from 1 to 5. An enum's values
+  are strings, so bare integers can't be kept; `S1` to `S5` is how the grades were already
+  written in prose (§5.6).
 - **Licence:** CC0 1.0, as declared in the original schema.
 - **Ownership:** Mendelian agreed to move the schema to this programme-neutral home in the
   `teamrapid` GitHub org. **Mendelian remain the owners and maintainers**, and others contribute
@@ -208,7 +212,9 @@ phenotypic features. Keep `hpo_id` readable during the transition.
 `specificity_grade` is an integer from 1 to 5 (S1 to S5 in prose), and only 1
 ("confirmatory/pathognomonic") and 5 ("incidental") are defined. The grade decides what counts as
 "safe alone" in L1. Agreed: make it an **enum with a definition for each grade**. Examples belong
-in the documentation, not the schema.
+in the documentation, not the schema. Done: the enum `SpecificityGrade` has values `S1` to
+`S5`, and the definitions and examples are in
+[docs/applying-cps-omop54.md](docs/applying-cps-omop54.md) §4.4 (#11).
 
 ### 5.7 Disease entity id in the CP name
 

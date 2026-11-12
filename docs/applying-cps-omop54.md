@@ -105,7 +105,7 @@ the record only and needs no query.
 | `id` | yes | `f1`, `f2`, … Referenced by the logic. |
 | `module` | yes | The kind of evidence (table below). |
 | `name` | yes | A readable name, e.g. "Low serum phosphate". |
-| `specificity_grade` | yes | 1 (confirmatory) to 5 (incidental), written S1 to S5 in prose. Level 1 uses only S1 features. |
+| `specificity_grade` | yes | `S1` (confirmatory) to `S5` (incidental) (4.4). Level 1 uses only S1 features. |
 | `codes` | yes | One or more code references. A record matching any one of them counts. |
 | `result` | tests and measured phenotypes | The result that must be found (4.2). |
 | `genetic` | genetic findings | The gene and accepted interpretations (4.3). |
@@ -162,6 +162,19 @@ listed answers.
   when the codes are generic LOINC panels.
 
 Any variant in the gene with an accepted interpretation counts; a CP can't name specific variants.
+
+### 4.4 Specificity grades
+
+The grade says how specific a feature is to the target disease. It decides what counts as safe
+alone at Level 1. The examples are for XLH and are illustrative, not clinically reviewed.
+
+| Grade | Meaning | Example |
+| --- | --- | --- |
+| `S1` | Confirmatory: specific enough to flag a patient on its own. A code shared with a few closely related conditions can still be S1 when the CP accepts that loss of precision. Only S1 features may be Level 1 disjuncts. | Burosumab; ICD-10-CM `E83.31` (familial hypophosphatemia), which also covers other inherited forms |
+| `S2` | Highly specific: only a small number of other conditions produce this feature. | Elevated FGF23, also found in other FGF23-mediated hypophosphatemias |
+| `S3` | Suggestive: the feature narrows the differential diagnosis but doesn't settle it. | Low serum phosphate |
+| `S4` | Weak: the feature says almost nothing about the disease on its own. | Short stature |
+| `S5` | Incidental: the feature is common in the disease but is not evidence for it. | Knee pain |
 
 ## 5. Logic
 
