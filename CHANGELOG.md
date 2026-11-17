@@ -18,7 +18,8 @@ Each pull request that changes the schema, the documentation or the examples add
   `RAPID` + six digits (#4).
 - Results-file specification v1.1, with its Frictionless schema and example file (#4).
 - **Breaking:** `disease.mondo_version`, required: the Mondo release that `mondo_id` and
-  `included_mondo_ids` come from, as its release tag, e.g. `v2026-10-07` (#9).
+  `included_mondo_ids` come from, as its release tag, e.g. `v2026-10-07`. The OMOP 5.4 guide's
+  rules (§5.6) require those ids to be current terms in that release (#9).
 
 ### Changed
 

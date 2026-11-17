@@ -172,7 +172,8 @@ classes:
           Defaults to `[mondo_id]`. Recorded, not queried.
       curation_record_version:
         description: >-
-          Version of the curation record this CP was built from. Recorded, not queried.
+          Version of the curation record (keyed by `disease_entity_id`) this CP was
+          built from. Recorded, not queried.
 
 
 

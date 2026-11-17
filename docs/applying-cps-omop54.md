@@ -253,6 +253,9 @@ A CP file that breaks any of these rules is wrong, even where the schema doesn't
 - `cp_name` agrees with the file name, `level`, `disease.disease_entity_id` and `disease.slug`
   (section 2).
 - `included_mondo_ids`, when given, includes `mondo_id`.
+- `mondo_id` and every `included_mondo_ids` entry are current (not obsolete) terms in the
+  `disease.mondo_version` release. An id that a later Mondo release obsoletes doesn't make the CP
+  wrong, since the CP is checked against the release it names.
 - `supersedes`, when given, is a `cp_name`.
 - `schema_version` is a schema version number, e.g. `0.2.0`.
 - A `cluster` block is given when `search_mode` is `cluster`, and only then. Umbrella codes are
