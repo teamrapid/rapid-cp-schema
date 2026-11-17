@@ -744,8 +744,8 @@ slots:
     pattern: ^MONDO:[0-9]{7}$
   diseaseRef__curation_record_version:
     name: diseaseRef__curation_record_version
-    description: Version of the curation record this CP was built from. Recorded,
-      not queried.
+    description: Version of the curation record (keyed by `disease_entity_id`) this
+      CP was built from. Recorded, not queried.
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
     slot_uri: rapidcp:curation_record_version
     alias: curation_record_version
@@ -1630,8 +1630,8 @@ classes:
         pattern: ^MONDO:[0-9]{7}$
       curation_record_version:
         name: curation_record_version
-        description: Version of the curation record this CP was built from. Recorded,
-          not queried.
+        description: Version of the curation record (keyed by `disease_entity_id`)
+          this CP was built from. Recorded, not queried.
     class_uri: rapidcp:DiseaseRef
   ClusterScope:
     name: ClusterScope
@@ -2122,6 +2122,6 @@ classes:
     class_uri: rapidcp:ScoreItem
 metamodel_version: 1.12.0
 source_file: rapid_cp_schema.yaml
-source_file_date: '2026-11-17T13:45:06'
-source_file_size: 17635
+source_file_date: '2026-11-17T16:26:06'
+source_file_size: 17676
 
