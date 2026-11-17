@@ -96,7 +96,7 @@ class CPLevel(str, Enum):
     """
     L1 = "L1"
     """
-    Safe Alone - union of S1 (highly specific) disjuncts.
+    Safe Alone - union of S1 (confirmatory) disjuncts.
     """
     L2A = "L2A"
     """
@@ -155,6 +155,32 @@ class ReviewDecision(str, Enum):
     revise = "revise"
     """
     Send back for revision.
+    """
+
+
+class SpecificityGrade(str, Enum):
+    """
+    How specific a feature is to the target disease. The grade decides what counts as safe alone in L1.
+    """
+    S1 = "S1"
+    """
+    Confirmatory: specific enough that the CP flags on it alone. It may also match a few closely related conditions, which the CP accepts flagging. Only S1 features may be L1 disjuncts.
+    """
+    S2 = "S2"
+    """
+    Highly specific, but not accepted to flag on its own: it needs corroboration.
+    """
+    S3 = "S3"
+    """
+    Suggestive: the feature narrows the differential diagnosis but doesn't settle it.
+    """
+    S4 = "S4"
+    """
+    Weak: the feature says almost nothing about the disease on its own.
+    """
+    S5 = "S5"
+    """
+    Incidental: the feature is common in the disease but is not evidence for it.
     """
 
 
@@ -322,10 +348,11 @@ class DiseaseRef(ConfiguredBaseModel):
 
     disease_entity_id: str = Field(default=..., description="""Opaque id of the disease entity, `RAPID` + exactly six digits, e.g. `RAPID000123`. Minted by Mendelian. Every CP for the entity carries the same id, across levels and versions. It does not depend on Mondo, so it stays the same when the anchor Mondo id is obsoleted or merged.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     mondo_id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
+    mondo_version: str = Field(default=..., description="""The Mondo release that `mondo_id` and `included_mondo_ids` come from, as its release tag, e.g. `v2026-10-07`. Mondo ids get obsoleted and merged, so the ids can only be checked against a known release.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     slug: str = Field(default=..., description="""Short lowercase hyphenated disease name used in file names, e.g. `xlh`, `fabry`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
     name: str = Field(default=..., description="""Human-readable disease name, for reviewers. Not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef', 'Feature']} })
     included_mondo_ids: Optional[list[str]] = Field(default=None, description="""Every Mondo id that constitutes this disease entity, `mondo_id` included. Defaults to `[mondo_id]`. Recorded, not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
-    curation_record_version: Optional[str] = Field(default=None, description="""Version of the curation record (keyed by `mondo_id`) this CP was built from. Recorded, not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
+    curation_record_version: Optional[str] = Field(default=None, description="""Version of the curation record (keyed by `disease_entity_id`) this CP was built from. Recorded, not queried.""", json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef']} })
 
     @field_validator('disease_entity_id')
     def pattern_disease_entity_id(cls, v):
@@ -350,6 +377,19 @@ class DiseaseRef(ConfiguredBaseModel):
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.search(v):
             err_msg = f"Invalid mondo_id format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator('mondo_version')
+    def pattern_mondo_version(cls, v):
+        pattern=re.compile(r"^v[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.search(element):
+                    err_msg = f"Invalid mondo_version format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.search(v):
+            err_msg = f"Invalid mondo_version format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -436,7 +476,7 @@ class Feature(ConfiguredBaseModel):
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature', 'Disjunct', 'Rule', 'ScoreItem']} })
     module: Module = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     name: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['DiseaseRef', 'Feature']} })
-    specificity_grade: int = Field(default=..., description="""Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.""", ge=1, le=5, json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
+    specificity_grade: SpecificityGrade = Field(default=..., description="""How specific the feature is to the target disease, from S1 (confirmatory) to S5 (incidental). L1 disjuncts may only use S1 features.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     hpo_id: Optional[str] = Field(default=None, description="""Phenotype features: the HPO term this realises (annotation only, not queried).""", json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     codes: list[CodeRef] = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })
     result: Optional[ResultCriterion] = Field(default=None, description="""Required for `diagnostic_test` features and for LOINC-coded `phenotype` features.""", json_schema_extra = { "linkml_meta": {'domain_of': ['Feature']} })

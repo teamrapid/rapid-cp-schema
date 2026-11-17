@@ -200,6 +200,7 @@ class DiseaseRef(YAMLRoot):
 
     disease_entity_id: str = None
     mondo_id: Union[str, URIorCURIE] = None
+    mondo_version: str = None
     slug: str = None
     name: str = None
     included_mondo_ids: Optional[Union[Union[str, URIorCURIE], list[Union[str, URIorCURIE]]]] = empty_list()
@@ -215,6 +216,11 @@ class DiseaseRef(YAMLRoot):
             self.MissingRequiredField("mondo_id")
         if not isinstance(self.mondo_id, URIorCURIE):
             self.mondo_id = URIorCURIE(self.mondo_id)
+
+        if self._is_empty(self.mondo_version):
+            self.MissingRequiredField("mondo_version")
+        if not isinstance(self.mondo_version, str):
+            self.mondo_version = str(self.mondo_version)
 
         if self._is_empty(self.slug):
             self.MissingRequiredField("slug")
@@ -397,7 +403,7 @@ class Feature(YAMLRoot):
     id: Union[str, FeatureId] = None
     module: Union[str, "Module"] = None
     name: str = None
-    specificity_grade: int = None
+    specificity_grade: Union[str, "SpecificityGrade"] = None
     codes: Union[Union[dict, "CodeRef"], list[Union[dict, "CodeRef"]]] = None
     hpo_id: Optional[Union[str, URIorCURIE]] = None
     result: Optional[Union[dict, "ResultCriterion"]] = None
@@ -423,8 +429,8 @@ class Feature(YAMLRoot):
 
         if self._is_empty(self.specificity_grade):
             self.MissingRequiredField("specificity_grade")
-        if not isinstance(self.specificity_grade, int):
-            self.specificity_grade = int(self.specificity_grade)
+        if not isinstance(self.specificity_grade, SpecificityGrade):
+            self.specificity_grade = SpecificityGrade(self.specificity_grade)
 
         if self._is_empty(self.codes):
             self.MissingRequiredField("codes")
@@ -813,7 +819,7 @@ class CPLevel(EnumDefinitionImpl):
     """
     L1 = PermissibleValue(
         text="L1",
-        description="Safe Alone - union of S1 (highly specific) disjuncts.")
+        description="Safe Alone - union of S1 (confirmatory) disjuncts.")
     L2A = PermissibleValue(
         text="L2A",
         description="Deterministic rules - Boolean gates.")
@@ -878,6 +884,31 @@ class ReviewDecision(EnumDefinitionImpl):
     _defn = EnumDefinition(
         name="ReviewDecision",
         description="The outcome of a clinical review of a CP.",
+    )
+
+class SpecificityGrade(EnumDefinitionImpl):
+    """
+    How specific a feature is to the target disease. The grade decides what counts as safe alone in L1.
+    """
+    S1 = PermissibleValue(
+        text="S1",
+        description="""Confirmatory: specific enough that the CP flags on it alone. It may also match a few closely related conditions, which the CP accepts flagging. Only S1 features may be L1 disjuncts.""")
+    S2 = PermissibleValue(
+        text="S2",
+        description="Highly specific, but not accepted to flag on its own: it needs corroboration.")
+    S3 = PermissibleValue(
+        text="S3",
+        description="Suggestive: the feature narrows the differential diagnosis but doesn't settle it.")
+    S4 = PermissibleValue(
+        text="S4",
+        description="Weak: the feature says almost nothing about the disease on its own.")
+    S5 = PermissibleValue(
+        text="S5",
+        description="Incidental: the feature is common in the disease but is not evidence for it.")
+
+    _defn = EnumDefinition(
+        name="SpecificityGrade",
+        description="How specific a feature is to the target disease. The grade decides what counts as safe alone in L1.",
     )
 
 class Module(EnumDefinitionImpl):
@@ -1043,6 +1074,10 @@ slots.diseaseRef__mondo_id = Slot(uri=RAPIDCP.mondo_id, name="diseaseRef__mondo_
                    model_uri=RAPIDCP.diseaseRef__mondo_id, domain=None, range=Union[str, URIorCURIE],
                    pattern=re.compile(r'^MONDO:[0-9]{7}$'))
 
+slots.diseaseRef__mondo_version = Slot(uri=RAPIDCP.mondo_version, name="diseaseRef__mondo_version", curie=RAPIDCP.curie('mondo_version'),
+                   model_uri=RAPIDCP.diseaseRef__mondo_version, domain=None, range=str,
+                   pattern=re.compile(r'^v[0-9]{4}-[0-9]{2}-[0-9]{2}$'))
+
 slots.diseaseRef__slug = Slot(uri=RAPIDCP.slug, name="diseaseRef__slug", curie=RAPIDCP.curie('slug'),
                    model_uri=RAPIDCP.diseaseRef__slug, domain=None, range=str,
                    pattern=re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*$'))
@@ -1113,7 +1148,7 @@ slots.feature__name = Slot(uri=RAPIDCP.name, name="feature__name", curie=RAPIDCP
                    model_uri=RAPIDCP.feature__name, domain=None, range=str)
 
 slots.feature__specificity_grade = Slot(uri=RAPIDCP.specificity_grade, name="feature__specificity_grade", curie=RAPIDCP.curie('specificity_grade'),
-                   model_uri=RAPIDCP.feature__specificity_grade, domain=None, range=int)
+                   model_uri=RAPIDCP.feature__specificity_grade, domain=None, range=Union[str, "SpecificityGrade"])
 
 slots.feature__hpo_id = Slot(uri=RAPIDCP.hpo_id, name="feature__hpo_id", curie=RAPIDCP.curie('hpo_id'),
                    model_uri=RAPIDCP.feature__hpo_id, domain=None, range=Optional[Union[str, URIorCURIE]])

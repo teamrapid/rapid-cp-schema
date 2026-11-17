@@ -98,6 +98,10 @@ the target over five years is about 2,700 diseases.
   `SpecificityGrade` with values `S1` to `S5` instead of an integer from 1 to 5. An enum's values
   are strings, so bare integers can't be kept; `S1` to `S5` is how the grades were already
   written in prose (§5.6).
+- **Since 0.2.0** (breaking, for the next minor version): the new required slot
+  `disease.mondo_version` records the Mondo release, as its release tag (`v2026-10-07`), that the
+  CP's Mondo ids come from. A CP without it can't be checked once those ids are obsoleted or
+  merged (§5.4).
 - **Licence:** CC0 1.0, as declared in the original schema.
 - **Ownership:** Mendelian agreed to move the schema to this programme-neutral home in the
   `teamrapid` GitHub org. **Mendelian remain the owners and maintainers**, and others contribute
@@ -196,7 +200,8 @@ They may switch to CURIEs only if UNC is happy with that.
 ### 5.4 `mondo_version`
 
 Add a slot recording **which Mondo release** the CP was built against. Mondo ids get obsoleted
-and merged, so a CP without a pinned release can't be checked later. Agreed.
+and merged, so a CP without a pinned release can't be checked later. Agreed. Done: the required
+slot `disease.mondo_version` holds the Mondo release tag, e.g. `v2026-10-07` (#9).
 
 ### 5.5 HPO terms with mapping predicates
 

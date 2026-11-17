@@ -6,6 +6,7 @@ title: X-linked hypophosphatemia, Level 1
 disease:
   disease_entity_id: RAPID000123
   mondo_id: MONDO:0010619
+  mondo_version: v2026-10-07
   slug: xlh
   name: X-linked hypophosphatemia
   included_mondo_ids:

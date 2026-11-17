@@ -82,7 +82,7 @@ its history; they can be read but aren't needed to build queries.
 | `cp_name` | yes | no | The CP version's name (section 2). |
 | `schema_version` | yes | no | Version of the LinkML schema the file follows, e.g. `0.2.0`. |
 | `title` | yes | no | A readable name for the CP. |
-| `disease` | yes | no | The disease entity: `disease_entity_id` (the RAPID id in `cp_name`), `mondo_id` (primary Mondo id), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
+| `disease` | yes | no | The disease entity: `disease_entity_id` (the RAPID id in `cp_name`), `mondo_id` (primary Mondo id), `mondo_version` (the Mondo release tag the Mondo ids come from, e.g. `v2026-10-07`), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
 | `level` | yes | query | `L1`, `L2A`, `L2B` or `L3`. Decides which logic block the file carries (section 5). |
 | `search_mode` | yes | query | `population`: search everyone. `cluster`: search only patients with an umbrella code (section 5.5). |
 | `cluster` | in cluster mode | query | `umbrella_codes`: the codes that define the group searched. `candidate_mondo_ids`: documentation only. |
@@ -253,6 +253,9 @@ A CP file that breaks any of these rules is wrong, even where the schema doesn't
 - `cp_name` agrees with the file name, `level`, `disease.disease_entity_id` and `disease.slug`
   (section 2).
 - `included_mondo_ids`, when given, includes `mondo_id`.
+- `mondo_id` and every `included_mondo_ids` entry are current (not obsolete) terms in the
+  `disease.mondo_version` release. An id that a later Mondo release obsoletes doesn't make the CP
+  wrong, since the CP is checked against the release it names.
 - `supersedes`, when given, is a `cp_name`.
 - `schema_version` is a schema version number, e.g. `0.2.0`.
 - A `cluster` block is given when `search_mode` is `cluster`, and only then. Umbrella codes are

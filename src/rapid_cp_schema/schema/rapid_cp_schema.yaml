@@ -151,6 +151,13 @@ classes:
           the same id, across levels and versions. It does not depend on Mondo,
           so it stays the same when the anchor Mondo id is obsoleted or merged.
       mondo_id: {range: uriorcurie, required: true, pattern: "^MONDO:[0-9]{7}$"}
+      mondo_version:
+        required: true
+        pattern: "^v[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        description: >-
+          The Mondo release that `mondo_id` and `included_mondo_ids` come from,
+          as its release tag, e.g. `v2026-10-07`. Mondo ids get obsoleted and
+          merged, so the ids can only be checked against a known release.
       slug:
         required: true
         pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
@@ -165,8 +172,8 @@ classes:
           Defaults to `[mondo_id]`. Recorded, not queried.
       curation_record_version:
         description: >-
-          Version of the curation record (keyed by `mondo_id`) this CP was built
-          from. Recorded, not queried.
+          Version of the curation record (keyed by `disease_entity_id`) this CP was
+          built from. Recorded, not queried.
 
 
 
