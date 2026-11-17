@@ -1,0 +1,8 @@
+site_code,result_spec_version,generated_at,cp_name,run_date,data_snapshot_date,row_type,criterion_id,population_n,population_basis,population_basis_note,count_value,count_status
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,213,exact
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,40,exact
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999999-test-disease-a_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,173,exact
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,summary,,520000,observation_time,,25,exact
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d1,,,,22,exact
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d2,,,,,suppressed
+test_site_1,1.0,2026-10-15T09:30:00Z,mondo9999998-test-disease-b_L1_v1.0,2026-10-14,2026-10-01,count,d3,,,,0,exact
