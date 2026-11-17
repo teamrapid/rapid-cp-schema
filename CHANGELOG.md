@@ -26,6 +26,9 @@ Each pull request that changes the schema, the documentation or the examples add
   obsoleted or merged (#4).
 - Results file: `cp_name` follows the new CP name format in specification v1.1. Version 1.0 is
   no longer accepted and it has been used only for testing purposes (#4).
+- **Breaking:** `specificity_grade` is now the enum `SpecificityGrade`, written `S1` to `S5`
+  instead of the integers 1 to 5, with a definition for each grade. The OMOP 5.4 guide lists the
+  grades with examples in §4.4 (#11).
 
 ## [0.2.0] - 2026-11-10
 

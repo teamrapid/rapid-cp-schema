@@ -10,13 +10,13 @@ features:
 - id: f1
   module: diagnostic_code
   name: XLH diagnosis code
-  specificity_grade: 1
+  specificity_grade: S1
   codes:
   - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia}
 - id: f4
   module: phenotype
   name: Low serum phosphate
-  specificity_grade: 3
+  specificity_grade: S3
   hpo_id: HP:0002148
   codes:
   - {vocabulary: LOINC, code: 2777-1}
@@ -24,7 +24,7 @@ features:
 - id: f5
   module: phenotype
   name: Rickets
-  specificity_grade: 3
+  specificity_grade: S3
   hpo_id: HP:0002748
   codes:
   - {vocabulary: SNOMED, code: '41345002', label: Rickets}

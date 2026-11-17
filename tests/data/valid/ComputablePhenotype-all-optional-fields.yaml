@@ -17,7 +17,7 @@ features:
 - id: f1
   module: diagnostic_code
   name: XLH diagnosis code
-  specificity_grade: 1
+  specificity_grade: S1
   codes:
   - {vocabulary: ICD10CM, code: E83.31, label: Familial hypophosphatemia, include_descendants: false}
   include_personal_history: false
@@ -25,13 +25,13 @@ features:
 - id: f2
   module: medication
   name: burosumab
-  specificity_grade: 1
+  specificity_grade: S1
   codes:
   - {vocabulary: RXNORM, code: '2043855', label: burosumab}
 - id: f3
   module: genetic_finding
   name: PHEX pathogenic variant
-  specificity_grade: 1
+  specificity_grade: S1
   codes:
   - {vocabulary: LOINC, code: 53037-8, label: Genetic variation clinical significance}
   genetic:

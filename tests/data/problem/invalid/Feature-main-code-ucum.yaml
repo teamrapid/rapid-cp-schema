@@ -4,6 +4,6 @@
 id: f1
 module: diagnostic_code
 name: XLH diagnosis code
-specificity_grade: 1
+specificity_grade: S1
 codes:
 - {vocabulary: UCUM, code: mg/dL}

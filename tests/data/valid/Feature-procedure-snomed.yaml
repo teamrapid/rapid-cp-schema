@@ -2,6 +2,6 @@
 id: f9
 module: procedure
 name: Guided growth surgery
-specificity_grade: 3
+specificity_grade: S3
 codes:
 - {vocabulary: SNOMED, code: '179097002'}
