@@ -305,7 +305,7 @@ enums:
     permissible_values:
       L1:
         text: L1
-        description: Safe Alone - union of S1 (highly specific) disjuncts.
+        description: Safe Alone - union of S1 (confirmatory) disjuncts.
       L2A:
         text: L2A
         description: Deterministic rules - Boolean gates.
@@ -355,6 +355,34 @@ enums:
       revise:
         text: revise
         description: Send back for revision.
+  SpecificityGrade:
+    name: SpecificityGrade
+    definition_uri: https://mendelian.co/schemas/rapid-cp-logic/SpecificityGrade
+    description: How specific a feature is to the target disease. The grade decides
+      what counts as safe alone in L1.
+    from_schema: https://mendelian.co/schemas/rapid-cp-logic
+    permissible_values:
+      S1:
+        text: S1
+        description: 'Confirmatory: specific enough that the CP flags on it alone.
+          It may also match a few closely related conditions, which the CP accepts
+          flagging. Only S1 features may be L1 disjuncts.'
+      S2:
+        text: S2
+        description: 'Highly specific, but not accepted to flag on its own: it needs
+          corroboration.'
+      S3:
+        text: S3
+        description: 'Suggestive: the feature narrows the differential diagnosis but
+          doesn''t settle it.'
+      S4:
+        text: S4
+        description: 'Weak: the feature says almost nothing about the disease on its
+          own.'
+      S5:
+        text: S5
+        description: 'Incidental: the feature is common in the disease but is not
+          evidence for it.'
   Module:
     name: Module
     definition_uri: https://mendelian.co/schemas/rapid-cp-logic/Module
@@ -903,18 +931,16 @@ slots:
     required: true
   feature__specificity_grade:
     name: feature__specificity_grade
-    description: Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic
-      ... 5 = incidental). L1 disjuncts may only use S1 features.
+    description: How specific the feature is to the target disease, from S1 (confirmatory)
+      to S5 (incidental). L1 disjuncts may only use S1 features.
     from_schema: https://mendelian.co/schemas/rapid-cp-logic
     slot_uri: rapidcp:specificity_grade
     alias: specificity_grade
     owner: Feature
     domain_of:
     - Feature
-    range: integer
+    range: SpecificityGrade
     required: true
-    minimum_value: 1
-    maximum_value: 5
   feature__hpo_id:
     name: feature__hpo_id
     description: 'Phenotype features: the HPO term this realises (annotation only,
@@ -1728,12 +1754,10 @@ classes:
         required: true
       specificity_grade:
         name: specificity_grade
-        description: Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic
-          ... 5 = incidental). L1 disjuncts may only use S1 features.
-        range: integer
+        description: How specific the feature is to the target disease, from S1 (confirmatory)
+          to S5 (incidental). L1 disjuncts may only use S1 features.
+        range: SpecificityGrade
         required: true
-        minimum_value: 1
-        maximum_value: 5
       hpo_id:
         name: hpo_id
         description: 'Phenotype features: the HPO term this realises (annotation only,
@@ -2076,6 +2100,6 @@ classes:
     class_uri: rapidcp:ScoreItem
 metamodel_version: 1.12.0
 source_file: rapid_cp_schema.yaml
-source_file_date: '2026-11-11T14:14:20'
-source_file_size: 16580
+source_file_date: '2026-11-17T13:43:10'
+source_file_size: 17318
 

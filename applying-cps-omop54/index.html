@@ -459,6 +459,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#44-specificity-grades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Specificity grades
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -812,6 +823,17 @@
     <span class="md-ellipsis">
       
         4.3 Genetic findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-specificity-grades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Specificity grades
       
     </span>
   </a>
@@ -1250,7 +1272,7 @@ the record only and needs no query.</p>
 <tr>
 <td><code>specificity_grade</code></td>
 <td>yes</td>
-<td>1 (confirmatory) to 5 (incidental), written S1 to S5 in prose. Level 1 uses only S1 features.</td>
+<td><code>S1</code> (confirmatory) to <code>S5</code> (incidental) (4.4). Level 1 uses only S1 features.</td>
 </tr>
 <tr>
 <td><code>codes</code></td>
@@ -1413,6 +1435,46 @@ listed answers.</p>
   when the codes are generic LOINC panels.</li>
 </ul>
 <p>Any variant in the gene with an accepted interpretation counts; a CP can't name specific variants.</p>
+<h3 id="44-specificity-grades">4.4 Specificity grades</h3>
+<p>The grade says how specific a feature is to the target disease. It decides what counts as safe
+alone at Level 1. The line between S1 and S2 is the CP author's choice. The examples are for XLH and
+are illustrative, not clinically reviewed.</p>
+<table>
+<thead>
+<tr>
+<th>Grade</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>S1</code></td>
+<td>Confirmatory: specific enough that the CP flags on it alone. It may also match a few closely related conditions, which the CP accepts flagging. Only S1 features may be Level 1 disjuncts.</td>
+<td>Burosumab; ICD-10-CM <code>E83.31</code> (familial hypophosphatemia), which also covers ADHR and ARHR: the CP accepts flagging those</td>
+</tr>
+<tr>
+<td><code>S2</code></td>
+<td>Highly specific, but not accepted to flag on its own: it needs corroboration.</td>
+<td>Elevated FGF23, which also points to ADHR, ARHR and tumour-induced osteomalacia: the CP flags it only with corroboration</td>
+</tr>
+<tr>
+<td><code>S3</code></td>
+<td>Suggestive: the feature narrows the differential diagnosis but doesn't settle it.</td>
+<td>Low serum phosphate</td>
+</tr>
+<tr>
+<td><code>S4</code></td>
+<td>Weak: the feature says almost nothing about the disease on its own.</td>
+<td>Short stature</td>
+</tr>
+<tr>
+<td><code>S5</code></td>
+<td>Incidental: the feature is common in the disease but is not evidence for it.</td>
+<td>Knee pain</td>
+</tr>
+</tbody>
+</table>
 <h2 id="5-logic">5. Logic</h2>
 <p>The level decides how features combine. Each part of the logic has an id (<code>d1</code>, <code>r2</code>, <code>s3</code>…);
 these are the criteria a site reports counts for. Level 3 can be declared but has no logic block

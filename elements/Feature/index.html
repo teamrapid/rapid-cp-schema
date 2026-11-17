@@ -361,6 +361,15 @@
 
       Feature : specificity_grade
 
+
+
+
+
+        Feature --&gt; "1" SpecificityGrade : specificity_grade
+        click SpecificityGrade href "../SpecificityGrade/"
+
+
+
       Feature : text_terms
 
 </code></pre>
@@ -396,8 +405,8 @@
 </tr>
 <tr>
 <td><a href="../specificity_grade/">specificity_grade</a></td>
-<td>1 <br/> <a href="../Integer/">Integer</a></td>
-<td>Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.</td>
+<td>1 <br/> <a href="../SpecificityGrade/">SpecificityGrade</a></td>
+<td>How specific the feature is to the target disease, from S1 (confirmatory) to S5 (incidental). L1 disjuncts may only use S1 features.</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -520,16 +529,14 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">specificity_grade</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_grade</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">... 5 = incidental). L1 disjuncts may only use S1 features.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">How specific the feature is to the target disease, from S1 (confirmatory)</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">to S5 (incidental). L1 disjuncts may only use S1 features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpecificityGrade</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">minimum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">maximum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 <span class="w">  </span><span class="nt">hpo_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hpo_id</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Phenotype</span><span class="nv"> </span><span class="s">features:</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">HPO</span><span class="nv"> </span><span class="s">term</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">realises</span><span class="nv"> </span><span class="s">(annotation</span><span class="nv"> </span><span class="s">only,</span>
@@ -631,17 +638,15 @@
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">specificity_grade</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_grade</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">... 5 = incidental). L1 disjuncts may only use S1 features.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">How specific the feature is to the target disease, from S1 (confirmatory)</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">to S5 (incidental). L1 disjuncts may only use S1 features.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpecificityGrade</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">minimum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">maximum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 <span class="w">  </span><span class="nt">hpo_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hpo_id</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Phenotype</span><span class="nv"> </span><span class="s">features:</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">HPO</span><span class="nv"> </span><span class="s">term</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">realises</span><span class="nv"> </span><span class="s">(annotation</span><span class="nv"> </span><span class="s">only,</span>

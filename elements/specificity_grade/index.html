@@ -463,17 +463,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#value-constraints" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Value Constraints
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -551,7 +540,7 @@
 
 
 <h1 id="slot-specificity_grade">Slot: specificity_grade</h1>
-<p><em>Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic ... 5 = incidental). L1 disjuncts may only use S1 features.</em></p>
+<p><em>How specific the feature is to the target disease, from S1 (confirmatory) to S5 (incidental). L1 disjuncts may only use S1 features.</em></p>
 <div>
 <p>URI: <a href="https://mendelian.co/schemas/rapid-cp-logic/specificity_grade">rapidcp:specificity_grade</a></p>
 <!-- no inheritance hierarchy -->
@@ -584,7 +573,7 @@
 <tbody>
 <tr>
 <td>Range</td>
-<td><a href="../Integer/">Integer</a></td>
+<td><a href="../SpecificityGrade/">SpecificityGrade</a></td>
 </tr>
 <tr>
 <td>Domain Of</td>
@@ -625,25 +614,6 @@
 </tr>
 </tbody>
 </table>
-<h3 id="value-constraints">Value Constraints</h3>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Minimum Value</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Maximum Value</td>
-<td>5</td>
-</tr>
-</tbody>
-</table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
@@ -671,17 +641,15 @@
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specificity_grade</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Specificity grade, written S1 to S5 in prose (1 = confirmatory/pathognomonic</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">... 5 = incidental). L1 disjuncts may only use S1 features.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">How specific the feature is to the target disease, from S1 (confirmatory)</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">to S5 (incidental). L1 disjuncts may only use S1 features.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpecificityGrade</span>
 <span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="nt">minimum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="nt">maximum_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </code></pre></div>
 </details>
 </div>
