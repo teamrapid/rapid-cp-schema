@@ -82,7 +82,7 @@ its history; they can be read but aren't needed to build queries.
 | `cp_name` | yes | no | The CP version's name (section 2). |
 | `schema_version` | yes | no | Version of the LinkML schema the file follows, e.g. `0.2.0`. |
 | `title` | yes | no | A readable name for the CP. |
-| `disease` | yes | no | The disease entity: `disease_entity_id` (the RAPID id in `cp_name`), `mondo_id` (primary Mondo id), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
+| `disease` | yes | no | The disease entity: `disease_entity_id` (the RAPID id in `cp_name`), `mondo_id` (primary Mondo id), `mondo_version` (the Mondo release tag the Mondo ids come from, e.g. `v2026-10-07`), `slug`, `name`, `included_mondo_ids` (every Mondo id for the entity, primary included), `curation_record_version`. |
 | `level` | yes | query | `L1`, `L2A`, `L2B` or `L3`. Decides which logic block the file carries (section 5). |
 | `search_mode` | yes | query | `population`: search everyone. `cluster`: search only patients with an umbrella code (section 5.5). |
 | `cluster` | in cluster mode | query | `umbrella_codes`: the codes that define the group searched. `candidate_mondo_ids`: documentation only. |
