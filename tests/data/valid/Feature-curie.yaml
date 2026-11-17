@@ -1,0 +1,14 @@
+# Codes, a unit and an accepted answer each carrying a `curie` next to `vocabulary` + `code` (SPEC.md §5.2).
+id: f6
+module: diagnostic_test
+name: Low serum phosphate
+specificity_grade: S2
+codes:
+- {vocabulary: LOINC, code: 2777-1, curie: 'loinc:2777-1', label: 'Phosphate [Mass/volume] in Serum or Plasma'}
+result:
+  kind: numeric
+  operator: lt
+  value: 2.5
+  units:
+  - {vocabulary: UCUM, code: mg/dL, curie: 'ucum:mg/dL'}
+  - {vocabulary: UCUM, code: 'mm[Hg]', curie: 'ucum:mm[Hg]'}

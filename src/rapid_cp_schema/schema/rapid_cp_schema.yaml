@@ -15,6 +15,12 @@ prefixes:
   linkml: https://w3id.org/linkml/
   MONDO: http://purl.obolibrary.org/obo/MONDO_
   HP: http://purl.obolibrary.org/obo/HP_
+  # Code CURIEs (CodeRef.curie): Bioregistry prefixes, with Bioregistry's URI prefixes.
+  icd10cm: https://www.icd10data.com/search?s=
+  snomedct: http://purl.bioontology.org/ontology/SNOMEDCT/
+  loinc: https://loinc.org/
+  rxnorm: https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=
+  ucum: https://units-of-measurement.org/
   # Placeholder under the v0.1.0 schema id, so the generators run. The real RAPID prefix/PURL is open (SPEC.md §5.3).
   rapidcp: https://mendelian.co/schemas/rapid-cp-logic/
 default_prefix: rapidcp
@@ -243,6 +249,13 @@ classes:
     attributes:
       vocabulary: {range: CodeSystem, required: true}
       code: {required: true}
+      curie:
+        pattern: "^(snomedct|icd10cm|loinc|rxnorm|ucum):\\S+$"
+        description: >-
+          Optional. The same code as a CURIE with a Bioregistry prefix, e.g.
+          `snomedct:82236004`, `icd10cm:E83.31`, `loinc:2777-1`, `rxnorm:2043855`,
+          `ucum:mg/dL`, for joining with Mondo and SSSOM mappings. The prefix must
+          match `vocabulary`, and the local part must equal `code`.
       label: {}
       include_descendants:
         range: boolean
@@ -250,6 +263,22 @@ classes:
           Default `true` for a feature's main codes, `false` for result value and unit
           codes. SNOMED/LOINC/RxNorm expand via `CONCEPT_ANCESTOR`; ICD10CM expands
           by code prefix.
+    rules:
+      - description: "An ICD10CM code's `curie` uses the `icd10cm` prefix."
+        preconditions: {slot_conditions: {vocabulary: {equals_string: ICD10CM}, curie: {value_presence: PRESENT}}}
+        postconditions: {slot_conditions: {curie: {pattern: "^icd10cm:"}}}
+      - description: "A SNOMED code's `curie` uses the `snomedct` prefix."
+        preconditions: {slot_conditions: {vocabulary: {equals_string: SNOMED}, curie: {value_presence: PRESENT}}}
+        postconditions: {slot_conditions: {curie: {pattern: "^snomedct:"}}}
+      - description: "A LOINC code's `curie` uses the `loinc` prefix."
+        preconditions: {slot_conditions: {vocabulary: {equals_string: LOINC}, curie: {value_presence: PRESENT}}}
+        postconditions: {slot_conditions: {curie: {pattern: "^loinc:"}}}
+      - description: "An RXNORM code's `curie` uses the `rxnorm` prefix."
+        preconditions: {slot_conditions: {vocabulary: {equals_string: RXNORM}, curie: {value_presence: PRESENT}}}
+        postconditions: {slot_conditions: {curie: {pattern: "^rxnorm:"}}}
+      - description: "A UCUM code's `curie` uses the `ucum` prefix."
+        preconditions: {slot_conditions: {vocabulary: {equals_string: UCUM}, curie: {value_presence: PRESENT}}}
+        postconditions: {slot_conditions: {curie: {pattern: "^ucum:"}}}
 
 
   ResultCriterion:

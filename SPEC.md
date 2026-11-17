@@ -189,6 +189,12 @@ They may switch to CURIEs only if UNC is happy with that.
 - **Why it matters:** CP features must join with Mondo mappings, SSSOM mapping sets and the RAPID
   value sets, which are the inputs CPs consume.
 
+Done (#7): `CodeRef.curie` is optional, so existing CP files keep validating, and the five
+prefixes are declared. Units may carry a `curie` but don't need one. A class rule per vocabulary
+checks that the prefix matches `vocabulary`. That the local part equals `code` is a rule too,
+but LinkML can't compare two slots, so it is recorded in `tests/data/problem/invalid/` until a
+check is added (§5.1).
+
 ### 5.3 Schema id, prefix and PURL
 
 - `default_prefix: rapidcp` was used but **not declared** in v0.1.0. It is declared here with a

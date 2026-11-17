@@ -1,0 +1,8 @@
+# ICD10CM code whose curie has the snomedct prefix.
+# expect: 'snomedct:E83.31' does not match '\^icd10cm:'
+id: f1
+module: diagnostic_code
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: ICD10CM, code: 'E83.31', curie: 'snomedct:E83.31'}

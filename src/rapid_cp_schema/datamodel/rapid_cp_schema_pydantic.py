@@ -84,10 +84,20 @@ linkml_meta = LinkMLMeta({'default_prefix': 'rapidcp',
                          'prefix_reference': 'http://purl.obolibrary.org/obo/HP_'},
                   'MONDO': {'prefix_prefix': 'MONDO',
                             'prefix_reference': 'http://purl.obolibrary.org/obo/MONDO_'},
+                  'icd10cm': {'prefix_prefix': 'icd10cm',
+                              'prefix_reference': 'https://www.icd10data.com/search?s='},
                   'linkml': {'prefix_prefix': 'linkml',
                              'prefix_reference': 'https://w3id.org/linkml/'},
+                  'loinc': {'prefix_prefix': 'loinc',
+                            'prefix_reference': 'https://loinc.org/'},
                   'rapidcp': {'prefix_prefix': 'rapidcp',
-                              'prefix_reference': 'https://mendelian.co/schemas/rapid-cp-logic/'}},
+                              'prefix_reference': 'https://mendelian.co/schemas/rapid-cp-logic/'},
+                  'rxnorm': {'prefix_prefix': 'rxnorm',
+                             'prefix_reference': 'https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm='},
+                  'snomedct': {'prefix_prefix': 'snomedct',
+                               'prefix_reference': 'http://purl.bioontology.org/ontology/SNOMEDCT/'},
+                  'ucum': {'prefix_prefix': 'ucum',
+                           'prefix_reference': 'https://units-of-measurement.org/'}},
      'source_file': 'src/rapid_cp_schema/schema/rapid_cp_schema.yaml'} )
 
 class CPLevel(str, Enum):
@@ -502,12 +512,63 @@ class CodeRef(ConfiguredBaseModel):
     """
     A code written as it appears in its source vocabulary, never as an OMOP `concept_id`.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://mendelian.co/schemas/rapid-cp-logic'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://mendelian.co/schemas/rapid-cp-logic',
+         'rules': [{'description': "An ICD10CM code's `curie` uses the `icd10cm` "
+                                   'prefix.',
+                    'postconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                     'pattern': '^icd10cm:'}}},
+                    'preconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                    'value_presence': 'PRESENT'},
+                                                          'vocabulary': {'equals_string': 'ICD10CM',
+                                                                         'name': 'vocabulary'}}}},
+                   {'description': "A SNOMED code's `curie` uses the `snomedct` "
+                                   'prefix.',
+                    'postconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                     'pattern': '^snomedct:'}}},
+                    'preconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                    'value_presence': 'PRESENT'},
+                                                          'vocabulary': {'equals_string': 'SNOMED',
+                                                                         'name': 'vocabulary'}}}},
+                   {'description': "A LOINC code's `curie` uses the `loinc` prefix.",
+                    'postconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                     'pattern': '^loinc:'}}},
+                    'preconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                    'value_presence': 'PRESENT'},
+                                                          'vocabulary': {'equals_string': 'LOINC',
+                                                                         'name': 'vocabulary'}}}},
+                   {'description': "An RXNORM code's `curie` uses the `rxnorm` prefix.",
+                    'postconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                     'pattern': '^rxnorm:'}}},
+                    'preconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                    'value_presence': 'PRESENT'},
+                                                          'vocabulary': {'equals_string': 'RXNORM',
+                                                                         'name': 'vocabulary'}}}},
+                   {'description': "A UCUM code's `curie` uses the `ucum` prefix.",
+                    'postconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                     'pattern': '^ucum:'}}},
+                    'preconditions': {'slot_conditions': {'curie': {'name': 'curie',
+                                                                    'value_presence': 'PRESENT'},
+                                                          'vocabulary': {'equals_string': 'UCUM',
+                                                                         'name': 'vocabulary'}}}}]})
 
     vocabulary: CodeSystem = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['CodeRef']} })
     code: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['CodeRef']} })
+    curie: Optional[str] = Field(default=None, description="""Optional. The same code as a CURIE with a Bioregistry prefix, e.g. `snomedct:82236004`, `icd10cm:E83.31`, `loinc:2777-1`, `rxnorm:2043855`, `ucum:mg/dL`, for joining with Mondo and SSSOM mappings. The prefix must match `vocabulary`, and the local part must equal `code`.""", json_schema_extra = { "linkml_meta": {'domain_of': ['CodeRef']} })
     label: Optional[str] = Field(default=None, json_schema_extra = { "linkml_meta": {'domain_of': ['CodeRef', 'Disjunct', 'Rule']} })
     include_descendants: Optional[bool] = Field(default=None, description="""Default `true` for a feature's main codes, `false` for result value and unit codes. SNOMED/LOINC/RxNorm expand via `CONCEPT_ANCESTOR`; ICD10CM expands by code prefix.""", json_schema_extra = { "linkml_meta": {'domain_of': ['CodeRef']} })
+
+    @field_validator('curie')
+    def pattern_curie(cls, v):
+        pattern=re.compile(r"^(snomedct|icd10cm|loinc|rxnorm|ucum):\S+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.search(element):
+                    err_msg = f"Invalid curie format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.search(v):
+            err_msg = f"Invalid curie format: {v}"
+            raise ValueError(err_msg)
+        return v
 
 
 class ResultCriterion(ConfiguredBaseModel):

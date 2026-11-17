@@ -1,0 +1,14 @@
+# UCUM unit whose curie has the loinc prefix.
+# expect: 'loinc:mg/dL' does not match '\^ucum:'
+id: f6
+module: diagnostic_test
+name: Low serum phosphate
+specificity_grade: S2
+codes:
+- {vocabulary: LOINC, code: 2777-1}
+result:
+  kind: numeric
+  operator: lt
+  value: 2.5
+  units:
+  - {vocabulary: UCUM, code: mg/dL, curie: 'loinc:mg/dL'}

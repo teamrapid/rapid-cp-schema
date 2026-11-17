@@ -1,0 +1,12 @@
+# Accepted answer with a `curie`; only some of the feature's codes carry one, since `curie` is optional.
+id: f7
+module: diagnostic_test
+name: Positive test
+specificity_grade: S2
+codes:
+- {vocabulary: SNOMED, code: '82236004', curie: 'snomedct:82236004'}
+- {vocabulary: LOINC, code: 2777-1}
+result:
+  kind: qualitative
+  value_concepts:
+  - {vocabulary: LOINC, code: LA6576-8, curie: 'loinc:LA6576-8', label: Positive}
