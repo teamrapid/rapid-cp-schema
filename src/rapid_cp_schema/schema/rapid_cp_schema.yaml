@@ -53,8 +53,8 @@ enums:
   SpecificityGrade:
     description: "How specific a feature is to the target disease. The grade decides what counts as safe alone in L1."
     permissible_values:
-      S1: {description: "Confirmatory: specific enough to flag a patient on its own. A code shared with a few closely related conditions can still be S1 when the CP accepts that loss of precision. Only S1 features may be L1 disjuncts."}
-      S2: {description: "Highly specific: only a small number of other conditions produce this feature."}
+      S1: {description: "Confirmatory: specific enough that the CP flags on it alone. It may also match a few closely related conditions, which the CP accepts flagging. Only S1 features may be L1 disjuncts."}
+      S2: {description: "Highly specific, but not accepted to flag on its own: it needs corroboration."}
       S3: {description: "Suggestive: the feature narrows the differential diagnosis but doesn't settle it."}
       S4: {description: "Weak: the feature says almost nothing about the disease on its own."}
       S5: {description: "Incidental: the feature is common in the disease but is not evidence for it."}

@@ -166,12 +166,13 @@ Any variant in the gene with an accepted interpretation counts; a CP can't name 
 ### 4.4 Specificity grades
 
 The grade says how specific a feature is to the target disease. It decides what counts as safe
-alone at Level 1. The examples are for XLH and are illustrative, not clinically reviewed.
+alone at Level 1. The line between S1 and S2 is the CP author's choice. The examples are for XLH and
+are illustrative, not clinically reviewed.
 
 | Grade | Meaning | Example |
 | --- | --- | --- |
-| `S1` | Confirmatory: specific enough to flag a patient on its own. A code shared with a few closely related conditions can still be S1 when the CP accepts that loss of precision. Only S1 features may be Level 1 disjuncts. | Burosumab; ICD-10-CM `E83.31` (familial hypophosphatemia), which also covers other inherited forms |
-| `S2` | Highly specific: only a small number of other conditions produce this feature. | Elevated FGF23, also found in other FGF23-mediated hypophosphatemias |
+| `S1` | Confirmatory: specific enough that the CP flags on it alone. It may also match a few closely related conditions, which the CP accepts flagging. Only S1 features may be Level 1 disjuncts. | Burosumab; ICD-10-CM `E83.31` (familial hypophosphatemia), which also covers ADHR and ARHR: the CP accepts flagging those |
+| `S2` | Highly specific, but not accepted to flag on its own: it needs corroboration. | Elevated FGF23, which also points to ADHR, ARHR and tumour-induced osteomalacia: the CP flags it only with corroboration |
 | `S3` | Suggestive: the feature narrows the differential diagnosis but doesn't settle it. | Low serum phosphate |
 | `S4` | Weak: the feature says almost nothing about the disease on its own. | Short stature |
 | `S5` | Incidental: the feature is common in the disease but is not evidence for it. | Knee pain |
