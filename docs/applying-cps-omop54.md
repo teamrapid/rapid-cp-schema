@@ -132,6 +132,7 @@ Each entry under `codes` is written like
 | --- | --- |
 | `vocabulary` | `ICD10CM`, `SNOMED`, `LOINC` or `RXNORM`, plus `UCUM` for result units only. In OMOP these are the `vocabulary_id` values `ICD10CM`, `SNOMED`, `LOINC`, `RxNorm` and `UCUM`. |
 | `code` | The code as written in that vocabulary, e.g. `E83.31`. Matches OMOP's `concept_code`. ICD-10-CM codes are dotted; one written without the dot, such as `E8331`, is read as `E83.31`. |
+| `curie` | Optional. The same code as a CURIE with a [Bioregistry](https://bioregistry.io) prefix: `icd10cm:E83.31`, `snomedct:82236004`, `loinc:2777-1`, `rxnorm:2043855` or `ucum:mg/dL`. It lets a CP's codes be joined with Mondo mappings and SSSOM mapping sets. `vocabulary` and `code` are still required; a unit may carry a `curie` but doesn't need one. |
 | `label` | Optional, for readers. |
 | `include_descendants` | Also match the more specific codes beneath it. Default `true` for a feature's codes, `false` for result values and units. |
 
@@ -273,6 +274,9 @@ A CP file that breaks any of these rules is wrong, even where the schema doesn't
 - Every feature has at least one code, in a vocabulary its module allows (section 4).
   `UCUM` is used for result units only, and units are always `UCUM`.
 - SNOMED CT and RxNorm codes are quoted, so YAML doesn't read them as numbers.
+- A `curie`, where given, uses the prefix for its `vocabulary` (`ICD10CM` → `icd10cm`, `SNOMED` →
+  `snomedct`, `LOINC` → `loinc`, `RXNORM` → `rxnorm`, `UCUM` → `ucum`), and its part after the
+  colon equals `code`.
 - `result` is given where the module needs it (`diagnostic_test`, measured `phenotype`) and not
   elsewhere; `genetic` is given on `genetic_finding` features only.
 - A `phenotype` feature with LOINC codes is all-LOINC. A coded (SNOMED CT or ICD-10-CM) phenotype

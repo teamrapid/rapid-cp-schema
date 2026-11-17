@@ -20,6 +20,9 @@ Each pull request that changes the schema, the documentation or the examples add
 - **Breaking:** `disease.mondo_version`, required: the Mondo release that `mondo_id` and
   `included_mondo_ids` come from, as its release tag, e.g. `v2026-10-07`. The OMOP 5.4 guide's
   rules (§5.6) require those ids to be current terms in that release (#9).
+- `curie` on code references, optional: the code as a CURIE with a Bioregistry prefix
+  (`icd10cm`, `snomedct`, `loinc`, `rxnorm`, `ucum`), whose prefix must match `vocabulary`.
+  The OMOP 5.4 guide describes it in §4.1 (#7).
 
 ### Changed
 

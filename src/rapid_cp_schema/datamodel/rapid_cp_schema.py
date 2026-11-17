@@ -64,8 +64,13 @@ version = "0.2.0"
 # Namespaces
 HP = CurieNamespace('HP', 'http://purl.obolibrary.org/obo/HP_')
 MONDO = CurieNamespace('MONDO', 'http://purl.obolibrary.org/obo/MONDO_')
+ICD10CM = CurieNamespace('icd10cm', 'https://www.icd10data.com/search?s=')
 LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
+LOINC = CurieNamespace('loinc', 'https://loinc.org/')
 RAPIDCP = CurieNamespace('rapidcp', 'https://mendelian.co/schemas/rapid-cp-logic/')
+RXNORM = CurieNamespace('rxnorm', 'https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=')
+SNOMEDCT = CurieNamespace('snomedct', 'http://purl.bioontology.org/ontology/SNOMEDCT/')
+UCUM = CurieNamespace('ucum', 'https://units-of-measurement.org/')
 DEFAULT_ = RAPIDCP
 
 
@@ -469,6 +474,7 @@ class CodeRef(YAMLRoot):
 
     vocabulary: Union[str, "CodeSystem"] = None
     code: str = None
+    curie: Optional[str] = None
     label: Optional[str] = None
     include_descendants: Optional[Union[bool, Bool]] = None
 
@@ -482,6 +488,9 @@ class CodeRef(YAMLRoot):
             self.MissingRequiredField("code")
         if not isinstance(self.code, str):
             self.code = str(self.code)
+
+        if self.curie is not None and not isinstance(self.curie, str):
+            self.curie = str(self.curie)
 
         if self.label is not None and not isinstance(self.label, str):
             self.label = str(self.label)
@@ -1173,6 +1182,10 @@ slots.codeRef__vocabulary = Slot(uri=RAPIDCP.vocabulary, name="codeRef__vocabula
 
 slots.codeRef__code = Slot(uri=RAPIDCP.code, name="codeRef__code", curie=RAPIDCP.curie('code'),
                    model_uri=RAPIDCP.codeRef__code, domain=None, range=str)
+
+slots.codeRef__curie = Slot(uri=RAPIDCP.curie, name="codeRef__curie", curie=RAPIDCP.curie('curie'),
+                   model_uri=RAPIDCP.codeRef__curie, domain=None, range=Optional[str],
+                   pattern=re.compile(r'^(snomedct|icd10cm|loinc|rxnorm|ucum):\S+$'))
 
 slots.codeRef__label = Slot(uri=RAPIDCP.label, name="codeRef__label", curie=RAPIDCP.curie('label'),
                    model_uri=RAPIDCP.codeRef__label, domain=None, range=Optional[str])

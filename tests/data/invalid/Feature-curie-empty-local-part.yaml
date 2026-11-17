@@ -1,0 +1,8 @@
+# curie with nothing after the prefix.
+# expect: 'snomedct:' does not match
+id: f1
+module: diagnostic_code
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: SNOMED, code: '41345002', curie: 'snomedct:'}

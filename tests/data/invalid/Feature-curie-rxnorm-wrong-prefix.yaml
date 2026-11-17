@@ -1,0 +1,8 @@
+# RXNORM code whose curie has the snomedct prefix.
+# expect: 'snomedct:2043855' does not match '\^rxnorm:'
+id: f1
+module: medication
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: RXNORM, code: '2043855', curie: 'snomedct:2043855'}

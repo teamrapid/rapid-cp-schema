@@ -1,0 +1,8 @@
+# LOINC code whose curie has the snomedct prefix.
+# expect: 'snomedct:2777-1' does not match '\^loinc:'
+id: f1
+module: diagnostic_test
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: LOINC, code: '2777-1', curie: 'snomedct:2777-1'}

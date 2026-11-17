@@ -1,0 +1,8 @@
+# curie with a space after the colon.
+# expect: 'snomedct: 41345002' does not match
+id: f1
+module: diagnostic_code
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: SNOMED, code: '41345002', curie: 'snomedct: 41345002'}

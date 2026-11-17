@@ -1,0 +1,8 @@
+# curie with a prefix that isn't one of the five declared Bioregistry prefixes (names are exact).
+# expect: 'SCTID:41345002' does not match
+id: f1
+module: diagnostic_code
+name: Example
+specificity_grade: S1
+codes:
+- {vocabulary: SNOMED, code: '41345002', curie: 'SCTID:41345002'}
