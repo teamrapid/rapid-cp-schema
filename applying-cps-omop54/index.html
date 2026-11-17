@@ -1177,7 +1177,7 @@ its history; they can be read but aren't needed to build queries.</p>
 <td><code>disease</code></td>
 <td>yes</td>
 <td>no</td>
-<td>The disease entity: <code>disease_entity_id</code> (the RAPID id in <code>cp_name</code>), <code>mondo_id</code> (primary Mondo id), <code>slug</code>, <code>name</code>, <code>included_mondo_ids</code> (every Mondo id for the entity, primary included), <code>curation_record_version</code>.</td>
+<td>The disease entity: <code>disease_entity_id</code> (the RAPID id in <code>cp_name</code>), <code>mondo_id</code> (primary Mondo id), <code>mondo_version</code> (the Mondo release tag the Mondo ids come from, e.g. <code>v2026-10-07</code>), <code>slug</code>, <code>name</code>, <code>included_mondo_ids</code> (every Mondo id for the entity, primary included), <code>curation_record_version</code>.</td>
 </tr>
 <tr>
 <td><code>level</code></td>
@@ -1565,6 +1565,9 @@ the same umbrella codes.</p>
 <li><code>cp_name</code> agrees with the file name, <code>level</code>, <code>disease.disease_entity_id</code> and <code>disease.slug</code>
   (section 2).</li>
 <li><code>included_mondo_ids</code>, when given, includes <code>mondo_id</code>.</li>
+<li><code>mondo_id</code> and every <code>included_mondo_ids</code> entry are current (not obsolete) terms in the
+  <code>disease.mondo_version</code> release. An id that a later Mondo release obsoletes doesn't make the CP
+  wrong, since the CP is checked against the release it names.</li>
 <li><code>supersedes</code>, when given, is a <code>cp_name</code>.</li>
 <li><code>schema_version</code> is a schema version number, e.g. <code>0.2.0</code>.</li>
 <li>A <code>cluster</code> block is given when <code>search_mode</code> is <code>cluster</code>, and only then. Umbrella codes are

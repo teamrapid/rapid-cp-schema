@@ -315,6 +315,8 @@
 
       DiseaseRef : mondo_id
 
+      DiseaseRef : mondo_version
+
       DiseaseRef : name
 
       DiseaseRef : slug
@@ -345,6 +347,12 @@
 <td>direct</td>
 </tr>
 <tr>
+<td><a href="../mondo_version/">mondo_version</a></td>
+<td>1 <br/> <a href="../String/">String</a></td>
+<td>The Mondo release that <code>mondo_id</code> and <code>included_mondo_ids</code> come from, as its release tag, e.g. <code>v2026-10-07</code>. Mondo ids get obsoleted and merged, so the ids can only be checked against a known release.</td>
+<td>direct</td>
+</tr>
+<tr>
 <td><a href="../slug/">slug</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
 <td>Short lowercase hyphenated disease name used in file names, e.g. <code>xlh</code>, <code>fabry</code>.</td>
@@ -365,7 +373,7 @@
 <tr>
 <td><a href="../curation_record_version/">curation_record_version</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
-<td>Version of the curation record (keyed by <code>mondo_id</code>) this CP was built from. Recorded, not queried.</td>
+<td>Version of the curation record (keyed by <code>disease_entity_id</code>) this CP was built from. Recorded, not queried.</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -443,6 +451,17 @@
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
+<span class="w">  </span><span class="nt">mondo_version</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mondo_version</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The Mondo release that `mondo_id` and `included_mondo_ids` come from,</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">as its release tag, e.g. `v2026-10-07`. Mondo ids get obsoleted and merged,</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">so the ids can only be checked against a known release.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^v[0-9]{4}-[0-9]{2}-[0-9]{2}$</span>
 <span class="w">  </span><span class="nt">slug</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slug</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Short lowercase hyphenated disease name used in file names, e.g.</span>
@@ -475,8 +494,8 @@
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
 <span class="w">  </span><span class="nt">curation_record_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curation_record_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `mondo_id`) this CP was</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">built from. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `disease_entity_id`) this</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">CP was built from. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
@@ -514,6 +533,19 @@
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
+<span class="w">  </span><span class="nt">mondo_version</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mondo_version</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The Mondo release that `mondo_id` and `included_mondo_ids` come from,</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">as its release tag, e.g. `v2026-10-07`. Mondo ids get obsoleted and merged,</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">so the ids can only be checked against a known release.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^v[0-9]{4}-[0-9]{2}-[0-9]{2}$</span>
 <span class="w">  </span><span class="nt">slug</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slug</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Short lowercase hyphenated disease name used in file names, e.g.</span>
@@ -551,8 +583,8 @@
 <span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^MONDO:[0-9]{7}$</span>
 <span class="w">  </span><span class="nt">curation_record_version</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curation_record_version</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `mondo_id`) this CP was</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">built from. Recorded, not queried.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Version of the curation record (keyed by `disease_entity_id`) this</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">CP was built from. Recorded, not queried.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mendelian.co/schemas/rapid-cp-logic</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DiseaseRef</span>
